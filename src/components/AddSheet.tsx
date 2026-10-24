@@ -98,7 +98,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
       }}
       onLongPress={() => {
         const on = toggleQuickPick(food.id)
-        showToast(on ? `${food.name} ligger nu bland snabbvalen` : `${food.name} borttagen från snabbvalen`)
+        showToast(on ? `${food.name} ligger nu bland favoriterna` : `${food.name} borttagen från favoriterna`)
       }}
     />
   )
@@ -112,7 +112,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
         <span className="row-text">
           <span className="row-title">
             <span className="row-name">{meal.name}</span>
-            {isPicked(MEAL_PREFIX + meal.id) && <span className="row-badge">snabbval</span>}
+            {isPicked(MEAL_PREFIX + meal.id) && <span className="row-badge">favorit</span>}
           </span>
           <span className="row-sub">{meal.items.map((i) => `${formatQty(i.qty)} ${i.name.toLowerCase()}`).join(', ')}</span>
         </span>
@@ -263,7 +263,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
             )}
             {pickedFoods.length > 0 && (
               <>
-                <h3 className="section-title">Snabbval</h3>
+                <h3 className="section-title">Favoriter</h3>
                 <div className="group">{pickedFoods.map(row)}</div>
               </>
             )}
@@ -290,7 +290,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
                 </button>
               ))}
             </div>
-            <p className="hint-text">Tips: håll inne på en vara för att lägga den bland snabbvalen. Skriv ”2 potatis” för att lägga till flera.</p>
+            <p className="hint-text">Tips: håll inne på en vara för att lägga den bland favoriterna. Skriv ”2 potatis” för att lägga till flera.</p>
           </>
         )}
       </div>

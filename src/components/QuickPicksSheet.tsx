@@ -50,8 +50,8 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
     <Sheet
       open={open}
       onClose={onClose}
-      label="Ändra snabbval"
-      title="Snabbval"
+      label="Ändra favoriter"
+      title="Favoriter"
       right={
         <button type="button" className="bar-btn bar-btn-strong" onClick={onClose}>
           Klar
@@ -74,10 +74,10 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
             ))}
           </div>
         ) : (
-          <p className="empty-text">Inga snabbval än. Välj några nedan.</p>
+          <p className="empty-text">Inga favoriter än. Välj några nedan.</p>
         )}
         <p className="hint-text">
-          {quickPicks ? 'Tryck på ett snabbval för att ta bort det.' : 'Just nu väljs snabbvalen automatiskt efter det du äter mest.'}
+          {quickPicks ? 'Tryck på en favorit för att ta bort den.' : 'Just nu väljs favoriterna automatiskt efter det du äter mest.'}
         </p>
       </div>
 

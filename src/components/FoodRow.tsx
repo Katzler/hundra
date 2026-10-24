@@ -26,7 +26,7 @@ export function FoodRow({ food, points, qty, picked, onAdd, onQty, onLongPress }
 
   return (
     <div className={`row food-row ${qty > 0 ? 'is-added' : ''}`}>
-      {/* Långtryck (snabbval) gäller bara namnraden, aldrig (+) eller stegaren. */}
+      {/* Långtryck (favorit) gäller bara namnraden, aldrig (+) eller stegaren. */}
       <button
         type="button"
         className="row-main"

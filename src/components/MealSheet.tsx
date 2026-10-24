@@ -41,7 +41,7 @@ export function MealSheet({ source, budgetKcal, onClose }: Props) {
     const isPicked = useStore.getState().quickPicks?.includes(id) ?? false
     if (asQuickPick !== isPicked) toggleQuickPick(id)
     haptic()
-    showToast(existing ? 'Måltiden sparad' : `${meal.name} sparad${asQuickPick ? ' bland snabbvalen' : ''}`)
+    showToast(existing ? 'Måltiden sparad' : `${meal.name} sparad${asQuickPick ? ' bland favoriterna' : ''}`)
     onClose()
   }
 
@@ -97,7 +97,7 @@ export function MealSheet({ source, budgetKcal, onClose }: Props) {
         <p className="hint-text">Totalt {formatPoints(toPoints(total, budgetKcal))} p. Poängen räknas om om du ändrar dina uppgifter.</p>
 
         <label className="toggle-row group">
-          <span className="row-title">Visa bland snabbvalen</span>
+          <span className="row-title">Visa bland favoriterna</span>
           <input type="checkbox" className="switch" checked={asQuickPick} onChange={(e) => setAsQuickPick(e.target.checked)} />
         </label>
 

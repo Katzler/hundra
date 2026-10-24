@@ -146,7 +146,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
 
       <section aria-labelledby="quick-title">
         <h2 className="section-title" id="quick-title">
-          Snabbval
+          Favoriter
           <button type="button" className="section-action" onClick={() => setEditingPicks(true)}>
             Ändra
           </button>
@@ -179,7 +179,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
           {quick.length === 0 && (
             <button type="button" className="chip chip-add" onClick={() => setEditingPicks(true)}>
               <PlusIcon size={16} />
-              Lägg till snabbval
+              Lägg till favoriter
             </button>
           )}
         </div>
@@ -201,7 +201,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
         ) : (
           <div className="empty-card">
             <p>
-              Tryck på ett snabbval ovan eller på <strong>Lägg till mat</strong>.
+              Tryck på en favorit ovan eller på <strong>Lägg till mat</strong>.
             </p>
           </div>
         )}

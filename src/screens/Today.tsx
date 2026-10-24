@@ -1,0 +1,158 @@
+import { useMemo, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
+import { AddSheet } from '../components/AddSheet'
+import { EntryRow } from '../components/FoodRow'
+import { ChevronLeft, ChevronRight, PlusIcon } from '../components/icons'
+import { Ring } from '../components/Ring'
+import { SwipeRow } from '../components/SwipeRow'
+import { FOODS, type Food } from '../data/foods'
+import { budgetFor, entryKcal, formatPoints, toPoints } from '../lib/calc'
+import { addDays, dayLong, dayTitle, type DateKey } from '../lib/dates'
+import { useToday } from '../lib/hooks'
+import { haptic, useUI } from '../store/ui'
+import { allFoods, topFoods, useStore } from '../store/useStore'
+
+const STARTER_IDS = ['kaffe-mjolk', 'macka-ost', 'potatis', 'banan', 'agg', 'pasta', 'apple', 'yoghurt']
+const STARTERS = STARTER_IDS.map((id) => FOODS.find((f) => f.id === id)!)
+
+export function Today() {
+  const today = useToday()
+  const [picked, setPicked] = useState<DateKey | null>(null)
+  const date = picked && picked < today ? picked : today
+  const [adding, setAdding] = useState(false)
+  const searchRef = useRef<HTMLInputElement>(null)
+
+  const entries = useStore((s) => s.entries)
+  const history = useStore((s) => s.budgetHistory)
+  const custom = useStore((s) => s.customFoods)
+  const addFood = useStore((s) => s.addFood)
+  const setQty = useStore((s) => s.setQty)
+  const removeEntry = useStore((s) => s.removeEntry)
+  const restoreEntry = useStore((s) => s.restoreEntry)
+  const showToast = useUI((s) => s.showToast)
+
+  const budget = budgetFor(date, history)
+  const dayEntries = useMemo(
+    () => entries.filter((e) => e.date === date).sort((a, b) => a.at - b.at),
+    [entries, date],
+  )
+  const total = toPoints(dayEntries.reduce((s, e) => s + entryKcal(e), 0), budget)
+  const left = 100 - total
+
+  // Ordningen låses när skärmen visas, så att chipsen inte hoppar runt medan man trycker.
+  const quick = useMemo(() => {
+    const top = topFoods(allFoods(custom), useStore.getState().usage, 8)
+    const fill = STARTERS.filter((f) => !top.some((t) => t.id === f.id))
+    return [...top, ...fill].slice(0, 8)
+  }, [custom])
+
+  const openAdd = () => {
+    // Fokus måste sättas direkt i trycket för att iOS ska visa tangentbordet.
+    flushSync(() => setAdding(true))
+    searchRef.current?.focus({ preventScroll: true })
+  }
+
+  const quickAdd = (food: Food) => {
+    haptic()
+    addFood(food, date)
+    showToast(`${food.emoji} ${food.name} +1`, {
+      label: 'Ångra',
+      run: () => {
+        const e = useStore.getState().entries.find((x) => x.date === date && x.foodId === food.id)
+        if (e) setQty(e.id, e.qty - 1)
+      },
+    })
+  }
+
+  const remove = (id: string) => {
+    const removed = removeEntry(id)
+    if (removed) showToast(`${removed.name} borttagen`, { label: 'Ångra', run: () => restoreEntry(removed) })
+  }
+
+  const isToday = date === today
+
+  return (
+    <main className="screen today">
+      <header className="day-header">
+        <button type="button" className="day-heading" onClick={() => setPicked(null)} disabled={isToday}>
+          <span className="eyebrow">{dayLong(date)}</span>
+          <span className="large-title">{dayTitle(date, today)}</span>
+        </button>
+        <div className="day-nav">
+          <button type="button" className="icon-btn" onClick={() => setPicked(addDays(date, -1))} aria-label="Föregående dag">
+            <ChevronLeft />
+          </button>
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={() => setPicked(addDays(date, 1))}
+            disabled={isToday}
+            aria-label="Nästa dag"
+          >
+            <ChevronRight />
+          </button>
+        </div>
+      </header>
+
+      <section className="ring-section">
+        <Ring value={total} />
+        <p className="ring-note">
+          {dayEntries.length === 0
+            ? 'Inget loggat än'
+            : left >= 0.5
+              ? `${formatPoints(left)} kvar till 100`
+              : left > -0.5
+                ? 'Precis 100'
+                : `${formatPoints(-left)} över 100`}
+        </p>
+      </section>
+
+      <section aria-label="Snabbval">
+        <h2 className="section-title">Snabbval</h2>
+        <div className="chips">
+          {quick.map((f) => (
+            <button key={f.id} type="button" className="chip" onClick={() => quickAdd(f)}>
+              <span className="chip-emoji" aria-hidden>
+                {f.emoji}
+              </span>
+              <span className="chip-name">{f.name}</span>
+              <span className="chip-points">{formatPoints(toPoints(f.kcal, budget))}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section aria-label="Dagens mat">
+        <h2 className="section-title">
+          {isToday ? 'Dagens mat' : 'Den här dagen'}
+          {dayEntries.length > 0 && <span className="section-meta">{formatPoints(total)} p</span>}
+        </h2>
+        {dayEntries.length > 0 ? (
+          <div className="group">
+            {dayEntries.map((e) => (
+              <SwipeRow key={e.id} onDelete={() => remove(e.id)}>
+                <EntryRow
+                  entry={e}
+                  points={toPoints(entryKcal(e), budget)}
+                  onQty={(q) => (q <= 0 ? remove(e.id) : setQty(e.id, q))}
+                />
+              </SwipeRow>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-card">
+            <p>Tryck på ett snabbval ovan eller på <strong>Lägg till mat</strong>.</p>
+          </div>
+        )}
+        {dayEntries.length > 0 && <p className="hint-text">Svep åt vänster på en rad för att ta bort den.</p>}
+      </section>
+
+      <button type="button" className="fab" onClick={openAdd}>
+        <PlusIcon size={20} />
+        Lägg till mat
+      </button>
+
+      <AddSheet open={adding} date={date} onClose={() => setAdding(false)} inputRef={searchRef} />
+    </main>
+  )
+}

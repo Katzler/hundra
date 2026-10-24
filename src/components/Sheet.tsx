@@ -1,0 +1,117 @@
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
+import { useVisualViewport } from '../lib/hooks'
+
+type Props = {
+  open: boolean
+  onClose: () => void
+  title: ReactNode
+  left?: ReactNode
+  right?: ReactNode
+  children: ReactNode
+  footer?: ReactNode
+  /** Monteras även när arket är stängt, så att sökfältet kan få fokus direkt vid tryck (krävs i iOS). */
+  keepMounted?: boolean
+  label?: string
+}
+
+/** Bottenark i iOS-stil. Dra ner i handtaget eller rubriken för att stänga. */
+export function Sheet({ open, onClose, title, left, right, children, footer, keepMounted, label }: Props) {
+  const vv = useVisualViewport()
+  const [dragY, setDragY] = useState(0)
+  const [dragging, setDragging] = useState(false)
+  const [mounted, setMounted] = useState(open)
+  const [entered, setEntered] = useState(false)
+  const start = useRef<{ y: number; id: number; t: number } | null>(null)
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true)
+      return
+    }
+    setEntered(false)
+    const t = setTimeout(() => setMounted(false), 450)
+    return () => clearTimeout(t)
+  }, [open])
+
+  // Ett nymonterat ark behöver en ruta i stängt läge för att glida in.
+  useEffect(() => {
+    if (!open || !mounted) return
+    let r2 = 0
+    const r1 = requestAnimationFrame(() => (r2 = requestAnimationFrame(() => setEntered(true))))
+    return () => {
+      cancelAnimationFrame(r1)
+      cancelAnimationFrame(r2)
+    }
+  }, [open, mounted])
+
+  const shown = keepMounted ? open : open && entered
+
+  useEffect(() => {
+    if (!open) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open, onClose])
+
+  if (!mounted && !keepMounted) return null
+
+  // Under statusraden/notchen och ovanför tangentbordet.
+  const extra = 10 + (window.matchMedia('(min-width: 640px)').matches ? 40 : 0)
+  const top = `calc(${vv.offsetTop}px + var(--safe-top) + ${extra}px)`
+  const height = `max(300px, calc(${vv.height}px - var(--safe-top) - ${extra}px))`
+
+  const onDown = (e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest('button, input, a')) return
+    start.current = { y: e.clientY, id: e.pointerId, t: performance.now() }
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    setDragging(true)
+  }
+  const onMove = (e: React.PointerEvent) => {
+    if (start.current?.id !== e.pointerId) return
+    setDragY(Math.max(0, e.clientY - start.current.y))
+  }
+  const onUp = (e: React.PointerEvent) => {
+    if (start.current?.id !== e.pointerId) return
+    const velocity = dragY / Math.max(1, performance.now() - start.current.t)
+    start.current = null
+    setDragging(false)
+    if (dragY > 120 || (dragY > 30 && velocity > 0.6)) onClose()
+    setDragY(0)
+  }
+
+  return createPortal(
+    <div className={`sheet-root ${shown ? 'is-open' : ''}`} aria-hidden={!open}>
+      <div className="sheet-scrim" onClick={onClose} />
+      <div
+        className="sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-label={label}
+        style={{
+          top,
+          height,
+          transform: shown ? `translate3d(0, ${dragY}px, 0)` : 'translate3d(0, 110%, 0)',
+          transition: dragging ? 'none' : undefined,
+        }}
+      >
+        <div className="sheet-head" onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
+          <div className="sheet-grabber" />
+          <div className="sheet-bar">
+            <div className="sheet-bar-side">{left}</div>
+            <div className="sheet-title">{title}</div>
+            <div className="sheet-bar-side sheet-bar-right">{right}</div>
+          </div>
+        </div>
+        <div className="sheet-body">{children}</div>
+        {footer}
+      </div>
+    </div>,
+    document.body,
+  )
+}

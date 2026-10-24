@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-mango-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="4" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="28"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-mango-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="11"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -1.6)">
+    <g filter="url(#riso-mango-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#FFD02E" d="M5.4 40.6L8.4 31.2L17.7 34.3L14.7 43.6ZM11.8 26.6L19.7 20.9L25.4 28.8L17.5 34.5ZM25.1 19.1L34.9 19.1L34.9 28.9L25.1 28.9ZM40.3 20.9L48.2 26.6L42.5 34.5L34.6 28.8ZM51.6 31.2L54.6 40.6L45.3 43.6L42.3 34.3ZM18.1 34.5L26.2 29L31.7 37.1L23.5 42.6ZM33.8 29L41.9 34.5L36.5 42.6L28.3 37.1Z"/>
+      <path fill="#F28C28" style="mix-blend-mode:multiply" transform="translate(1.6 1.6)" d="M5.4 40.6L8.4 31.2L17.7 34.3L14.7 43.6ZM11.8 26.6L19.7 20.9L25.4 28.8L17.5 34.5ZM25.1 19.1L34.9 19.1L34.9 28.9L25.1 28.9ZM40.3 20.9L48.2 26.6L42.5 34.5L34.6 28.8ZM51.6 31.2L54.6 40.6L45.3 43.6L42.3 34.3ZM18.1 34.5L26.2 29L31.7 37.1L23.5 42.6ZM33.8 29L41.9 34.5L36.5 42.6L28.3 37.1Z"/>
+      <path fill="#3BAA5C" d="M5.6 41.6C8.6 50 18 55.4 30 55.4S51.4 50 54.4 41.6C46 45.4 38 46.4 30 46.4S14 45.4 5.6 41.6Z"/>
+      <path fill="#E8453C" d="M38 54.4C46 52.6 52 48 54.4 41.6C50.6 43.4 46.4 44.6 42 45.4C42 48.6 40.6 51.6 38 54.4Z"/>
+    </g>
+    <g filter="url(#riso-mango-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="2.4" d="M5.4 40.6L8.4 31.2L17.7 34.3L14.7 43.6ZM11.8 26.6L19.7 20.9L25.4 28.8L17.5 34.5ZM25.1 19.1L34.9 19.1L34.9 28.9L25.1 28.9ZM40.3 20.9L48.2 26.6L42.5 34.5L34.6 28.8ZM51.6 31.2L54.6 40.6L45.3 43.6L42.3 34.3ZM18.1 34.5L26.2 29L31.7 37.1L23.5 42.6ZM33.8 29L41.9 34.5L36.5 42.6L28.3 37.1Z"/>
+      <path d="M5.6 41.6C8.6 50 18 55.4 30 55.4S51.4 50 54.4 41.6C46 45.4 38 46.4 30 46.4S14 45.4 5.6 41.6"/>
+    </g>
+  </g>
+</svg>

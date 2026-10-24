@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-bagel-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="8" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="17"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-bagel-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -1.4)">
+    <g filter="url(#riso-bagel-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" fill-rule="evenodd" d="M6 32A24 16.4 0 1 0 54 32A24 16.4 0 1 0 6 32ZM23.6 29.4A6.4 3.4 0 1 0 36.4 29.4A6.4 3.4 0 1 0 23.6 29.4Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M6.4 34C9 43 20 48.4 30 48.4C40 48.4 51 43 53.6 34C50 41 40 45 30 45C20 45 10 41 6.4 34Z"/>
+      <path fill="#9A4E24" style="mix-blend-mode:multiply" transform="translate(0 0)" d="M23.6 29.4A6.4 3.4 0 0 1 36.4 29.4C34 28 26 28 23.6 29.4Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M22.6 34.6C26 36.6 34 36.6 37.4 34.6"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12.4 25.4C16 20.6 22 18 28.6 17.6"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 24l1.4 -.6M33 21.4l1.5 .2M41.4 23.6l1.4 .8M47 30l.6 1.4M14.6 31.4l1.2 -1M24.6 38.6l1.5 .2M36.6 39l1.4 -.5M44.2 36.4l1.2 -.9M26.2 22.4l1.3 -.4M16.6 37.4l1.3 .6"/>
+    </g>
+    <g filter="url(#riso-bagel-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.6 39.4C6.8 37 6 34.6 6 32C6 22.8 16.8 15.6 30 15.6S54 22.8 54 32S43.2 48.4 30 48.4C22 48.4 15.4 46 11.6 42.6"/>
+      <path stroke-width="2.4" d="M23.6 29.4A6.4 3.4 0 1 0 36.4 29.4A6.4 3.4 0 1 0 23.6 29.4Z"/>
+    </g>
+  </g>
+</svg>

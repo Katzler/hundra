@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { formatPoints, toPoints } from '../lib/calc'
 import { searchFoods } from '../lib/search'
 import { haptic } from '../store/ui'
-import { allFoods, quickFoods, useStore } from '../store/useStore'
+import { allFoods, MEAL_PREFIX, mealKcal, quickFoods, quickItems, useStore } from '../store/useStore'
 import { FoodIcon } from './FoodIcon'
 import { CheckIcon, SearchIcon, XIcon } from './icons'
 import { Sheet } from './Sheet'
@@ -15,6 +15,7 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
   const custom = useStore((s) => s.customFoods)
   const usage = useStore((s) => s.usage)
   const quickPicks = useStore((s) => s.quickPicks)
+  const meals = useStore((s) => s.meals)
   const setQuickPicks = useStore((s) => s.setQuickPicks)
   const foods = useMemo(() => allFoods(custom), [custom])
 
@@ -29,8 +30,12 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
   )
 
   const picks = quickPicks ?? autoIds
-  const byId = useMemo(() => new Map(foods.map((f) => [f.id, f])), [foods])
-  const picked = picks.map((id) => byId.get(id)).filter((f) => !!f)
+  // Både varor och sparade måltider kan ligga bland snabbvalen.
+  const picked = quickItems(foods, usage, picks, meals, 100).map((q) =>
+    q.kind === 'food'
+      ? { id: q.food.id, name: q.food.name, icon: q.food.id, emoji: q.food.emoji }
+      : { id: MEAL_PREFIX + q.meal.id, name: q.meal.name, icon: 'maltid-egen', emoji: '🍱' },
+  )
 
   const suggestions = useMemo(() => quickFoods(foods, usage, null, 24), [foods, usage])
   const results = useMemo(() => searchFoods(foods, query, usage).slice(0, 40), [foods, query, usage])
@@ -59,7 +64,7 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
             {picked.map((f) => (
               <button key={f.id} type="button" className="chip chip-editing" onClick={() => toggle(f.id)} aria-label={`Ta bort ${f.name}`}>
                 <span className="chip-emoji" aria-hidden>
-                  <FoodIcon id={f.id} emoji={f.emoji} size={26} />
+                  <FoodIcon id={f.icon} emoji={f.emoji} size={26} />
                 </span>
                 <span className="chip-name">{f.name}</span>
                 <span className="chip-remove" aria-hidden>
@@ -96,6 +101,34 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
         )}
       </div>
 
+      {!query.trim() && meals.length > 0 && (
+        <>
+          <h3 className="section-title">Mina måltider</h3>
+          <div className="group">
+            {meals.map((m) => {
+              const on = picks.includes(MEAL_PREFIX + m.id)
+              return (
+                <button key={m.id} type="button" className="row nav-row" onClick={() => toggle(MEAL_PREFIX + m.id)} aria-pressed={on}>
+                  <span className="emoji" aria-hidden>
+                    <FoodIcon id="maltid-egen" emoji="🍱" />
+                  </span>
+                  <span className="row-text">
+                    <span className="row-title">
+                      <span className="row-name">{m.name}</span>
+                    </span>
+                    <span className="row-sub">
+                      {m.items.length} varor · {formatPoints(toPoints(mealKcal(m), budgetKcal))} p
+                    </span>
+                  </span>
+                  <span className={`check ${on ? 'is-on' : ''}`} aria-hidden>
+                    {on && <CheckIcon />}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </>
+      )}
       {!query.trim() && <h3 className="section-title">Förslag</h3>}
       {list.length > 0 ? (
         <div className="group">
@@ -107,7 +140,9 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
                   <FoodIcon id={f.id} emoji={f.emoji} />
                 </span>
                 <span className="row-text">
-                  <span className="row-title">{f.name}</span>
+                  <span className="row-title">
+                    <span className="row-name">{f.name}</span>
+                  </span>
                   <span className="row-sub">
                     {f.unit} · {formatPoints(toPoints(f.kcal, budgetKcal))} p
                   </span>

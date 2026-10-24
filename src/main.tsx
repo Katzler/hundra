@@ -20,13 +20,13 @@ const updateSW = registerSW({
   immediate: true,
   onNeedRefresh() {
     updateReady = true
-    if (document.visibilityState === 'hidden' || Date.now() - shownAt < JUST_OPENED_MS) updateSW(true)
+    if (document.visibilityState === 'hidden' || Date.now() - shownAt < JUST_OPENED_MS) updateSW()
   },
   onRegisteredSW(_url, registration) {
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
         // Inte medan ett ark (t.ex. ett halvifyllt formulär) är öppet – då väntar vi till nästa gång.
-        if (updateReady && !document.body.dataset.sheetOpen) updateSW(true)
+        if (updateReady && !document.body.dataset.sheetOpen) updateSW()
       } else {
         shownAt = Date.now()
         registration?.update().catch(() => {})

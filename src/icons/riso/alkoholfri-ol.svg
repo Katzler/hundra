@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-alkoholfri-ol-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="18" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="6"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-alkoholfri-ol-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="24"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 0)">
+    <g filter="url(#riso-alkoholfri-ol-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#F28C28" d="M18 13.4C18 9 42 9 42 13.4L44.8 19C45.2 29 45.2 40 45 50.6C45 56 15 56 15 50.6C14.8 40 14.8 29 15.2 19Z"/>
+      <path fill="#F28C28" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M38.4 18.8L44.8 19C45.2 29 45.2 40 45 50.6C44.8 53.8 40.6 55 35.6 55.4C38.6 44 39.4 30 38.4 18.8Z"/>
+      <path fill="#A9C8F0" d="M18 13.4C18 9 42 9 42 13.4C42 16.8 18 16.8 18 13.4Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M30 23.4C25.6 23.4 25.8 32.4 30 32.4C34.2 32.4 34.4 23.4 30 23.4Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M30 51V39.6"/>
+      <path fill="#9A4E24" d="M30 49c-2.8.2-4.6-1.4-4.8-3.6c2.6-.2 4.4 1.4 4.8 3.6ZM30 49c2.8.2 4.6-1.4 4.8-3.6c-2.6-.2-4.4 1.4-4.8 3.6ZM30 44.6c-2.8.2-4.6-1.4-4.8-3.6c2.6-.2 4.4 1.4 4.8 3.6ZM30 44.6c2.8.2 4.6-1.4 4.8-3.6c-2.6-.2-4.4 1.4-4.8 3.6ZM30 40.6c-1.6-1.6-1.6-3.8 0-5.4c1.6 1.6 1.6 3.8 0 5.4Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M19.6 24L19.4 32"/>
+      <path fill="#FFF1CF" d="M27.4 13.4C25 13 24.6 9.6 27.4 9C27.6 5.6 31.4 4 34 5.8C36.4 3.8 40.6 5.2 40.4 8.8C42.6 9.6 42.4 12.8 40 13.4L39.6 15C39.6 17.8 39.6 20.8 37.8 20.8C36 20.8 36 17.8 35.8 15.4C32.8 15.6 29.6 15 27.4 13.4Z"/>
+    </g>
+    <g filter="url(#riso-alkoholfri-ol-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M27.6 13.2C24.8 12.8 24.6 9.6 27.4 9C27.6 5.6 31.4 4 34 5.8C36.4 3.8 40.6 5.2 40.4 8.8C42.6 9.6 42.6 12.4 40.8 13.2"/>
+      <path d="M17.8 14L15.2 19.2C14.8 29 14.8 40 15 50.6C15.2 56.2 44.8 56.4 45 50.6C45.2 40 45.2 29 44.8 19L42.2 13.8M25.4 10C21 10.6 18 11.8 18 13.4"/>
+      <path stroke-width="2.4" d="M18.6 14.2C20.6 16.8 26.6 17.4 33.4 17.2M41.6 14.2C41.2 14.8 40.6 15.2 39.8 15.6M35.8 17C36 18.8 36.2 20.8 37.8 20.8C39.4 20.8 39.6 18.8 39.8 16.8"/>
+    </g>
+  </g>
+</svg>

@@ -6,6 +6,12 @@ import {
   forecastKgPerWeek,
   formatKg,
   formatKgPerWeek,
+  formatQty,
+  daySlot,
+  weightTrend,
+  estimateCalibration,
+  weekdayAverages,
+  topSources,
   formatPoints,
   rollingAverage,
   tdee,
@@ -177,5 +183,103 @@ describe('vald dag', () => {
   it('idag eller framtid betyder idag', () => {
     expect(resolveDay(null, '2026-10-24')).toBe('2026-10-24')
     expect(resolveDay({ date: '2026-10-24', on: '2026-10-24' }, '2026-10-24')).toBe('2026-10-24')
+  })
+})
+
+describe('portioner och tid på dygnet', () => {
+  it('skriver halvor som i en meny', () => {
+    expect(formatQty(0.5)).toBe('½')
+    expect(formatQty(1.5)).toBe('1½')
+    expect(formatQty(3)).toBe('3')
+  })
+
+  it('delar in dygnet i fyra delar', () => {
+    expect(daySlot(new Date(2026, 9, 24, 7))).toBe(0)
+    expect(daySlot(new Date(2026, 9, 24, 12))).toBe(1)
+    expect(daySlot(new Date(2026, 9, 24, 15))).toBe(2)
+    expect(daySlot(new Date(2026, 9, 24, 20))).toBe(3)
+    expect(daySlot(new Date(2026, 9, 24, 2))).toBe(3)
+  })
+})
+
+describe('uteslutna dagar', () => {
+  it('räknas inte i snittet men syns i diagrammet', () => {
+    const end = '2026-10-24'
+    const history = [{ from: '2026-01-01', kcal: 2000 }]
+    const r = rollingAverage([entry(end, 2000), entry(addDays(end, -1), 400)], history, end, 7, [addDays(end, -1)])
+    expect(r.avg).toBeCloseTo(100)
+    expect(r.loggedDays).toBe(1)
+    expect(r.days[5]).toMatchObject({ points: 20, excluded: true })
+  })
+})
+
+describe('vikttrend', () => {
+  it('jämnar ut dagliga hopp och fyller luckor', () => {
+    const t = weightTrend(
+      [
+        { date: '2026-10-01', kg: 80 },
+        { date: '2026-10-11', kg: 79 },
+      ],
+      '2026-10-12',
+    )
+    expect(t).toHaveLength(12)
+    expect(t[5].kg).toBeNull()
+    expect(t[11].trend).toBeLessThan(80)
+    expect(t[11].trend).toBeGreaterThan(79)
+  })
+})
+
+describe('självkalibrering', () => {
+  const today = '2026-10-24'
+  const days = (n: number, kcal: number) => Array.from({ length: n }, (_, i) => entry(addDays(today, -1 - i), kcal))
+
+  it('föreslår lägre budget när vikten står still på ett snitt under 100', () => {
+    // Äter 2 300 kcal mot en budget på 2 500, men vikten står still → förbrukningen är ca 2 300.
+    const weights = Array.from({ length: 9 }, (_, i) => ({ date: addDays(today, -1 - i * 5), kg: 80 }))
+    const c = estimateCalibration({
+      entries: days(28, 2300),
+      weights,
+      excluded: [],
+      today,
+      currentBudget: 2500,
+      currentFactor: 1,
+      firstDay: addDays(today, -60),
+    })
+    expect(c).not.toBeNull()
+    expect(c!.expenditure).toBe(2300)
+    expect(c!.factor).toBe(0.95) // högst 5 % per gång
+  })
+
+  it('ger inget förslag på för tunt underlag', () => {
+    const c = estimateCalibration({
+      entries: days(10, 2300),
+      weights: [{ date: addDays(today, -2), kg: 80 }],
+      excluded: [],
+      today,
+      currentBudget: 2500,
+      currentFactor: 1,
+      firstDay: addDays(today, -60),
+    })
+    expect(c).toBeNull()
+  })
+})
+
+describe('mönster', () => {
+  it('räknar snitt per veckodag med måndag först', () => {
+    const avgs = weekdayAverages([
+      { date: '2026-10-19', points: 90 }, // måndag
+      { date: '2026-10-24', points: 130 }, // lördag
+      { date: '2026-10-25', points: null },
+    ])
+    expect(avgs[0]).toBe(90)
+    expect(avgs[5]).toBe(130)
+    expect(avgs[6]).toBeNull()
+  })
+
+  it('visar vilka varor som gav flest poäng', () => {
+    const e1 = { ...entry('2026-10-20', 1000), foodId: 'pizza', name: 'Pizza' }
+    const e2 = { ...entry('2026-10-21', 250), foodId: 'ol', name: 'Öl' }
+    const top = topSources([e1, e2], '2026-10-01', '2026-10-31')
+    expect(top[0]).toMatchObject({ foodId: 'pizza', share: 0.8 })
   })
 })

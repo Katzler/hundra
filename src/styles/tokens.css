@@ -12,6 +12,8 @@
   --accent: #34c759;
   --accent-deep: #248a3d;
   --accent-soft: rgba(52, 199, 89, 0.16);
+  /* Mörkare grönt för knappar med vit text (kontrast 5,3:1). */
+  --button: #1e7b34;
   --tint: #007aff;
   --danger: #ff3b30;
   --bar: rgba(249, 249, 249, 0.82);
@@ -50,5 +52,24 @@
     --bar: rgba(22, 22, 24, 0.82);
     --scrim: rgba(0, 0, 0, 0.55);
     --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Inställningen Öka kontrast i iOS. */
+@media (prefers-contrast: more) {
+  :root {
+    --label-2: rgba(60, 60, 67, 0.85);
+    --label-3: rgba(60, 60, 67, 0.6);
+    --separator: rgba(60, 60, 67, 0.45);
+    --fill: rgba(118, 118, 128, 0.22);
+  }
+}
+
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root {
+    --label-2: rgba(235, 235, 245, 0.85);
+    --label-3: rgba(235, 235, 245, 0.6);
+    --separator: rgba(140, 140, 145, 0.8);
+    --fill: rgba(118, 118, 128, 0.4);
   }
 }

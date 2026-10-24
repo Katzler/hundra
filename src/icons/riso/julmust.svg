@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-julmust-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="8" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="30"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-julmust-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="15"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1 0)">
+    <g filter="url(#riso-julmust-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#A9C8F0" d="M17 12C17 8.4 43 8.4 43 12L40 52C39.6 56 20.4 56 20 52Z"/>
+      <path fill="#6B3A1E" d="M17.6 19.6C24 21.6 36 21.6 42.4 19.6L40 52C39.6 56 20.4 56 20 52Z"/>
+      <path fill="#6B3A1E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M35.4 21C38.4 20.8 40.6 20.2 42.4 19.6L40 52C39.8 54.4 36.6 55.6 32.4 55.8C35 45 35.6 32 35.4 21Z"/>
+      <path fill="#FFF1CF" d="M17.4 16.4C22 14 38 14 42.6 16.4L42.4 20C40 22.4 37 20.4 34.6 22C32 23.4 29.6 21.4 27 22.6C24 23.6 22 21.4 17.8 21.8Z"/>
+      <g transform="rotate(20 34 30)">
+      <path fill="#FFF1CF" d="M33 2h4.4v26h-4.4Z"/>
+      <path fill="none" stroke="#E8453C" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="butt" d="M35.2 4.6v3.4M35.2 12.6v3.4M35.2 20.6v3.4"/>
+      </g>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M21.4 26L22.4 36"/>
+      <path fill="#3BAA5C" d="M28.4 41C25.4 37.2 20.4 37 18.4 40.2C21.4 43.6 26 43.8 28.4 41ZM28.4 41C31.4 37.2 36.4 37 38.4 40.2C35.4 43.6 30.8 43.8 28.4 41Z"/>
+      <path fill="none" stroke="#E8453C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M26.6 43.6h.1M30.4 43.6h.1M28.4 46.4h.1"/>
+    </g>
+    <g filter="url(#riso-julmust-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.6 13.4C15.4 8.6 43 8 43 12C43 15 23 15.6 17.4 13"/>
+      <path d="M17.2 12.6L20 52C20.4 56.2 39.6 56.2 40 52L42.8 12.8"/>
+      <path stroke-width="2.4" d="M17.8 21.6C22 21.4 24 23.6 27 22.6C29.6 21.4 32 23.4 34.6 22C37 20.4 40 22.4 42.2 20.2"/>
+      <g transform="rotate(20 34 30)"><path stroke-width="2.4" d="M33 13V2.4H37.4V13"/></g>
+    </g>
+  </g>
+</svg>

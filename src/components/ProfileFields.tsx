@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ACTIVITY, type ActivityLevel, type Profile, type Sex } from '../lib/calc'
 import { Segmented } from './Segmented'
 
@@ -22,7 +23,7 @@ export const formFromProfile = (p: Profile): ProfileForm => ({
 const num = (s: string) => Number(s.replace(',', '.'))
 
 const LIMITS = {
-  age: [13, 100],
+  age: [18, 100],
   height: [120, 230],
   weight: [30, 300],
 } as const
@@ -45,10 +46,14 @@ export function toProfile(f: ProfileForm): Profile | null {
 
 type FieldsProps = { form: ProfileForm; onChange: (f: ProfileForm) => void }
 
+const HINTS = { age: '18–100 år', height: '120–230 cm', weight: '30–300 kg' }
+
 export function AboutFields({ form, onChange }: FieldsProps) {
+  // Fel visas först när man lämnat fältet – inte medan man skriver "1" på väg mot "180".
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
   const field = (key: 'age' | 'height' | 'weight', label: string, unit: string, decimals = false) => {
     const value = form[key]
-    const invalid = value !== '' && !inRange(value, LIMITS[key])
+    const invalid = touched[key] && value !== '' && !inRange(value, LIMITS[key])
     return (
       <label className={`field field-inline ${invalid ? 'is-invalid' : ''}`}>
         <span className="field-label">{label}</span>
@@ -58,8 +63,15 @@ export function AboutFields({ form, onChange }: FieldsProps) {
           inputMode={decimals ? 'decimal' : 'numeric'}
           placeholder="0"
           aria-invalid={invalid}
+          aria-describedby={invalid ? `hint-${key}` : undefined}
+          onBlur={() => setTouched((t) => ({ ...t, [key]: true }))}
         />
         <span className="field-unit">{unit}</span>
+        {invalid && (
+          <span className="field-error" id={`hint-${key}`}>
+            {HINTS[key]}
+          </span>
+        )}
       </label>
     )
   }

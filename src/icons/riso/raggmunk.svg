@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-raggmunk-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="17" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="5"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-raggmunk-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="25"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.6 -3)">
+<g filter="url(#riso-raggmunk-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#3D78D8" d="M4 37a26 15 0 1 0 52 0 26 15 0 1 0-52 0z"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M56 38a26 14 0 0 1-52 0 26 8.4 0 0 0 52 0z"/>
+<path fill="none" stroke="#A9C8F0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M10.2 36.2a19.8 11.1 0 1 0 39.6 0 19.8 11.1 0 1 0-39.6 0z"/>
+<path fill="#DCA660" d="M40.2 36.4c0 1.6-.8 3.3-2 4.7-1.2 1.4-3 2.8-5.2 3.6-2.1.9-4.9 1.2-7.5 1.5-2.6.2-5.8.6-8 .1-2.3-.6-4-2.3-5.7-3.6-1.6-1.2-3.7-2.5-4.2-3.9-.5-1.4.6-3 1.1-4.6.4-1.7 0-3.8 1.5-5 1.5-1.3 4.8-2 7.4-2.4 2.6-.5 5.6-.8 8-.5 2.4.4 4.4 1.7 6.5 2.6 2.1.9 4.8 1.6 6.1 2.8 1.4 1.3 2 3.1 2 4.7z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M38.6 37.6a15 8.4 0 0 1-30 0 15 5 0 0 0 30 0z"/>
+<path fill="#FFD02E" d="M30 35c-.2 1.1-1.2 2.3-2.6 3-1.3.7-3.6 1.4-5.4 1.4-1.8 0-3.9-.6-5.5-1.3-1.7-.8-4.4-2-4.6-3.1-.2-1.1 1.6-2.9 3.3-3.8 1.7-.9 4.5-1.5 6.8-1.5 2.3 0 5.4.7 6.7 1.6 1.3.9 1.5 2.6 1.3 3.7z"/>
+<path fill="none" stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M18 34.3c1-1 2.2-.2 3-1m-.5-.5c1-1 2.2-.2 3-1m6.7 5.8c1-1 2.2-.2 3-1m-4.3.4c1-1 2.2-.2 3-1m-14.4.3c1-1 2.2-.2 3-1m8.4 4.3c1-1 2.2-.2 3-1m-9.7-1.5c1-1 2.2-.2 3-1"/>
+<path fill="none" stroke="#E8453C" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round" d="M33.6 27.4c3.4-2.6 5.6 1.6 9.4-.6s5.8 1.2 9.2-1.2m-16.2 8.8c3.4-2 5.6 2.4 9.4.2s5.4 1.6 8.2.2"/>
+<path fill="none" stroke="#F49AB0" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" d="M33.6 27.4c3.4-2.6 5.6 1.6 9.4-.6s5.8 1.2 9.2-1.2m-16.2 8.8c3.4-2 5.6 2.4 9.4.2s5.4 1.6 8.2.2"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M33.6 27.4c3.4-2.6 5.6 1.6 9.4-.6s5.8 1.2 9.2-1.2m-16.2 8.8c3.4-2 5.6 2.4 9.4.2s5.4 1.6 8.2.2"/>
+<path fill="none" stroke="#9B1B30" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" d="M41 44h.1m3.5-.8h.1m-2.1 3.8h.1m3.3-.4h.1m-7.7.2h.1m9.5-3.8h.1"/>
+<path fill="none" stroke="#E8453C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M42.6 41.6h.1m4.9 4.4h.1"/>
+</g>
+<g filter="url(#riso-raggmunk-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M5.7 31.9c1.4-1.2 4.9-5.5 8.8-7.1 3.9-1.7 9.6-2.5 14.4-2.6 4.9-.1 10.4.7 14.6 2.1 4.1 1.4 8.3 3.8 10.3 6.4 2 2.5 2.7 5.9 1.9 8.6-.8 2.8-3.4 5.8-6.7 7.9-3.3 2-8.3 3.7-13 4.4-4.7.6-10.6.5-15.1-.5-4.5-1-9.1-3.1-11.9-5.4-2.8-2.2-4.3-6.8-5.1-8.2"/>
+<path stroke-width="2.6" d="M40.2 36.4c-.3.8-.8 3.3-2 4.7-1.2 1.4-3 2.8-5.2 3.6-2.1.9-4.9 1.2-7.5 1.5-2.6.2-5.8.6-8 .1-2.3-.6-4-2.3-5.7-3.6-1.6-1.2-3.7-2.5-4.2-3.9-.5-1.4.6-3 1.1-4.6.4-1.7 0-3.8 1.5-5 1.5-1.3 4.8-2 7.4-2.4 2.6-.5 5.6-.8 8-.5 2.4.4 4.4 1.7 6.5 2.6 2.1.9 4.9 1.9 6.1 2.8 1.2.9.9 2.2 1.1 2.6"/>
+</g>
+</g>
+</svg>

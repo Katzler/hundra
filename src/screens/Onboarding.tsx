@@ -3,13 +3,13 @@ import { FoodIcon } from '../components/FoodIcon'
 import { ChevronLeft } from '../components/icons'
 import { AboutFields, ActivityPicker, aboutValid, emptyForm, toProfile } from '../components/ProfileFields'
 import { Ring } from '../components/Ring'
-import { FOODS } from '../data/foods'
+import { EXAMPLE_FOOD_IDS, FOODS } from '../data/foods'
 import { importBackup } from '../lib/backup'
 import { formatInt, formatPoints, tdee, toPoints } from '../lib/calc'
 import { isStandalone } from '../lib/hooks'
 import { useStore } from '../store/useStore'
 
-const EXAMPLES = ['potatis', 'macka-ost', 'banan', 'kaffe-mjolk', 'bolognese'].map((id) => FOODS.find((f) => f.id === id)!)
+const EXAMPLES = EXAMPLE_FOOD_IDS.map((id) => FOODS.find((f) => f.id === id)!)
 
 export function Onboarding() {
   const [step, setStep] = useState(0)

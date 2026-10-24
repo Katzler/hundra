@@ -2,6 +2,8 @@ import { useRef, useState } from 'react'
 import { CustomFoodForm } from '../components/CustomFoodForm'
 import { FoodIcon } from '../components/FoodIcon'
 import { ChevronRight } from '../components/icons'
+import { MealSheet } from '../components/MealSheet'
+import { Segmented } from '../components/Segmented'
 import { AboutFields, ActivityPicker, formFromProfile, toProfile } from '../components/ProfileFields'
 import { Sheet } from '../components/Sheet'
 import type { Food } from '../data/foods'
@@ -11,7 +13,7 @@ import { demoEntries } from '../lib/demo'
 import { exportBackup, importBackup } from '../lib/backup'
 import { isStandalone } from '../lib/hooks'
 import { useUI } from '../store/ui'
-import { useStore } from '../store/useStore'
+import { GOALS, mealKcal, useStore, type Meal } from '../store/useStore'
 
 export function Profile() {
   const profile = useStore((s) => s.profile)!
@@ -21,20 +23,31 @@ export function Profile() {
   const updateCustomFood = useStore((s) => s.updateCustomFood)
   const deleteCustomFood = useStore((s) => s.deleteCustomFood)
   const resetAll = useStore((s) => s.resetAll)
+  const meals = useStore((s) => s.meals)
+  const goal = useStore((s) => s.goal)
+  const setGoal = useStore((s) => s.setGoal)
+  const calibration = useStore((s) => s.calibration)
+  const setCalibration = useStore((s) => s.setCalibration)
+  const lastBackupAt = useStore((s) => s.lastBackupAt)
   const showToast = useUI((s) => s.showToast)
 
   const [editing, setEditing] = useState(false)
   const [form, setForm] = useState(() => formFromProfile(profile))
   const [editFood, setEditFood] = useState<Food | null>(null)
+  const [editMeal, setEditMeal] = useState<Meal | null>(null)
+  const [fromStart, setFromStart] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const budget = budgetFor(todayKey(), history)
   const draft = toProfile(form)
+  // Den som redan har lågt BMI erbjuds inte att gå ner i vikt.
+  const bmi = profile.weightKg / (profile.heightCm / 100) ** 2
+  const goals = bmi < 20 ? GOALS.filter((g) => g.value === 100) : GOALS
 
   return (
     <main className="screen profile">
       <header className="page-header">
-        <span className="large-title">Profil</span>
+        <h1 className="large-title">Profil</h1>
       </header>
 
       <section className="card day-card">
@@ -42,7 +55,29 @@ export function Profile() {
           100 poäng <span className="muted">≈ {formatInt(budget)} kcal</span>
         </div>
         <div className="muted small">1 poäng ≈ {formatInt(kcalPerPoint(budget))} kcal</div>
+        {calibration !== 1 && (
+          <div className="muted small calibration-note">
+            Justerad efter din vikttrend ({calibration > 1 ? '+' : ''}
+            {Math.round((calibration - 1) * 100)} %).{' '}
+            <button type="button" className="inline-link" onClick={() => setCalibration(1)}>
+              Återställ
+            </button>
+          </div>
+        )}
       </section>
+
+      <h2 className="section-title">Mål</h2>
+      <Segmented
+        label="Mål"
+        value={goal}
+        onChange={setGoal}
+        options={goals.map((g) => ({ value: g.value, label: g.value === 100 ? 'Hålla' : String(g.value) }))}
+      />
+      <p className="hint-text">
+        {GOALS.find((g) => g.value === goal)?.title}
+        {goal < 100 ? ` – sikta på ett snitt runt ${goal}. Ringen visar målet som ett streck.` : ' – ett snitt runt 100 håller vikten.'}
+        {bmi < 20 && ' Med ditt BMI rekommenderas inte viktnedgång.'}
+      </p>
 
       <h2 className="section-title">Mina uppgifter</h2>
       <div className="group">
@@ -66,7 +101,30 @@ export function Profile() {
           <ChevronRight size={16} className="row-chevron" />
         </button>
       </div>
-      <p className="hint-text">Uppdatera vikten då och då. Gamla dagar räknas fortfarande mot det som gällde då.</p>
+      <p className="hint-text">Väg in under Trend då och då, så följer dina 100 poäng med automatiskt. Gamla dagar räknas mot det som gällde då.</p>
+
+      <h2 className="section-title">Mina måltider</h2>
+      {meals.length > 0 ? (
+        <div className="group">
+          {meals.map((m) => (
+            <button key={m.id} type="button" className="row nav-row" onClick={() => setEditMeal(m)}>
+              <span className="emoji" aria-hidden>
+                <FoodIcon id="maltid-egen" emoji="🍱" />
+              </span>
+              <span className="row-text">
+                <span className="row-title">
+                  <span className="row-name">{m.name}</span>
+                </span>
+                <span className="row-sub">{m.items.map((i) => i.name).join(', ')}</span>
+              </span>
+              <span className="row-points">{formatPoints(toPoints(mealKcal(m), budget))} p</span>
+              <ChevronRight size={16} className="row-chevron" />
+            </button>
+          ))}
+        </div>
+      ) : (
+        <p className="hint-text">Inga måltider än. Logga en måltid på Idag och välj ”Spara som måltid”.</p>
+      )}
 
       <h2 className="section-title">Mina varor</h2>
       {custom.length > 0 ? (
@@ -77,7 +135,9 @@ export function Profile() {
                 <FoodIcon id={f.id} emoji={f.emoji} />
               </span>
               <span className="row-text">
-                <span className="row-title">{f.name}</span>
+                <span className="row-title">
+                  <span className="row-name">{f.name}</span>
+                </span>
                 <span className="row-sub">{f.unit}</span>
               </span>
               <span className="row-points">{formatPoints(toPoints(f.kcal, budget))} p</span>
@@ -118,7 +178,10 @@ export function Profile() {
           e.target.value = ''
         }}
       />
-      <p className="hint-text">Allt sparas bara på den här enheten. Exportera en backup ibland.</p>
+      <p className="hint-text">
+        Senaste backup: {lastBackupAt ? new Date(lastBackupAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'long' }) : 'aldrig'}. Allt sparas bara på den här
+        telefonen. <strong>Ta aldrig bort Hundra från hemskärmen utan att först exportera en backup</strong> – då raderar iPhone all data.
+      </p>
 
       {!isStandalone() && (
         <section className="card tip-card">
@@ -154,7 +217,17 @@ export function Profile() {
         </div>
       )}
 
-      <p className="footer-text">Hundra · version 0.1</p>
+      <h2 className="section-title">Om Hundra</h2>
+      <section className="card about-card">
+        <p className="muted small">
+          Hundra är ett enkelt sätt att följa vad du äter utan att väga. Värdena är ungefärliga – det är snittet över tid som räknas. Appen ersätter inte
+          råd från vården. Är du gravid, ammar, är under 18 eller har eller har haft en ätstörning: prata med vården innan du börjar räkna.
+        </p>
+        <p className="muted small">All data stannar på din telefon. Ingenting skickas någonstans.</p>
+      </section>
+      <p className="footer-text">
+        Hundra · version {__APP_VERSION__} · {__BUILD_DATE__}
+      </p>
 
       <Sheet
         open={editing}
@@ -173,9 +246,10 @@ export function Profile() {
             disabled={!draft}
             onClick={() => {
               if (!draft) return
-              setProfile(draft)
+              setProfile(draft, { fromStart })
               setEditing(false)
-              showToast('Uppgifterna sparade')
+              setFromStart(false)
+              showToast(fromStart ? 'Uppgifterna sparade och tidigare dagar räknade om' : 'Uppgifterna sparade')
             }}
           >
             Spara
@@ -186,6 +260,13 @@ export function Profile() {
           <AboutFields form={form} onChange={setForm} />
           <h3 className="section-title">Aktivitet</h3>
           <ActivityPicker form={form} onChange={setForm} />
+          <label className="toggle-row group">
+            <span className="row-text">
+              <span className="row-title">Rätta även tidigare dagar</span>
+              <span className="row-sub">Använd om något var fel från början, t.ex. aktivitetsnivån. Annars gäller ändringen från idag.</span>
+            </span>
+            <input type="checkbox" className="switch" checked={fromStart} onChange={(e) => setFromStart(e.target.checked)} />
+          </label>
         </div>
       </Sheet>
 
@@ -219,6 +300,7 @@ export function Profile() {
           />
         )}
       </Sheet>
+      <MealSheet source={editMeal ? { meal: editMeal } : null} budgetKcal={budget} onClose={() => setEditMeal(null)} />
     </main>
   )
 }

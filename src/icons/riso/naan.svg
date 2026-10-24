@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-naan-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="12" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="7"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-naan-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="19"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -1.6)">
+    <g filter="url(#riso-naan-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#EFCF9C" d="M55 8.6C48.6 11.4 36.4 13.6 24 19.6C10.4 26.4 5 39.6 10.6 48.4C16.6 57.4 32.6 55.4 40.8 46.2C49 37 52.8 23.4 55 8.6Z"/>
+      <path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M50.4 23C47.6 33 43 41.4 36.6 47C29.4 53 18 54.4 12 49C20 51 31 48.6 37.6 41C44 34 47.6 27 50.4 23Z"/>
+      <path fill="#DCA660" d="M15.2 31A5.4 3.8 0 1 0 26 31A5.4 3.8 0 1 0 15.2 31ZM31 22A6 3.6 0 1 0 43 22A6 3.6 0 1 0 31 22ZM27.6 41.6A5.8 3.6 0 1 0 39.2 41.6A5.8 3.6 0 1 0 27.6 41.6ZM11.4 43.6A3.6 2.6 0 1 0 18.6 43.6A3.6 2.6 0 1 0 11.4 43.6Z"/>
+      <path fill="#6B3A1E" d="M18.4 31.6C19 29.4 23.6 29.4 22.8 31.4C22.2 32.8 19.6 33 18.4 31.6ZM34.6 22.6C35.6 20.6 40.6 20.6 39.4 22.8C38.6 24 35.6 24.2 34.6 22.6ZM31.4 42C32.6 39.8 36.4 40.4 35.6 42.6C34.8 44 32 44 31.4 42ZM45.4 30.8C46 29.6 48 29.8 47.6 31.2C47.2 32.2 45.6 32.2 45.4 30.8ZM23.6 48.6C24.4 47.4 26.4 47.8 26 49.2C25.6 50.2 23.8 50.2 23.6 48.6ZM48.6 15.6C49.2 14.6 50.8 14.8 50.6 16C50.2 16.8 48.8 16.8 48.6 15.6Z"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M28.6 31.6l1.4 -.8M44.6 19l1.2 .8M14.6 36.4l1.4 .6M40.6 34.6l.8 1.2M18.4 49.4l1.4 -.4M27.4 24.4l1.2 .6"/>
+    </g>
+    <g filter="url(#riso-naan-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M55 8.6C48.6 11.4 36.4 13.6 24 19.6C10.4 26.4 5 39.6 10.6 48.4C16.6 57.4 32.6 55.4 40.8 46.2C47 39.2 50.8 29.6 53.2 18.8"/>
+    </g>
+  </g>
+</svg>

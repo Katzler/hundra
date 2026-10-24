@@ -10,6 +10,14 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   background: var(--bg);
+  font-size: 17px;
+}
+
+/* Följer textstorleken i iPhonens inställningar (Dynamic Type). 1 rem = brödtexten. */
+@supports (font: -apple-system-body) {
+  html {
+    font: -apple-system-body;
+  }
 }
 
 body {
@@ -18,7 +26,7 @@ body {
   background: var(--bg);
   color: var(--label);
   font-family: -apple-system, BlinkMacSystemFont, system-ui, 'SF Pro Text', 'Inter', 'Segoe UI', Roboto, sans-serif;
-  font-size: 17px;
+  font-size: 1rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
@@ -86,7 +94,7 @@ strong {
 }
 
 .small {
-  font-size: 14px;
+  font-size: 0.8235rem;
 }
 
 .tint {
@@ -137,7 +145,7 @@ strong {
 
 .large-title {
   display: block;
-  font-size: 34px;
+  font-size: 2rem;
   line-height: 41px;
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -145,7 +153,7 @@ strong {
 
 .eyebrow {
   display: block;
-  font-size: 13px;
+  font-size: 0.7647rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -156,19 +164,19 @@ strong {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  font-size: 20px;
+  font-size: 1.1765rem;
   font-weight: 700;
   margin: 26px 4px 10px;
 }
 
 .section-meta {
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 500;
   color: var(--label-2);
 }
 
 .hint-text {
-  font-size: 13px;
+  font-size: 0.7647rem;
   color: var(--label-2);
   margin: 8px 16px 0;
   line-height: 1.4;
@@ -176,7 +184,7 @@ strong {
 
 .footer-text {
   text-align: center;
-  font-size: 13px;
+  font-size: 0.7647rem;
   color: var(--label-3);
   margin: 32px 0 0;
 }
@@ -196,12 +204,12 @@ strong {
   border-radius: var(--radius);
   padding: 22px 20px;
   text-align: center;
-  font-size: 15px;
+  font-size: 0.8824rem;
   color: var(--label-2);
 }
 
 .empty-text {
-  font-size: 15px;
+  font-size: 0.8824rem;
   color: var(--label-2);
   text-align: center;
   padding: 18px 16px 6px;
@@ -286,7 +294,7 @@ strong {
   height: 38px;
   border-radius: 50%;
   background: var(--fill);
-  font-size: 21px;
+  font-size: 1.2353rem;
   line-height: 1;
 }
 
@@ -307,7 +315,7 @@ strong {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 17px;
+  font-size: 1rem;
   line-height: 22px;
   white-space: nowrap;
   overflow: hidden;
@@ -315,7 +323,7 @@ strong {
 }
 
 .row-sub {
-  font-size: 13px;
+  font-size: 0.7647rem;
   line-height: 17px;
   color: var(--label-2);
   white-space: nowrap;
@@ -332,21 +340,28 @@ strong {
   flex: none;
 }
 
+.row-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .row-points {
   flex: none;
-  font-size: 15px;
+  font-size: 0.8824rem;
   color: var(--label-2);
   font-variant-numeric: tabular-nums;
 }
 
 .row-points.big {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--label);
 }
 
 .row-action {
-  font-size: 17px;
+  font-size: 1rem;
   color: var(--label-2);
 }
 
@@ -374,7 +389,12 @@ strong {
   }
 }
 
+.stepper {
+  position: relative;
+}
+
 .stepper-btn {
+  position: relative;
   display: grid;
   place-items: center;
   width: 38px;
@@ -383,14 +403,23 @@ strong {
   color: var(--label);
 }
 
+/* Osynlig träffyta på minst 44 px. */
+.stepper-btn::after {
+  content: '';
+  position: absolute;
+  inset: -4px -3px;
+}
+
 .stepper-btn:active {
   background: var(--fill-strong);
 }
 
 .stepper-value {
-  min-width: 20px;
+  min-width: 24px;
+  height: 36px;
+  padding: 0 2px;
   text-align: center;
-  font-size: 16px;
+  font-size: 0.9412rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -404,7 +433,7 @@ strong {
   height: 34px;
   margin: 1px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--button);
   color: #fff;
   transition: transform 0.15s;
 }
@@ -441,9 +470,9 @@ strong {
   width: 100%;
   height: 52px;
   border-radius: var(--radius);
-  background: var(--accent);
+  background: var(--button);
   color: #fff;
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   transition:
     opacity 0.2s,
@@ -465,14 +494,14 @@ strong {
   border-radius: var(--radius);
   background: var(--card);
   color: var(--danger);
-  font-size: 17px;
+  font-size: 1rem;
 }
 
 .link-btn {
   align-self: center;
   padding: 8px 12px;
   color: var(--tint);
-  font-size: 15px;
+  font-size: 0.8824rem;
 }
 
 .bar-btn {
@@ -482,7 +511,7 @@ strong {
   min-height: 44px;
   padding: 0 8px;
   color: var(--tint);
-  font-size: 17px;
+  font-size: 1rem;
 }
 
 .bar-btn:active {
@@ -559,7 +588,7 @@ strong {
 }
 
 .ring-value {
-  font-size: 60px;
+  font-size: 3.5294rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -567,13 +596,13 @@ strong {
 
 .ring-caption {
   margin-top: 4px;
-  font-size: 15px;
+  font-size: 0.8824rem;
   color: var(--label-2);
 }
 
 .ring-note {
   margin-top: 14px;
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 500;
   color: var(--label-2);
 }
@@ -601,7 +630,7 @@ strong {
   padding: 0 8px 0 12px;
   border-radius: 999px;
   background: var(--card);
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 500;
   transition: transform 0.15s;
 }
@@ -611,7 +640,7 @@ strong {
 }
 
 .chip-emoji {
-  font-size: 19px;
+  font-size: 1.1176rem;
 }
 
 .chip-points {
@@ -623,7 +652,7 @@ strong {
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent-deep);
-  font-size: 13px;
+  font-size: 0.7647rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -646,9 +675,9 @@ strong {
   height: 52px;
   padding: 0 26px 0 20px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--button);
   color: #fff;
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
   box-shadow:
@@ -683,7 +712,7 @@ strong {
   overflow: hidden;
   background: var(--danger);
   color: #fff;
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 600;
 }
 
@@ -725,8 +754,8 @@ strong {
   align-items: center;
   justify-content: center;
   gap: 1px;
-  color: var(--label-3);
-  font-size: 10px;
+  color: var(--label-2);
+  font-size: 0.5882rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   transition: color 0.2s;
@@ -762,7 +791,7 @@ strong {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   color: #fff;
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 500;
   box-shadow: var(--shadow);
   pointer-events: auto;
@@ -881,7 +910,7 @@ strong {
 }
 
 .sheet-title {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   text-align: center;
   white-space: nowrap;
@@ -967,7 +996,7 @@ strong {
 }
 
 .sheet-body .section-title {
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 600;
   color: var(--label-2);
   text-transform: uppercase;
@@ -1003,12 +1032,12 @@ strong {
 }
 
 .category-emoji {
-  font-size: 26px;
+  font-size: 1.5294rem;
   line-height: 1;
 }
 
 .category-name {
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -1046,7 +1075,7 @@ strong {
 .field-label {
   flex: none;
   min-width: 72px;
-  font-size: 17px;
+  font-size: 1rem;
 }
 
 .field input {
@@ -1071,7 +1100,7 @@ strong {
 
 .field-hint {
   padding: 0 16px 12px;
-  font-size: 14px;
+  font-size: 0.8235rem;
   color: var(--label-2);
 }
 
@@ -1096,7 +1125,7 @@ strong {
   height: 46px;
   border-radius: 12px;
   background: var(--card);
-  font-size: 24px;
+  font-size: 1.4118rem;
   border: 2px solid transparent;
   transition: transform 0.15s;
 }
@@ -1119,7 +1148,7 @@ strong {
 }
 
 .points-picker .field-label {
-  font-size: 15px;
+  font-size: 0.8824rem;
   color: var(--label-2);
 }
 
@@ -1146,7 +1175,7 @@ strong {
 .points-input {
   width: 110px;
   text-align: center;
-  font-size: 48px !important;
+  font-size: 2.8235rem !important;
   font-weight: 700;
   line-height: 1;
 }
@@ -1162,7 +1191,7 @@ strong {
   padding: 5px 10px;
   border-radius: 999px;
   background: var(--fill);
-  font-size: 13px;
+  font-size: 0.7647rem;
   color: var(--label-2);
   white-space: nowrap;
 }
@@ -1202,7 +1231,7 @@ strong {
 .segmented-option {
   position: relative;
   z-index: 1;
-  font-size: 14px;
+  font-size: 0.8235rem;
   font-weight: 500;
   color: var(--label);
 }
@@ -1280,12 +1309,12 @@ strong {
 }
 
 .activity-title {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .activity-sub {
-  font-size: 14px;
+  font-size: 0.8235rem;
   color: var(--label-2);
   line-height: 1.3;
 }
@@ -1346,27 +1375,27 @@ strong {
 
 .hero-title {
   margin-top: 16px;
-  font-size: 40px;
+  font-size: 2.3529rem;
   font-weight: 800;
   letter-spacing: -0.01em;
 }
 
 .hero-text {
   max-width: 330px;
-  font-size: 17px;
+  font-size: 1rem;
   line-height: 1.45;
   color: var(--label-2);
 }
 
 .step-title {
-  font-size: 30px;
+  font-size: 1.7647rem;
   line-height: 1.15;
   font-weight: 700;
   margin: 6px 4px 8px;
 }
 
 .step-text {
-  font-size: 16px;
+  font-size: 0.9412rem;
   line-height: 1.4;
   color: var(--label-2);
   margin: 0 4px 22px;
@@ -1377,7 +1406,7 @@ strong {
   flex-direction: column;
   gap: 8px;
   margin: 20px 4px 0;
-  font-size: 15px;
+  font-size: 0.8824rem;
   line-height: 1.45;
   color: var(--label-2);
 }
@@ -1392,7 +1421,7 @@ strong {
 /* ───────── Trend ───────── */
 
 .stat-label {
-  font-size: 15px;
+  font-size: 0.8824rem;
   font-weight: 600;
   color: var(--label-2);
 }
@@ -1405,19 +1434,19 @@ strong {
 }
 
 .stat-value {
-  font-size: 58px;
+  font-size: 3.4118rem;
   line-height: 1.05;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .stat-of {
-  font-size: 17px;
+  font-size: 1rem;
   color: var(--label-2);
 }
 
 .stat-sub {
-  font-size: 14px;
+  font-size: 0.8235rem;
   color: var(--label-2);
 }
 
@@ -1537,13 +1566,13 @@ strong {
 }
 
 .insight-title {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   margin-top: 1px;
 }
 
 .insight-text {
-  font-size: 15px;
+  font-size: 0.8824rem;
   color: var(--label-2);
   margin-top: 2px;
   line-height: 1.4;
@@ -1556,7 +1585,7 @@ strong {
 /* ───────── Profil ───────── */
 
 .day-card-big {
-  font-size: 22px;
+  font-size: 1.2941rem;
   font-weight: 700;
 }
 
@@ -1569,7 +1598,7 @@ strong {
 }
 
 .tip-title {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   margin-bottom: 4px;
 }
@@ -1614,7 +1643,7 @@ strong {
 /* ───────── Egna snabbval ───────── */
 
 .section-action {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--tint);
   padding: 4px 0 4px 12px;
@@ -1698,7 +1727,7 @@ strong {
   border-radius: var(--radius);
   background: var(--fill);
   color: var(--tint);
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -1724,4 +1753,476 @@ strong {
   flex-direction: column;
   gap: 12px;
   padding-top: calc(var(--safe-top) + 15vh);
+}
+
+/* ───────── Halva portioner ───────── */
+
+.amounts {
+  position: absolute;
+  z-index: 20;
+  right: 0;
+  bottom: calc(100% + 6px);
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 14px;
+  background: var(--elevated);
+  box-shadow: var(--shadow);
+  animation: pop 0.2s var(--spring);
+}
+
+.amount {
+  min-width: 40px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 0.9412rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.amount.is-active {
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+}
+
+.qty-note {
+  margin: 0 4px 10px;
+  font-size: 0.8824rem;
+  color: var(--label-2);
+}
+
+/* ───────── Idag: vecka, mål, kalender ───────── */
+
+.ring-goal {
+  stroke: var(--label);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.week-strip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px 12px 12px 16px;
+  border-radius: var(--radius);
+  background: var(--card);
+  text-align: left;
+}
+
+.week-strip:active {
+  background: var(--card-pressed);
+}
+
+.week-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.week-label {
+  font-size: 0.7647rem;
+  font-weight: 600;
+  color: var(--label-2);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.week-avg {
+  font-size: 1rem;
+}
+
+.week-goal {
+  color: var(--label-2);
+}
+
+.week-bars,
+.weekday-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 44px;
+}
+
+.weekday-bars {
+  height: 80px;
+  gap: 10px;
+  margin: 10px 0 8px;
+}
+
+.week-bar,
+.weekday-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  width: 12px;
+  height: 100%;
+}
+
+.weekday-bar {
+  flex: 1;
+}
+
+.week-fill {
+  display: block;
+  width: 100%;
+  max-height: calc(100% - 15px);
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.week-fill.is-over {
+  background: var(--accent-deep);
+}
+
+.week-fill.is-empty {
+  background: var(--fill-strong);
+}
+
+.week-day {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--label-2);
+}
+
+.eyebrow svg {
+  vertical-align: -1px;
+  margin-left: 3px;
+}
+
+.chip-emoji {
+  position: relative;
+  display: inline-flex;
+}
+
+.chip-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--button);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.exclude-card {
+  margin-top: 16px;
+  padding: 12px 16px;
+}
+
+.exclude-card.is-short {
+  background: var(--accent-soft);
+}
+
+.exclude-card p {
+  margin-bottom: 8px;
+  color: var(--label-2);
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.toggle-row.group {
+  padding: 12px 16px;
+}
+
+/* Strömbrytare i iOS-stil av en vanlig kryssruta. */
+.switch {
+  flex: none;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: 51px;
+  height: 31px;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--fill-strong);
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s var(--ease);
+}
+
+.switch:checked {
+  background: var(--accent);
+}
+
+.switch:checked::after {
+  transform: translateX(20px);
+}
+
+.day-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.day-actions .hint-text {
+  flex: 1;
+}
+
+.day-actions .link-btn {
+  flex: none;
+  margin-top: 4px;
+}
+
+.backup-card,
+.care-card,
+.calibrate-card {
+  margin-top: 24px;
+}
+
+.care-card {
+  background: rgba(255, 149, 0, 0.12);
+}
+
+.backup-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.backup-actions .secondary-btn {
+  flex: 1;
+}
+
+.row-badge {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 0.6471rem;
+  font-weight: 600;
+}
+
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0 12px;
+}
+
+.cal-title {
+  font-size: 1.1765rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px 2px;
+  padding: 12px 6px;
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.cal-weekday {
+  text-align: center;
+  font-size: 0.7059rem;
+  font-weight: 600;
+  color: var(--label-2);
+}
+
+.cal-day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 46px;
+  border-radius: 12px;
+}
+
+.cal-day:disabled {
+  opacity: 0.3;
+}
+
+.cal-day.is-selected {
+  background: var(--fill);
+}
+
+.cal-num {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--label-2);
+}
+
+.cal-day.is-today .cal-num {
+  color: var(--label);
+  font-weight: 800;
+}
+
+.mini-ring.is-muted {
+  opacity: 0.35;
+  filter: grayscale(1);
+}
+
+.cal-today {
+  display: block;
+  margin: 10px auto 0;
+}
+
+/* ───────── Trend: vikt och mönster ───────── */
+
+.chart-target {
+  stroke: var(--accent-deep);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 4;
+}
+
+.chart-bar.is-excluded {
+  fill: var(--fill-strong);
+}
+
+.weight-card {
+  padding-bottom: 12px;
+}
+
+.small-value {
+  font-size: 2.3529rem;
+}
+
+.weight-chart {
+  margin-top: 12px;
+}
+
+.weight-dot {
+  fill: var(--label-3);
+}
+
+.weight-trend {
+  fill: none;
+  stroke: var(--tint);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.weight-empty {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  font-size: 0.8824rem;
+  color: var(--label-2);
+}
+
+.weight-empty svg {
+  flex: none;
+  color: var(--tint);
+}
+
+.weight-input {
+  width: 140px;
+}
+
+.compare-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.compare-value {
+  font-family: ui-rounded, 'SF Pro Rounded', -apple-system, system-ui, sans-serif;
+  font-size: 1.8824rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sources {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.source {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+}
+
+.source .row-name {
+  flex: 1;
+}
+
+.trend .section-title + .card {
+  margin-top: 0;
+}
+
+/* ───────── Profil ───────── */
+
+.calibration-note {
+  margin-top: 6px;
+}
+
+.inline-link {
+  color: var(--tint);
+  font-size: inherit;
+}
+
+.about-card p + p {
+  margin-top: 8px;
+}
+
+.about-card p {
+  line-height: 1.45;
+}
+
+.field {
+  flex-wrap: wrap;
+}
+
+.field-error {
+  flex-basis: 100%;
+  margin: -8px 0 8px;
+  text-align: right;
+  font-size: 0.7647rem;
+  color: var(--danger);
+}
+
+.sheet-title {
+  margin: 0;
+}
+
+.day-heading .large-title {
+  margin: 0;
+}
+
+h1.large-title {
+  margin: 0;
 }

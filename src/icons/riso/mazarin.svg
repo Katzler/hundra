@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-mazarin-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="12" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="27"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-mazarin-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 0)">
+    <g filter="url(#riso-mazarin-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" d="M54.4 36Q57.5 39.3 52.7 41.5Q53.6 45.4 47.8 46.2Q46.4 50.1 40.6 49.3Q37.1 52.6 32 50.4Q26.9 52.6 23.4 49.3Q17.6 50.1 16.2 46.2Q10.4 45.4 11.3 41.5Q6.5 39.3 9.6 36Q6.5 32.7 11.3 30.5Q10.4 26.6 16.2 25.8Q17.6 21.9 23.4 22.7Q26.9 19.4 32 21.6Q37.1 19.4 40.6 22.7Q46.4 21.9 47.8 25.8Q53.6 26.6 52.7 30.5Q57.5 32.7 54.4 36Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" d="M54.4 36Q57.5 39.3 52.7 41.5Q53.6 45.4 47.8 46.2Q46.4 50.1 40.6 49.3Q37.1 52.6 32 50.4Q26.9 52.6 23.4 49.3Q17.6 50.1 16.2 46.2Q10.4 45.4 11.3 41.5Q6.5 39.3 9.6 36Q6.5 32.7 11.3 30.5Q10.4 26.6 16.2 25.8Q17.6 21.9 23.4 22.7Q26.9 19.4 32 21.6Q37.1 19.4 40.6 22.7Q46.4 21.9 47.8 25.8Q53.6 26.6 52.7 30.5Q57.5 32.7 54.4 36Z"/>
+      <path fill="#DCA660" d="M56 27Q59.1 30.6 54.2 33.1Q54.9 37.3 49 38.3Q47.3 42.4 41.2 41.8Q37.4 45.2 32 43Q26.6 45.2 22.8 41.8Q16.7 42.4 15 38.3Q9.1 37.3 9.8 33.1Q4.9 30.6 8 27Q4.9 23.4 9.8 20.9Q9.1 16.7 15 15.7Q16.7 11.6 22.8 12.2Q26.6 8.8 32 11Q37.4 8.8 41.2 12.2Q47.3 11.6 49 15.7Q54.9 16.7 54.2 20.9Q59.1 23.4 56 27Z"/>
+      <path fill="#FFF1CF" d="M12.5 25.9C12.4 23.7 13.2 20.5 14.8 18.5C16.4 16.5 19 14.9 21.9 13.9C24.8 12.9 28.6 12.5 32 12.5C35.4 12.5 39.2 12.9 42.1 13.9C45 14.8 47.9 16.4 49.4 18.3C51 20.1 51.6 22.9 51.5 25.2C51.5 27.4 50.1 29.8 49.2 31.6C48.3 33.4 47.1 35.7 46.3 36C45.4 36.2 45.4 33 44.2 33C42.9 32.9 40.8 35.1 38.7 35.7C36.7 36.4 34.2 36.6 32 36.7C29.8 36.7 27.2 35.5 25.7 36C24.2 36.4 24 39.5 23.2 39.2C22.3 38.9 22 35.7 20.7 34.4C19.3 33 16.6 32.6 15.2 31.1C13.8 29.7 12.5 28 12.5 25.9Z"/>
+      <path fill="none" stroke="#EFCF9C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M18.6 24C22.4 19.6 28.6 18 34 18.2"/>
+    </g>
+    <g filter="url(#riso-mazarin-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 27Q4.9 23.4 9.8 20.9Q9.1 16.7 15 15.7Q16.7 11.6 22.8 12.2Q26.6 8.8 32 11Q37.4 8.8 41.2 12.2Q47.3 11.6 49 15.7Q54.9 16.7 54.2 20.9Q59.1 23.4 56 27"/>
+      <path d="M54.4 36Q57.5 39.3 52.7 41.5Q53.6 45.4 47.8 46.2Q46.4 50.1 40.6 49.3Q37.1 52.6 32 50.4Q26.9 52.6 23.4 49.3Q17.6 50.1 16.2 46.2Q10.4 45.4 11.3 41.5Q6.5 39.3 9.6 36Q6.5 32.7 11.3 30.5"/>
+      <path stroke-width="2.4" d="M12.5 25.9C12.4 23.7 13.2 20.5 14.8 18.5C16.4 16.5 19 14.9 21.9 13.9C24.8 12.9 28.6 12.5 32 12.5C35.4 12.5 39.2 12.9 42.1 13.9C45 14.8 47.9 16.4 49.4 18.3C51 20.1 51.6 22.9 51.5 25.2C51.5 27.4 50.1 29.8 49.2 31.6C48.3 33.4 47.1 35.7 46.3 36C45.4 36.2 45.4 33 44.2 33C42.9 32.9 40.8 35.1 38.7 35.7C36.7 36.4 34.2 36.6 32 36.7C29.8 36.7 27.2 35.5 25.7 36C24.2 36.4 24 39.5 23.2 39.2C22.3 38.9 22 35.7 20.7 34.4C19.3 33 16.6 32.6 15.2 31.1C13.8 29.7 12.5 28 12.5 25.9Z"/>
+    </g>
+  </g>
+</svg>

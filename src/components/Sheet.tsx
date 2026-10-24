@@ -23,6 +23,7 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
   const [mounted, setMounted] = useState(open)
   const [entered, setEntered] = useState(false)
   const start = useRef<{ y: number; id: number; t: number } | null>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (open) {
@@ -52,12 +53,35 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     document.body.dataset.sheetOpen = '1'
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    // Fokus flyttas in i arket (om inget där redan har det) och tillbaka när det stängs – för VoiceOver och tangentbord.
+    const returnTo = document.activeElement as HTMLElement | null
+    const raf = requestAnimationFrame(() => {
+      if (!dialogRef.current?.contains(document.activeElement)) dialogRef.current?.focus({ preventScroll: true })
+    })
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key !== 'Tab' || !dialogRef.current) return
+      const focusable = [...dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), input, [tabindex="0"]')].filter(
+        (el) => el.offsetParent !== null,
+      )
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
     window.addEventListener('keydown', onKey)
     return () => {
+      cancelAnimationFrame(raf)
       document.body.style.overflow = prev
       delete document.body.dataset.sheetOpen
       window.removeEventListener('keydown', onKey)
+      if (returnTo?.isConnected) returnTo.focus({ preventScroll: true })
     }
   }, [open, onClose])
 
@@ -88,10 +112,12 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
   }
 
   return createPortal(
-    <div className={`sheet-root ${shown ? 'is-open' : ''}`} aria-hidden={!open}>
+    <div className={`sheet-root ${shown ? 'is-open' : ''}`} aria-hidden={!open} inert={!open}>
       <div className="sheet-scrim" onClick={onClose} />
       <div
         className="sheet"
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-label={label}
@@ -106,7 +132,7 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
           <div className="sheet-grabber" />
           <div className="sheet-bar">
             <div className="sheet-bar-side">{left}</div>
-            <div className="sheet-title">{title}</div>
+            <h2 className="sheet-title">{title}</h2>
             <div className="sheet-bar-side sheet-bar-right">{right}</div>
           </div>
         </div>

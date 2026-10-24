@@ -10,14 +10,14 @@ type FoodRowProps = {
   food: Food
   points: number
   qty: number
-  favorite: boolean
+  picked: boolean
   onAdd: () => void
   onQty: (qty: number) => void
   onLongPress: () => void
 }
 
 /** En vara i Lägg till-listan: (+) blir en stegare när den ligger i dagens lista. */
-export function FoodRow({ food, points, qty, favorite, onAdd, onQty, onLongPress }: FoodRowProps) {
+export function FoodRow({ food, points, qty, picked, onAdd, onQty, onLongPress }: FoodRowProps) {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const longPressed = useRef(false)
   const startPos = useRef({ x: 0, y: 0 })
@@ -26,7 +26,7 @@ export function FoodRow({ food, points, qty, favorite, onAdd, onQty, onLongPress
 
   return (
     <div className={`row food-row ${qty > 0 ? 'is-added' : ''}`}>
-      {/* Långtryck (favorit) gäller bara namnraden, aldrig (+) eller stegaren. */}
+      {/* Långtryck (snabbval) gäller bara namnraden, aldrig (+) eller stegaren. */}
       <button
         type="button"
         className="row-main"
@@ -61,8 +61,8 @@ export function FoodRow({ food, points, qty, favorite, onAdd, onQty, onLongPress
         </span>
         <span className="row-text">
           <span className="row-title">
-            {food.name}
-            {favorite && <StarIcon size={12} filled className="row-star" />}
+            <span className="row-name">{food.name}</span>
+            {picked && <StarIcon size={12} filled className="row-star" />}
           </span>
           <span className="row-sub">{food.unit}</span>
         </span>
@@ -97,9 +97,12 @@ export function EntryRow({ entry, points, onQty }: EntryRowProps) {
         <FoodIcon id={entry.foodId} emoji={entry.emoji} />
       </span>
       <span className="row-text">
-        <span className="row-title">{entry.name}</span>
+        <span className="row-title">
+          <span className="row-name">{entry.name}</span>
+        </span>
         <span className="row-sub">
-          {entry.unit} · <strong>{formatPoints(points)} p</strong>
+          {entry.unit ? `${entry.unit} · ` : ''}
+          <strong>{formatPoints(points)} p</strong>
         </span>
       </span>
       <Stepper value={entry.qty} onChange={onQty} label={entry.name} />

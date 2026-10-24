@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.node.json && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "icons": "node scripts/make-icons.mjs",
-    "icons:raster": "node scripts/rasterize-icons.mjs"
+    "icons:raster": "node scripts/rasterize-icons.mjs",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.node.json"
   },
   "dependencies": {
     "react": "^19.3.1",

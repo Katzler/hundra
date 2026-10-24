@@ -1,6 +1,8 @@
-import { existsSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { existsSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { CATEGORIES, FOODS } from '../data/foods'
+import hashes from './riso/hashes.json'
 import { ICON_IDS } from './riso/ids'
 
 const ICONS = import.meta.glob('./riso/*.svg', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
@@ -26,6 +28,18 @@ describe('ikoner', () => {
     expect(missing).toEqual([])
   })
 
+  it('ingen SVG har ändrats utan att bilderna renderats om (kör npm run icons:raster)', () => {
+    const stale = svgs.filter(([id, svg]) => (hashes as Record<string, string>)[id] !== createHash('sha1').update(svg).digest('hex').slice(0, 12))
+    expect(stale.map(([id]) => id)).toEqual([])
+  })
+
+  it('inga gamla bilder ligger kvar utan SVG', () => {
+    for (const mode of ['light', 'dark']) {
+      const stray = readdirSync(`public/icons/riso/${mode}`).filter((f) => !ICON_IDS.has(f.replace('.webp', '')))
+      expect(stray, mode).toEqual([])
+    }
+  })
+
   it('ikonerna följer formatet i stilguiden', () => {
     for (const [id, svg] of svgs) {
       const root = svg.match(/<svg\b[^>]*>/)?.[0] ?? ''
@@ -34,6 +48,7 @@ describe('ikoner', () => {
       // Bläcket byts mot rätt färg för ljust/mörkt läge när ikonen förrenderas.
       expect(svg, id).toContain('var(--ink, #2b2118)')
       expect(svg, id).not.toMatch(/<(text|style|script|image|use)\b/)
+      expect(svg.length, `${id} är för stor`).toBeLessThan(4.5 * 1024)
       for (const [, ref] of svg.matchAll(/id="([^"]+)"/g)) expect(ref.startsWith(`riso-${id}-`), `${id}: ${ref}`).toBe(true)
     }
   })

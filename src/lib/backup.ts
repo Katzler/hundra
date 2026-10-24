@@ -11,11 +11,13 @@ export async function exportBackup(text = exportData(useStore.getState())): Prom
   if (navigator.canShare?.({ files: [file] })) {
     try {
       await navigator.share({ files: [file], title: 'Hundra backup' })
+      useStore.getState().markBackup()
       return
     } catch (e) {
       if ((e as Error).name === 'AbortError') return
     }
   }
+  useStore.getState().markBackup()
   const url = URL.createObjectURL(file)
   const a = document.createElement('a')
   a.href = url

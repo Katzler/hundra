@@ -99,3 +99,17 @@ export const CheckIcon = ({ size = 14, className }: P) => (
     <path d="M5 12.5l4.5 4.5L19 7.5" />
   </svg>
 )
+
+export const CalendarIcon = ({ size = 16, className }: P) => (
+  <svg {...base(size)} className={className} strokeWidth={2.2}>
+    <rect x="4" y="5.5" width="16" height="14.5" rx="3" />
+    <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" />
+  </svg>
+)
+
+export const ScaleIcon = ({ size = 18, className }: P) => (
+  <svg {...base(size)} className={className} strokeWidth={2.2}>
+    <rect x="4" y="4" width="16" height="16" rx="4" />
+    <path d="M9 9.5a4 4 0 0 1 6 0M12 12l1.6-2.4" />
+  </svg>
+)

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-svamp-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="20" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="12"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-svamp-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="6"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -1.4)">
+    <g filter="url(#riso-svamp-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#FFF1CF" d="M18.6 30.6C17.6 38 16.8 45 15.6 51C19.4 54.6 30 54.6 33.6 51.4C32 45 31.2 38 31.6 30.6Z"/>
+      <path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(0 0)" d="M27.6 31C27 39 28 46 30.6 53C32 52.6 33 52 33.6 51.4C32 45 31.2 38 31.6 30.6Z"/>
+      <path fill="#DCA660" d="M5.4 30.6C5.4 17.4 14.6 8.6 25.4 8.6S45.4 17.4 45.4 30.6C38 34 12.8 34 5.4 30.6Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M33 10.6C40.6 13.6 45.4 21 45.4 30.6C41 32.6 31 33.4 22 33.2C34 30 38 20 33 10.6Z"/>
+      <path fill="#EFCF9C" d="M8 30.8C14 34.6 37 34.6 42.8 30.8C38 29 13 29 8 30.8Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M12.4 21.4C14.4 16.6 18.6 13.2 23.6 12.4"/>
+      <path fill="#FFF1CF" d="M41.6 43.6L40.6 53C43.4 55.4 49.4 55.4 51.6 53L50.6 43.6Z"/>
+      <path fill="#DCA660" d="M34 43.4C34 35.4 39 30.6 46 30.6S58 35.4 58 43.4C53 45.6 39 45.6 34 43.4Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M50 31.6C55 33.6 58 38 58 43.4C55 44.8 49 45.4 44 45.4C51 42 53 37 50 31.6Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M38 38C39 35.6 41 34 43.4 33.4"/>
+    </g>
+    <g filter="url(#riso-svamp-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5.4 30.6C5.4 17.4 14.6 8.6 25.4 8.6S45.4 17.4 45.4 30.6C42.6 31.8 38 32.6 33 33M18 33C12.6 32.6 8 31.8 5.4 30.6"/>
+      <path d="M18.6 33.4C17.8 39.6 16.8 45.6 15.6 51C18.6 53.8 26 54.4 31 52.8M31.6 33.2C31.4 36.4 31.6 39 32.2 42"/>
+      <path d="M34 43.4C34 35.4 39 30.6 46 30.6S58 35.4 58 43.4C53 45.6 39 45.6 34 43.4ZM41.4 45.6L40.6 53C43.4 55.4 49.4 55.4 51.6 53L50.8 45.6"/>
+    </g>
+  </g>
+</svg>

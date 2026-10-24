@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { DayStat } from '../lib/calc'
 import { dayLong, dayOfMonth, weekdayLetter } from '../lib/dates'
 
-type Props = { days: DayStat[]; avg: number | null }
+type Props = { days: DayStat[]; avg: number | null; goal?: number }
 
 const W = 340
 const H = 190
@@ -11,7 +11,7 @@ const PAD_BOTTOM = 22
 const PAD_RIGHT = 30
 
 /** Staplar per dag med en streckad linje vid 100. Tryck och dra för att se en dag. */
-export function BarChart({ days, avg }: Props) {
+export function BarChart({ days, avg, goal = 100 }: Props) {
   const [active, setActive] = useState<number | null>(null)
   const n = days.length
   const max = Math.max(130, ...days.map((d) => d.points ?? 0)) * 1.05
@@ -37,7 +37,10 @@ export function BarChart({ days, avg }: Props) {
         {sel ? (
           <>
             <span className="chart-readout-value">{sel.points === null ? '–' : Math.round(sel.points)}</span>
-            <span className="chart-readout-date">{dayLong(sel.date)}</span>
+            <span className="chart-readout-date">
+              {dayLong(sel.date)}
+              {sel.excluded ? ' · räknas inte' : ''}
+            </span>
           </>
         ) : (
           <span className="chart-readout-date">Tryck på en stapel för att se dagen</span>
@@ -47,7 +50,7 @@ export function BarChart({ days, avg }: Props) {
         viewBox={`0 0 ${W} ${H}`}
         className="chart-svg"
         role="img"
-        aria-label="Poäng per dag"
+        aria-label={summary(days, avg)}
         onPointerDown={pick}
         onPointerMove={(e) => e.buttons && pick(e)}
         // Vid touch kommer pointerleave direkt efter att fingret lyfts, så då ligger valet kvar.
@@ -68,7 +71,7 @@ export function BarChart({ days, avg }: Props) {
               width={barW}
               height={h}
               rx={Math.min(4, barW / 2)}
-              className={`chart-bar ${d.points > 100 ? 'is-over' : ''} ${active === i ? 'is-active' : ''} ${
+              className={`chart-bar ${d.excluded ? 'is-excluded' : d.points > 100 ? 'is-over' : ''} ${active === i ? 'is-active' : ''} ${
                 active !== null && active !== i ? 'is-dim' : ''
               }`}
             />
@@ -78,6 +81,14 @@ export function BarChart({ days, avg }: Props) {
         <text x={plotW + 4} y={y(100) + 4} className="chart-goal-label">
           100
         </text>
+        {goal < 100 && (
+          <>
+            <line x1={0} x2={plotW} y1={y(goal)} y2={y(goal)} className="chart-target" />
+            <text x={plotW + 4} y={y(goal) + 4} className="chart-goal-label">
+              mål
+            </text>
+          </>
+        )}
         {avg !== null && (
           <>
             <line x1={0} x2={plotW} y1={y(avg)} y2={y(avg)} className="chart-avg" />
@@ -96,4 +107,13 @@ export function BarChart({ days, avg }: Props) {
       </svg>
     </div>
   )
+}
+
+/** Det diagrammet visar, i ord – för VoiceOver. */
+function summary(days: DayStat[], avg: number | null): string {
+  const logged = days.filter((d) => d.points !== null && !d.excluded) as { date: string; points: number }[]
+  if (!logged.length) return 'Poäng per dag. Inga loggade dagar i perioden.'
+  const hi = logged.reduce((a, b) => (b.points > a.points ? b : a))
+  const lo = logged.reduce((a, b) => (b.points < a.points ? b : a))
+  return `Poäng per dag. Snitt ${Math.round(avg ?? 0)}. Högst ${Math.round(hi.points)} ${dayLong(hi.date)}, lägst ${Math.round(lo.points)} ${dayLong(lo.date)}.`
 }

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-snabbpoang-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="5" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="23"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-snabbpoang-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="12"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -1.4)">
+    <g filter="url(#riso-snabbpoang-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#FFD02E" d="M37 6L15.6 35H29.4L23.4 58L48.4 26H34.6L42.6 6Z"/>
+      <path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M42.6 6L34.6 26H48.4L23.4 58L36.4 30H31.6Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M33 13.4L25.6 23.6"/>
+    </g>
+    <g filter="url(#riso-snabbpoang-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M37.4 6H42.6L34.6 26H48.4L23.4 58L29.4 35H15.6L35.2 8.4"/>
+      <path stroke-width="2.4" d="M9 16.6L13.4 19.4M7.4 26.6H12M50.6 39.6L55 42.4M53 32H57.6"/>
+    </g>
+  </g>
+</svg>

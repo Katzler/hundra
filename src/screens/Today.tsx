@@ -210,7 +210,6 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
         )}
         {dayEntries.length > 0 && (
           <div className="day-actions">
-            <p className="hint-text">Svep åt vänster på en rad för att ta bort den. Tryck på antalet för halva portioner.</p>
             {dayEntries.some((e) => e.foodId !== 'snabbpoang') && (
               <button
                 type="button"

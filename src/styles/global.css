@@ -1758,10 +1758,8 @@ strong {
 /* ───────── Halva portioner ───────── */
 
 .amounts {
-  position: absolute;
-  z-index: 20;
-  right: 0;
-  bottom: calc(100% + 6px);
+  position: fixed;
+  z-index: 300;
   display: flex;
   gap: 4px;
   padding: 5px;

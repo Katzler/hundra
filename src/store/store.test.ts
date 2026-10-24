@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { FOODS } from '../data/foods'
-import { exportData, parseImport, useStore } from './useStore'
+import { exportData, parseImport, quickFoods, useStore } from './useStore'
 
 const potatis = FOODS.find((f) => f.id === 'potatis')!
 const banan = FOODS.find((f) => f.id === 'banan')!
@@ -67,6 +67,23 @@ describe('store', () => {
     expect(after.entries).toEqual(before.entries)
     expect(after.profile).toEqual(before.profile)
     expect(after.favorites).toEqual(['potatis'])
+  })
+
+  it('egna snabbval följer med i export och försvinner när en egen vara tas bort', () => {
+    const s = useStore.getState()
+    const egen = s.addCustomFood({ name: 'Mammas lasagne', emoji: '🍝', unit: '1 bit', kcal: 600 })
+    s.setQuickPicks(['potatis', egen.id])
+    const text = exportData(useStore.getState())
+    s.deleteCustomFood(egen.id)
+    expect(useStore.getState().quickPicks).toEqual(['potatis'])
+    s.importData(parseImport(text))
+    expect(useStore.getState().quickPicks).toEqual(['potatis', egen.id])
+  })
+
+  it('snabbval är automatiska tills man valt egna', () => {
+    const foods = [...useStore.getState().customFoods, ...FOODS]
+    expect(quickFoods(foods, {}, null).map((f) => f.id)).toContain('kaffe-mjolk')
+    expect(quickFoods(foods, {}, ['banan', 'finns-inte', 'potatis']).map((f) => f.id)).toEqual(['banan', 'potatis'])
   })
 
   it('import avvisar fel filer', () => {

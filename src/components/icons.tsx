@@ -93,3 +93,9 @@ export const EqualIcon = ({ size = 18, className }: P) => (
     <path d="M5 9h14M5 15h14" />
   </svg>
 )
+
+export const CheckIcon = ({ size = 14, className }: P) => (
+  <svg {...base(size)} className={className} strokeWidth={3}>
+    <path d="M5 12.5l4.5 4.5L19 7.5" />
+  </svg>
+)

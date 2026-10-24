@@ -13,6 +13,8 @@ export type Data = {
   customFoods: Food[]
   favorites: string[]
   usage: Usage
+  /** Egna snabbval i vald ordning. null = automatiskt efter det man äter mest. */
+  quickPicks: string[] | null
 }
 
 type Actions = {
@@ -25,6 +27,7 @@ type Actions = {
   updateCustomFood: (id: string, patch: Partial<Omit<Food, 'id'>>) => void
   deleteCustomFood: (id: string) => void
   toggleFavorite: (foodId: string) => void
+  setQuickPicks: (ids: string[] | null) => void
   importData: (data: Data) => void
   resetAll: () => void
 }
@@ -36,6 +39,7 @@ const empty: Data = {
   customFoods: [],
   favorites: [],
   usage: {},
+  quickPicks: null,
 }
 
 // crypto.randomUUID kräver https, men appen ska gå att testa via LAN-IP också.
@@ -111,6 +115,7 @@ export const useStore = create<Data & Actions>()(
         set((s) => ({
           customFoods: s.customFoods.filter((f) => f.id !== id),
           favorites: s.favorites.filter((x) => x !== id),
+          quickPicks: s.quickPicks?.filter((x) => x !== id) ?? null,
         })),
 
       toggleFavorite: (foodId) =>
@@ -120,6 +125,8 @@ export const useStore = create<Data & Actions>()(
             : [...s.favorites, foodId],
         })),
 
+      setQuickPicks: (quickPicks) => set({ quickPicks }),
+
       importData: (data) => set({ ...empty, ...data }),
 
       resetAll: () => set(empty),
@@ -127,13 +134,14 @@ export const useStore = create<Data & Actions>()(
     {
       name: 'hundra-v1',
       version: 1,
-      partialize: ({ profile, budgetHistory, entries, customFoods, favorites, usage }) => ({
+      partialize: ({ profile, budgetHistory, entries, customFoods, favorites, usage, quickPicks }) => ({
         profile,
         budgetHistory,
         entries,
         customFoods,
         favorites,
         usage,
+        quickPicks,
       }),
     },
   ),
@@ -158,6 +166,17 @@ export function topFoods(foods: Food[], usage: Usage, limit = 8): Food[] {
     .map((x) => x.food)
 }
 
+const STARTER_IDS = ['kaffe-mjolk', 'macka-ost', 'potatis', 'banan', 'agg', 'pasta', 'apple', 'yoghurt']
+
+/** Snabbvalen: de egna i vald ordning, annars de mest använda fyllda med vanliga varor. */
+export function quickFoods(foods: Food[], usage: Usage, picks: string[] | null, limit = 8): Food[] {
+  const byId = new Map(foods.map((f) => [f.id, f]))
+  if (picks) return picks.map((id) => byId.get(id)).filter((f): f is Food => !!f)
+  const top = topFoods(foods, usage, limit)
+  const fill = STARTER_IDS.map((id) => byId.get(id)).filter((f): f is Food => !!f && !top.includes(f))
+  return [...top, ...fill].slice(0, limit)
+}
+
 export function recentFoods(foods: Food[], usage: Usage, limit = 12): Food[] {
   const byId = new Map(foods.map((f) => [f.id, f]))
   return Object.entries(usage)
@@ -168,13 +187,13 @@ export function recentFoods(foods: Food[], usage: Usage, limit = 12): Food[] {
 }
 
 export function exportData(s: Data): string {
-  const { profile, budgetHistory, entries, customFoods, favorites, usage } = s
+  const { profile, budgetHistory, entries, customFoods, favorites, usage, quickPicks } = s
   return JSON.stringify(
     {
       app: 'hundra',
       version: 1,
       exportedAt: new Date().toISOString(),
-      data: { profile, budgetHistory, entries, customFoods, favorites, usage },
+      data: { profile, budgetHistory, entries, customFoods, favorites, usage, quickPicks },
     },
     null,
     2,
@@ -204,5 +223,6 @@ export function parseImport(text: string): Data {
     customFoods: Array.isArray(d.customFoods) ? d.customFoods : [],
     favorites: Array.isArray(d.favorites) ? d.favorites : [],
     usage: d.usage && typeof d.usage === 'object' ? d.usage : {},
+    quickPicks: Array.isArray(d.quickPicks) ? d.quickPicks : null,
   }
 }

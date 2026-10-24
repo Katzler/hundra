@@ -1,20 +1,19 @@
 import { useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { AddSheet } from '../components/AddSheet'
+import { QuickPicksSheet } from '../components/QuickPicksSheet'
 import { FoodIcon } from '../components/FoodIcon'
 import { EntryRow } from '../components/FoodRow'
 import { ChevronLeft, ChevronRight, PlusIcon } from '../components/icons'
 import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
-import { FOODS, type Food } from '../data/foods'
+import type { Food } from '../data/foods'
 import { budgetFor, entryKcal, formatPoints, toPoints } from '../lib/calc'
 import { addDays, dayLong, dayTitle, type DateKey } from '../lib/dates'
 import { useToday } from '../lib/hooks'
 import { haptic, useUI } from '../store/ui'
-import { allFoods, topFoods, useStore } from '../store/useStore'
+import { allFoods, quickFoods, useStore } from '../store/useStore'
 
-const STARTER_IDS = ['kaffe-mjolk', 'macka-ost', 'potatis', 'banan', 'agg', 'pasta', 'apple', 'yoghurt']
-const STARTERS = STARTER_IDS.map((id) => FOODS.find((f) => f.id === id)!)
 
 export function Today() {
   const today = useToday()
@@ -26,6 +25,8 @@ export function Today() {
   const entries = useStore((s) => s.entries)
   const history = useStore((s) => s.budgetHistory)
   const custom = useStore((s) => s.customFoods)
+  const quickPicks = useStore((s) => s.quickPicks)
+  const [editingPicks, setEditingPicks] = useState(false)
   const addFood = useStore((s) => s.addFood)
   const setQty = useStore((s) => s.setQty)
   const removeEntry = useStore((s) => s.removeEntry)
@@ -40,12 +41,11 @@ export function Today() {
   const total = toPoints(dayEntries.reduce((s, e) => s + entryKcal(e), 0), budget)
   const left = 100 - total
 
-  // Ordningen låses när skärmen visas, så att chipsen inte hoppar runt medan man trycker.
-  const quick = useMemo(() => {
-    const top = topFoods(allFoods(custom), useStore.getState().usage, 8)
-    const fill = STARTERS.filter((f) => !top.some((t) => t.id === f.id))
-    return [...top, ...fill].slice(0, 8)
-  }, [custom])
+  // Automatiska snabbval låses när skärmen visas, så att chipsen inte hoppar runt medan man trycker.
+  const quick = useMemo(
+    () => quickFoods(allFoods(custom), useStore.getState().usage, quickPicks),
+    [custom, quickPicks],
+  )
 
   const openAdd = () => {
     // Fokus måste sättas direkt i trycket för att iOS ska visa tangentbordet.
@@ -109,7 +109,12 @@ export function Today() {
       </section>
 
       <section aria-label="Snabbval">
-        <h2 className="section-title">Snabbval</h2>
+        <h2 className="section-title">
+          Snabbval
+          <button type="button" className="section-action" onClick={() => setEditingPicks(true)}>
+            Ändra
+          </button>
+        </h2>
         <div className="chips">
           {quick.map((f) => (
             <button key={f.id} type="button" className="chip" onClick={() => quickAdd(f)}>
@@ -120,6 +125,12 @@ export function Today() {
               <span className="chip-points">{formatPoints(toPoints(f.kcal, budget))}</span>
             </button>
           ))}
+          {quick.length === 0 && (
+            <button type="button" className="chip chip-add" onClick={() => setEditingPicks(true)}>
+              <PlusIcon size={16} />
+              Lägg till snabbval
+            </button>
+          )}
         </div>
       </section>
 
@@ -153,6 +164,7 @@ export function Today() {
         Lägg till mat
       </button>
 
+      <QuickPicksSheet open={editingPicks} onClose={() => setEditingPicks(false)} budgetKcal={budget} />
       <AddSheet open={adding} date={date} onClose={() => setAdding(false)} inputRef={searchRef} />
     </main>
   )

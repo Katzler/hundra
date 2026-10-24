@@ -1599,7 +1599,8 @@ strong {
 
 /* ───────── Handritade ikoner ───────── */
 
-.food-icon {
+.food-icon,
+.food-icon img {
   display: block;
   pointer-events: none;
   -webkit-user-drag: none;

@@ -6,13 +6,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   // GitHub Pages serverar sajten under /hundra/
   base: process.env.GITHUB_PAGES ? '/hundra/' : '/',
-  // Ikonerna ligger i en egen chunk (ca 560 kB, 90 kB gzip) som laddas efter första renderingen.
-  build: { chunkSizeWarningLimit: 700 },
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg', 'apple-touch-icon.png'],
+      // Matikonerna (ca 2 MB WebP) följer med i offline-cachen så att de syns utan nät.
+      workbox: { globPatterns: ['**/*.{js,css,html,svg,png,webp,webmanifest}'] },
       manifest: {
         name: 'Hundra',
         short_name: 'Hundra',

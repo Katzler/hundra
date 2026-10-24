@@ -83,9 +83,12 @@ så att du ser att din ikon hör till samma familj.
 
 ## I appen
 
-- Ikonerna laddas från `src/icons/riso/` (se `src/icons/riso/index.ts`) i en egen chunk efter första renderingen.
-- `src/components/FoodIcon.tsx` visar ikonen som `<img>` och byter in rätt bläckfärg för ljust eller mörkt läge.
-  Saknas en ikon (t.ex. för användarens egna varor) visas varans emoji.
-- `npm test` kontrollerar att varje vara och kategori har en ikon och att formatet stämmer.
+- Källan är SVG-filerna i `src/icons/riso/`. Appen visar dem som förrenderade WebP-bilder
+  (144 px, ljust och mörkt bläck) från `public/icons/riso/{light,dark}/`, eftersom Safari ritar
+  SVG-filtren suddigt på Retina. Kör `npm run icons:raster` (kräver Google Chrome) efter att du
+  ändrat eller lagt till en ikon – det uppdaterar också listan `src/icons/riso/ids.ts`.
+- `src/components/FoodIcon.tsx` väljer ljus/mörk bild med `<picture>`. Saknas en ikon
+  (t.ex. för användarens egna varor) visas varans emoji.
+- `npm test` kontrollerar att varje vara och kategori har en ikon, att alla är förrenderade och att formatet stämmer.
 - Översiktsark över alla ikoner per kategori: `design/riso/oversikt/`.
   Rendera om ett ark med `node scripts/icon-sheet.mjs <ut.png> <svg-filer...>`.

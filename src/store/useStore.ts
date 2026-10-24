@@ -11,6 +11,9 @@ export type Usage = Record<string, { count: number; last: number; slots?: number
 export type MealItem = { foodId: string; name: string; emoji: string; unit: string; kcalPerUnit: number; qty: number }
 export type Meal = { id: string; name: string; items: MealItem[] }
 
+/** Nyckeln i localStorage. Får aldrig bytas – all historik ligger under den. */
+export const STORAGE_KEY = 'hundra-v1'
+
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
 
@@ -555,7 +558,7 @@ export const useStore = create<Data & Actions>()(
     {
       // Nyckeln får aldrig bytas: all historik ligger under den. Höj i stället `version`
       // och skriv en migrering i `migrate` om datamodellen ändras.
-      name: 'hundra-v1',
+      name: STORAGE_KEY,
       version: 2,
       storage: createJSONStorage(() => safeStorage),
       migrate: (persisted, version) => migrateData(persisted, version),
@@ -565,6 +568,7 @@ export const useStore = create<Data & Actions>()(
       onRehydrateStorage: () => (_state, error) => {
         if (error) {
           console.error('Kunde inte läsa sparad data', error)
+          useUI.setState({ hydrationError: error instanceof Error ? error.message : String(error) })
           return
         }
         hydrated = true

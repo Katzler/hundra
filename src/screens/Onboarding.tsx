@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { FoodIcon } from '../components/FoodIcon'
 import { ChevronLeft } from '../components/icons'
+import { RecoveryCard } from '../components/RecoveryCard'
 import { AboutFields, ActivityPicker, aboutValid, emptyForm, toProfile } from '../components/ProfileFields'
 import { Ring } from '../components/Ring'
 import { EXAMPLE_FOOD_IDS, FOODS } from '../data/foods'
@@ -46,6 +47,7 @@ export function Onboarding() {
       </div>
 
       <div className="onboarding-body" key={step}>
+        {step === 0 && <RecoveryCard />}
         {step === 0 && (
           <div className="welcome">
             <Ring value={100} size={180} stroke={22} caption="poäng" />
@@ -124,6 +126,7 @@ export function Onboarding() {
         <button type="button" className="primary-btn" disabled={!canContinue} onClick={next}>
           {step === 0 ? 'Kom igång' : step === 3 ? 'Börja logga' : 'Fortsätt'}
         </button>
+        <p className="footer-text onboarding-version">Version {__APP_VERSION__}</p>
       </div>
     </div>
   )

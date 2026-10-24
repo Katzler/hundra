@@ -4,6 +4,8 @@ export type Toast = { id: number; text: string; action?: { label: string; run: (
 
 type UI = {
   toast: Toast | null
+  /** Felet om sparad data inte gick att läsa in när appen startade. */
+  hydrationError: string | null
   showToast: (text: string, action?: Toast['action']) => void
   hideToast: () => void
   /** Pausar nedräkningen medan man har fingret eller fokus på rutan, så att Ångra hinns med. */
@@ -21,6 +23,7 @@ export const useUI = create<UI>()((set, get) => {
   }
   return {
     toast: null,
+    hydrationError: null,
     showToast: (text, action) => {
       const id = ++seq
       set({ toast: { id, text, action } })

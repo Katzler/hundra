@@ -1,3 +1,4 @@
+import { STORAGE_KEY } from '../store/useStore'
 import { Component, type ReactNode } from 'react'
 
 type State = { error: Error | null }
@@ -12,7 +13,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
 
   saveBackup = () => {
     // Läser lagringen direkt, så att det fungerar även om appens egen kod är det som kraschat.
-    const raw = localStorage.getItem('hundra-v1') ?? '{}'
+    const raw = localStorage.getItem(STORAGE_KEY) ?? '{}'
     let data: unknown = {}
     try {
       data = JSON.parse(raw).state

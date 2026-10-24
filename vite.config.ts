@@ -9,7 +9,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // Vi bestämmer själva när en ny version tas i bruk (se main.tsx).
+      registerType: 'prompt',
       includeAssets: ['icon.svg', 'apple-touch-icon.png'],
       // Matikonerna (ca 2 MB WebP) följer med i offline-cachen så att de syns utan nät.
       workbox: { globPatterns: ['**/*.{js,css,html,svg,png,webp,webmanifest}'] },

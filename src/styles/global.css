@@ -2223,3 +2223,12 @@ h1.large-title {
 .onboarding-version {
   margin-top: 10px;
 }
+
+.feedback-group {
+  margin-top: 16px;
+}
+
+a.row {
+  color: inherit;
+  text-decoration: none;
+}

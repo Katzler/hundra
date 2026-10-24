@@ -225,6 +225,13 @@ export function Profile() {
         </p>
         <p className="muted small">All data stannar på din telefon. Ingenting skickas någonstans.</p>
       </section>
+      <div className="group feedback-group">
+        <a className="row nav-row" href={feedbackLink()}>
+          <span className="row-title tint">Skicka feedback</span>
+          <ChevronRight size={16} className="row-chevron" />
+        </a>
+      </div>
+      <p className="hint-text">Öppnar din mejlapp. Berätta gärna vad som saknas eller krånglar.</p>
       <p className="footer-text">
         Hundra · version {__APP_VERSION__} · {__BUILD_DATE__}
       </p>
@@ -303,4 +310,13 @@ export function Profile() {
       <MealSheet source={editMeal ? { meal: editMeal } : null} budgetKcal={budget} onClose={() => setEditMeal(null)} />
     </main>
   )
+}
+
+const FEEDBACK_EMAIL = 'jack.katzler@gmail.com'
+
+/** Mejl med version och telefon ifyllt, så att det går att förstå felet. Inga loggdata skickas med. */
+function feedbackLink(): string {
+  const device = navigator.userAgent.match(/\(([^)]+)\)/)?.[1] ?? navigator.userAgent
+  const body = `\n\n\n---\nHundra ${__APP_VERSION__} (${__BUILD_DATE__})\n${device}`
+  return `mailto:${FEEDBACK_EMAIL}?subject=${encodeURIComponent('Feedback på Hundra')}&body=${encodeURIComponent(body)}`
 }

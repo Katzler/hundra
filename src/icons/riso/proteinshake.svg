@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-proteinshake-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="45" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="32"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-proteinshake-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="21"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+<g transform="translate(-1.6 -0.6)">
+    <g filter="url(#riso-proteinshake-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#F49AB0" d="M17 27.4L18.2 51.6C18.4 56.8 41.6 56.8 41.8 51.6L43 27.4Z"/>
+      <path fill="#F49AB0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M37.6 33.4C39.6 33.6 41.2 33.4 42.7 33L41.8 51.6C41.6 54.6 38.8 56 34.8 56.4C37.4 48.6 38.4 40.6 37.6 33.4Z"/>
+      <path fill="#FFF1CF" d="M17 27.4H43L42.7 33C39.6 34.4 37 31.6 34 33.2C31 34.8 28.4 32 25.4 33.6C22.6 35 20 32.6 17.3 33.6Z"/>
+      <path fill="#3D78D8" d="M18.6 14.2H41.4C42.6 14.2 43 14.8 43.2 16L44.6 25.6C44.6 26.8 44.2 27.4 43 27.4H17C15.8 27.4 15.4 26.8 15.4 25.6L16.8 16C17 14.8 17.4 14.2 18.6 14.2ZM20.2 14.4L20.8 10.8C21 9.6 27.4 9.4 27.8 10.6L28.6 14.4Z"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M37.4 14.2H41.4C42.6 14.2 43 14.8 43.2 16L44.6 25.6C44.6 26.8 44.2 27.4 43 27.4H37.2C38.4 23 38.4 18.6 37.4 14.2Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" d="M19.8 17.4L19.4 24.4"/>
+    </g>
+    <g filter="url(#riso-proteinshake-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.4 14.6C21 14.2 39 14 42.4 14.6L44.4 26.4C42.6 28.2 17.4 28.2 15.6 26.6L16.8 17.6"/>
+      <path stroke-width="2.4" d="M16.4 20.8C24 21.8 36 21.8 43.6 20.8M20.4 14.2L21 10.8C21.2 9.4 27.4 9.2 27.8 10.6L28.6 14.2"/>
+      <path d="M17.2 28.2L18.2 51.6C18.4 57 41.6 57 41.8 51.6L42.8 28.2"/>
+      <path stroke-width="2.4" d="M17.6 33.8C20.2 32.8 22.6 35.2 25.4 33.8C28.4 32.2 31 35 34 33.4C37 31.8 39.6 34.6 42.4 33.2M21.2 39.6H24.8M21.4 44.6H25M21.6 49.6H25.2"/>
+    </g>
+  </g>
+</svg>

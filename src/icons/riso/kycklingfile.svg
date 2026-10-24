@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-kycklingfile-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="15" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="6"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-kycklingfile-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="12"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.2 .7)">
+<g filter="url(#riso-kycklingfile-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#EFCF9C" d="M8 33.5C7.5 30.7 8.2 27.3 9.6 24.6S13.6 19.3 16.4 17.6S23.2 14.7 26.6 14.4S33.7 14.6 37 15.6S43.7 18.4 46.4 20.4S51.5 25 53.2 27.4S56.8 32.9 56.4 34.6S53.1 36.5 50.6 37.4S44.8 38.9 41.6 39.8S35 42 31.6 42.8S24.6 44.6 21.4 44.4S14.6 43.2 12.4 41.4S8.5 36.3 8 33.5Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M53.2 27.4C53.2 27.8 56.8 32.9 56.4 34.6S53.1 36.5 50.6 37.4S44.8 38.9 41.6 39.8S35 42 31.6 42.8S24.6 44.6 21.4 44.4S12.4 41.8 12.4 41.4S18.2 42.4 21.4 41.9S28.2 39.7 31.6 38.5S38.4 35.7 41.6 34.8S48.1 33.5 50.6 33.1S56 33 56.4 32.1S53.2 27 53.2 27.4Z"/>
+<path fill="none" stroke="#9A4E24" stroke-width="2.8" stroke-linecap="round" d="M22.4 18.6L15.6 37.4M31.6 17.2L24.2 40.4M40.6 19L33.2 40.2M48.4 24.4L42.6 38.4"/>
+</g>
+<g filter="url(#riso-kycklingfile-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7.7 33.8C8 32.3 8.2 27.3 9.6 24.6S13.6 19.3 16.4 17.6S23.2 14.7 26.6 14.4S33.7 14.6 37 15.6S43.7 18.4 46.4 20.4S51.5 25 53.2 27.4S56.8 32.9 56.4 34.6S53.1 36.5 50.6 37.4S44.8 38.9 41.6 39.8S35 42 31.6 42.8S24.6 44.6 21.4 44.4S14.6 43.2 12.4 41.4S8.5 35.5 8 33.5S9 30.1 9.1 29.4"/>
+</g>
+</g>
+</svg>

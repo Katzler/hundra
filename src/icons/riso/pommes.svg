@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-pommes-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="4" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="13"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-pommes-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="21"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.8 -1.5)">
+<g filter="url(#riso-pommes-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#FFD02E" d="M19.7 33.4L15.3 12.8L9.9 14L14.3 34.6Z"/>
+<path fill="#FFD02E" d="M25.2 33.7L22.6 8.7L17 9.3L19.6 34.3Z"/>
+<path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M22.7 34L20.1 9L17 9.3L19.6 34.3Z"/>
+<path fill="#FFD02E" d="M30.8 33.9L30.2 6.5L24.6 6.7L25.2 34.1Z"/>
+<path fill="#FFD02E" d="M36.4 34.1L37.6 9.9L32 9.7L30.8 33.9Z"/>
+<path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M33.9 34L35.1 9.8L32 9.7L30.8 33.9Z"/>
+<path fill="#FFD02E" d="M41.8 34.4L44.8 11.8L39.2 11L36.2 33.6Z"/>
+<path fill="#FFD02E" d="M46.9 33.8L51.9 17L46.5 15.4L41.5 32.2Z"/>
+<path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M44.5 33.1L49.5 16.3L46.5 15.4L41.5 32.2Z"/>
+<path fill="#E8453C" d="M11.5 29.5C20 35 40 35 48.5 29.5L43.6 54.4C36 56.6 24 56.6 16.4 54.4Z"/>
+<path fill="#E8453C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M39 33.6C42.6 32.8 45.8 31.4 48.5 29.5L43.6 54.4C41 55.2 38 55.7 34.6 56Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M16.6 38C16.8 39.3 17.5 43.4 18 45.6S19.2 50.1 19.4 51"/>
+</g>
+<g filter="url(#riso-pommes-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M11.6 29.8C20 35.2 40 35.2 48.4 29.6L43.6 54.4C36 56.6 24 56.6 16.4 54.4L12.2 31.6"/>
+<path stroke-width="2.6" d="M19.2 30.9L15.3 12.8L9.9 14L13 28.8M25 31.7L22.6 8.7L17 9.3L19.3 30.8M30.8 32.3L30.2 6.5L24.6 6.7L25.2 31.9M36.5 31.7L37.6 9.9L32 9.7L30.9 31.9M42.3 30.3L44.8 11.8L39.2 11L36.5 31.8M48.6 28.1L51.9 17L46.5 15.4L42 30.5"/>
+</g>
+</g>
+</svg>

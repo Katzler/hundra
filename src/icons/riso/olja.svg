@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-olja-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="16" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="4"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-olja-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="19"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-3 0)">
+    <g filter="url(#riso-olja-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#FFD02E" d="M23.6 17C23.6 19.6 17.8 21.8 17.4 27.4L17.2 52.4C17.4 56 36.6 56 36.8 52.4L36.6 27.4C36.2 21.8 30.4 19.6 30.4 17Z"/>
+      <path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M31.4 23.6C34.4 25 36.6 26.4 36.6 27.4L36.8 52.4C36.6 54.6 33 55.4 28 55.6C31.6 48 32.6 34 31.4 23.6Z"/>
+      <path fill="#6B3A1E" d="M22.4 10.6C21.8 6.6 22 4.6 23.4 4.4C26 3.8 29 3.8 31.6 4.2C33 4.4 33.2 6.6 32.6 10.6C29.4 11 25.6 11 22.4 10.6Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M21.6 29.6L21.6 44"/>
+      <g transform="translate(-2.2 -2)"><path fill="#3BAA5C" d="M47.4 40C49.6 34 54 30.6 58.6 30.8C58 36 54 39.8 47.4 40Z"/><path fill="#3BAA5C" transform="rotate(-28 43.4 47)" d="M37 47C37 36.9 49.8 36.9 49.8 47C49.8 57.1 37 57.1 37 47Z"/><path fill="#3BAA5C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M47.4 40C49.6 34 54 30.6 58.6 30.8C58 36 54 39.8 47.4 40Z"/></g>
+    </g>
+    <g filter="url(#riso-olja-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22.4 10.6C21.8 6.6 22 4.6 23.4 4.4C26 3.8 29 3.8 31.6 4.2C33 4.4 33.2 6.6 32.6 10.6C29.4 11 25.6 11 22.2 10.4"/>
+      <path d="M23.6 11.2V16C23.6 19.6 17.8 21.8 17.4 27.4L17.2 52.4C17.4 56 36.6 56 36.8 52.4L36.6 27.4C36.2 21.8 30.4 19.6 30.4 16V11.2"/>
+      <path transform="rotate(-28 43.4 47)" d="M37.6 50.8C36 36.4 50 36 49.8 47C49.6 57.1 38.6 57.8 37 47.8"/>
+      <path stroke-width="2.4" d="M47.4 40C49.6 34 54 30.6 58.6 30.8C58 36 54 39.8 47.6 40.2M49.4 38.6L54.4 33.8"/>
+    </g>
+  </g>
+</svg>

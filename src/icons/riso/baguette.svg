@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-baguette-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="21" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="8"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-baguette-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="17"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-.7 -.8)">
+<g filter="url(#riso-baguette-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#DCA660" d="M8.5 31C10 29.1 13.6 27.1 16.6 25.1S23.6 20.8 26.9 19S34 15.2 36.9 14.1S41.8 12.5 44.1 12.7S49.1 13.8 50.6 15.2S53.3 19 53.6 21.1S53.4 25.6 52.3 27.6S49.3 31.5 46.8 33.4S40.8 37.5 37.6 39.4S30.6 43.3 27.5 44.9S21.2 48.7 18.9 49S15.1 48.1 13.6 47S10.7 44 9.7 42.3S7.8 38.5 7.6 36.6S7 32.9 8.5 31Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M53.6 21.1C53.9 21.6 53.4 25.6 52.3 27.6S49.3 31.5 46.8 33.4S40.8 37.5 37.6 39.4S30.6 43.3 27.5 44.9S19.1 49.5 18.9 49S23.2 44.5 25.9 42.1S31.9 37 35 34.8S41.6 30.6 44.2 28.9S49.1 26.1 50.7 24.8S53.3 20.7 53.6 21.1Z"/>
+<path fill="#EFCF9C" d="M8.5 31C9.2 30.6 10.5 30.7 11.7 31.4S14.5 33.6 15.7 35.1S18.2 38.9 18.9 40.7S20.1 44.6 20.1 46S19.6 48.6 18.9 49S16.8 49.3 15.6 48.6S12.9 46.4 11.7 44.9S9.2 41.1 8.4 39.3S7.2 35.4 7.2 34S7.7 31.4 8.5 31Z"/>
+<path fill="#EFCF9C" d="M16.2 35.2C15.8 34.8 17 30.7 18.3 29.4S23.6 26.7 24 27.2S22.4 30.7 21.1 32.1S16.7 35.7 16.2 35.2Z"/>
+<path fill="#EFCF9C" d="M25.7 28.6C25.2 28.2 26.4 24.1 27.7 22.8S33 20.1 33.5 20.5S31.8 24.1 30.5 25.5S26.2 29.1 25.7 28.6Z"/>
+<path fill="#EFCF9C" d="M36.1 23.5C35.6 23.1 36.8 19.1 38.1 17.7S43.4 15 43.8 15.5S42.2 19.1 40.9 20.4S36.5 24 36.1 23.5Z"/>
+<path stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" d="M11 36.5h0M15.7 41.6h0M15.2 45.4h0"/>
+</g>
+<g filter="url(#riso-baguette-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M9.4 42.6C9.1 41.6 7.7 38.5 7.6 36.6S7 32.9 8.5 31S13.6 27.1 16.6 25.1S23.6 20.8 26.9 19S34 15.2 36.9 14.1S41.8 12.5 44.1 12.7S49.1 13.8 50.6 15.2S53.3 19 53.6 21.1S53.4 25.6 52.3 27.6S49.3 31.5 46.8 33.4S40.8 37.5 37.6 39.4S30.6 43.3 27.5 44.9S21.2 48.7 18.9 49S15.1 48.1 13.6 47S10.4 43.6 9.7 42.3S9.2 39.5 9.1 39"/>
+<path stroke-width="2.4" d="M9.2 30.7C9.7 30.9 11.3 31.1 12.4 31.8S14.8 34 15.9 35.4S18.1 38.7 18.8 40.4S20 43.9 20.1 45.2S19.6 47.9 19.5 48.5"/>
+<path stroke-width="2.4" d="M16.2 35.2C16.6 34.2 16.8 30.5 18.1 29.2S23 27.5 24 27.2M25.7 28.6C26 27.6 26.2 23.9 27.5 22.6S32.5 20.9 33.5 20.5M36.1 23.5C36.4 22.5 36.6 18.8 37.9 17.5S42.9 15.8 43.8 15.5"/>
+</g>
+</g>
+</svg>

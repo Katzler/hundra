@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-chili-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="19" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="11"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-chili-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="1"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.4 -8.6)">
+<g filter="url(#riso-chili-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32.3" cy="40" rx="26.2" ry="17"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58.4 42.4A26.2 17 0 0 1 6.1 42.4A26.2 11 0 0 0 58.4 42.4Z"/>
+<ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.6" ry="12"/>
+<path fill="#E8453C" stroke="#9B1B30" stroke-width="2.2" stroke-linejoin="round" d="M47.5 36c-.2 2.4-1.6 5-3.8 7s-5.9 4.4-9.5 5-8.9-.5-12.2-1.8-6.3-3.9-7.5-6.3-1.1-5.5.2-7.8 4.4-4.8 7.6-6 7.9-1.5 11.6-1.1 8.3 1.7 10.6 3.6 3.1 5 3 7.4z"/>
+<path fill="#E8453C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M48.2 38c.2.6-3.1 5.2-6 6.8s-7.5 2.7-11.2 2.7-8.4-1.1-11.2-2.7-6.2-6.2-6-6.8 4.2 2.4 7.1 3.3 6.7 2.5 10.1 2.5 7.3-1.5 10.1-2.5 6.9-3.9 7.1-3.3z"/>
+<path stroke="#6B3A1E" stroke-width="2.6" stroke-linecap="round" d="M20 36h.1M36 32h.1M41 39h.1M25 42h.1M33 43.5h.1"/><path stroke="#6B3A1E" stroke-width="2.4" stroke-linecap="round" d="M44 34h.1"/>
+<path fill="none" stroke="#9B1B30" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" d="M21.6 37.9l2.8 1M36.6 36.4l2.8-.8M28.6 41.2l2.8.5M40.8 41.3l2.4 1.4M17.9 33.3l2.4-1.4"/>
+<path fill="#FFF1CF" stroke="#EFCF9C" stroke-width="2.2" stroke-linejoin="round" d="M35.1 31.5c0 1-1.4 2.3-2.6 2.9s-3.3.9-4.7.7-3.3-1-4.1-1.9-1-2.6-.3-3.5 2.7-1.9 4.3-2.1 3.7.2 4.9.9 2.5 2 2.5 3z"/>
+<path fill="#E8453C" stroke="#9B1B30" stroke-width="2.2" stroke-linejoin="round" d="M29 55.5c.7-.8 7.4-2.7 10-4s6.6-3.4 8.5-5 3.6-5.9 5-6.5 4.9 1.1 5 2.5-2.6 5.7-4.5 7.5-6.3 4.4-9 5.5-7.9 2-10 2-5.7-1.1-5-2z"/>
+<path fill="#E8453C" style="mix-blend-mode:multiply" d="M33 56.5C42 55 50 51 55.5 45C54 51 46 56 37 57.5Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M37 52.5c4-1 8-3 11-5.5"/>
+<path fill="#3BAA5C" d="M57.9 42.9c-.3.7-2.1 1.1-3.1.8s-2.6-1.8-2.9-2.7 .6-2.2 1.4-2.4 3 .4 3.8 1.1 1.2 2.5.8 3.2z"/>
+<path fill="none" stroke="#3BAA5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M56 40c.8-2.6 2-4.4 4.4-5.4"/>
+</g>
+<g filter="url(#riso-chili-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M41.1 56c-3 0-12.4 1.2-17.6.1s-10.9-4-13.8-7-4.6-7.4-4-11 3.7-7.6 7.6-10.1 10.3-4.5 15.8-4.9 12.5.7 17.1 2.6 9.1 5.5 10.9 8.8-.2 9.4-.2 11.3"/>
+</g>
+</g>
+</svg>

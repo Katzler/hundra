@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-poke-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="12" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="4"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-poke-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="19"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+<g transform="translate(-1.8 .5)">
+<g filter="url(#riso-poke-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#3D78D8" d="M7 28C7.5 38 12 47.5 20 51.5C27 55 37 55 44 51.5C52 47.5 56.5 38 57 28Z"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M57 28C56.5 38 52 47.5 44 51.5C37 55 27 55 22 53C33 51 47 44 50.5 33.5C53.5 32 56 30.5 57 28Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M13.5 38.5C15 42.5 17.5 45.5 20.5 47.5"/>
+<g transform="translate(-2.4 -2.2)">
+<path fill="#FFF1CF" d="M57 28A25 10.5 0 0 1 7 28.2A25 10.5 0 0 1 57 27.6A25 10.5 0 0 1 57 28Z"/>
+<path fill="#F28C28" d="M12.8 21.8L18.8 22.6L18 28.6L12 27.8ZM19.5 20.3L25.5 19.7L26.1 25.7L20.1 26.3ZM14.4 29.4L20.4 29L20.8 35L14.8 35.4ZM22.9 26.4L28.8 27.7L27.5 33.6L21.6 32.3Z"/>
+<path fill="#F49AB0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M12.8 21.8L18.8 22.6L18 28.6L12 27.8ZM19.5 20.3L25.5 19.7L26.1 25.7L20.1 26.3ZM14.4 29.4L20.4 29L20.8 35L14.8 35.4ZM22.9 26.4L28.8 27.7L27.5 33.6L21.6 32.3Z"/>
+<g fill="#3BAA5C"><path transform="translate(37.6 28.8) rotate(-64)" d="M-6.8 0A6.8 5.2 0 0 0 6.8 0Q0 1.4-6.8 0Z"/><path transform="translate(44.6 26) rotate(-16)" d="M-6.8 0A6.8 5.2 0 0 0 6.8 0Q0 1.4-6.8 0Z"/><path transform="translate(51.2 30.4) rotate(30)" d="M-6.8 0A6.8 5.2 0 0 0 6.8 0Q0 1.4-6.8 0Z"/></g>
+<path fill="none" stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" d="M30.4 34.2h.1M33.6 21.4h.1M11.4 31.4h.1M29.4 24.4h.1"/>
+</g></g>
+<g filter="url(#riso-poke-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7.1 27.1A25 10.5 0 0 1 56.9 28.7A25 10.5 0 0 1 9.3 32.4"/>
+<path d="M7.1 30.5C7.8 39.5 12.4 47.8 20 51.5C27 55 37 55 44 51.5C51.6 47.8 56.2 39.5 56.9 30.5"/>
+</g>
+</g>
+</svg>

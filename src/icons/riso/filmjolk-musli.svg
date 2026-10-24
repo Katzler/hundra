@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-filmjolk-musli-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="3" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="8"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-filmjolk-musli-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="15"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g filter="url(#riso-filmjolk-musli-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+    <path fill="#3D78D8" d="M21.6 45.5C21.4 48.4 21.6 50.6 22.4 51.6C27 53 33.4 53 37.6 51.6C38.4 50.6 38.6 48.4 38.4 45.5Z"/>
+    <path fill="#3D78D8" d="M6 23A24 10 0 0 1 54 23C54 23 53.6 29.1 52.5 32C51.4 34.9 49.6 38.2 47.5 40.5C45.4 42.8 42.9 44.7 40 46C37.1 47.3 33.3 48.2 30 48.2C26.7 48.2 22.9 47.3 20 46C17.1 44.7 14.6 42.8 12.5 40.5C10.4 38.2 8.6 34.9 7.5 32C6.4 29.1 6 23 6 23Z"/>
+    <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M54 23C54 23 53.6 29.1 52.5 32C51.4 34.9 49.6 38.2 47.5 40.5C45.4 42.8 42.9 44.7 40 46C37.1 47.3 30.5 48.6 30 48.2C29.5 47.8 34.7 45.4 37 43.4C39.3 41.4 42.2 38.6 44 36C45.8 33.4 45.9 30.2 47.6 28C49.3 25.8 54 23 54 23Z"/>
+    <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M11.6 31.4c1.2 3.6 3 6.6 5.6 9"/>
+    <path fill="#FFF1CF" d="M9 24.4a21 7.6 0 1 0 42 0a21 7.6 0 1 0 -42 0Z"/>
+    <path fill="none" stroke="#DCA660" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14.6 25.6l3.6-1.2M23.6 19.8l3.6.2M33.4 28.6l3.6-.8M40.4 20.4l3.2 1M21.4 29.4l3.2.6M44.6 26.8l2.8-1.4M29.4 22.6l3-1.4"/>
+    <path fill="none" stroke="#9A4E24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M19 21.6h.6M37.4 24.4h.6M28 30.6h.6M47 23h.6"/>
+    <path fill="none" stroke="#6B3A1E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" d="M23 24.8h.6M32.4 26.6h.6M39.6 29h.6M44 22h.6M16 29h.6"/>
+  </g>
+  <g filter="url(#riso-filmjolk-musli-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.5 25.1A24 10 0 1 1 53.8 24.4A24 10 0 0 1 5.3 23.4"/>
+    <path d="M6.2 24.2C6.4 25.5 6.5 29.3 7.5 32C8.6 34.7 10.4 38.2 12.5 40.5C14.6 42.8 17.1 44.7 20 46C22.9 47.3 26.7 48.2 30 48.2C33.3 48.2 37.1 47.3 40 46C42.9 44.7 45.4 42.8 47.5 40.5C49.6 38.2 51.5 34.7 52.5 32C53.6 29.4 53.6 25.8 53.8 24.6"/>
+    <path stroke-width="2.6" d="M22.2 47.4C21.8 49.4 21.8 50.8 22.6 51.6C27 53.2 33.4 53.2 37.6 51.6C38.4 50.8 38.4 49.4 38 47.4"/>
+  </g>
+</svg>

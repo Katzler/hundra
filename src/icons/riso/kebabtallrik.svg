@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-kebabtallrik-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="19" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="25"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-kebabtallrik-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="10"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+<g transform="translate(-1.8 -2.5)">
+<g filter="url(#riso-kebabtallrik-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#3D78D8" d="M58 44.5A26 13 0 0 1 6 44.7A26 13 0 0 1 58 44A26 13 0 0 1 58 44.5Z"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M6 44.5C8.5 52 19 57.5 32 57.5S55.5 52 58 44.5C55.5 49 45 53 32 53S8.5 49 6 44.5Z"/>
+<path fill="#FFD02E" d="M40.2 45.8L37.7 19.8L33.3 20.2L35.8 46.2ZM44.2 46L44.2 16.5L39.8 16.5L39.8 46ZM48.2 46.2L50.7 18.7L46.3 18.3L43.8 45.8ZM52.1 46.5L57.1 24.5L52.9 23.5L47.9 45.5Z"/>
+<path fill="#3BAA5C" d="M54 48.5Q54.9 50.4 51.8 50.9Q50 53.1 46.5 51.9Q43 53.1 41.2 50.9Q38.1 50.4 39 48.5Q38.1 46.6 41.2 46.1Q43 43.9 46.5 45.1Q50 43.9 51.8 46.1Q54.9 46.6 54 48.5Z"/>
+<path fill="#6B3A1E" d="M8.5 44C7 38.5 9.5 33.5 13.5 32.5C14 27 18.5 23.5 23.5 25C26.5 21 33.5 22 35 27C38.5 28.5 40 35 37.5 39.5C37.5 44.5 33.5 48.5 27.5 49C21 50 11.5 49 8.5 44Z"/>
+<path fill="none" stroke="#DCA660" stroke-width="2.4" stroke-linecap="round" d="M12.5 40.5c2.5-2 5.5-2 7.5 0M23.5 44.5c2.5-2 5.5-2 7.5 0M27 33c2-1.6 4.5-1.6 6 0"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M12 35c2.4-4 3.8 2 6.4-2.4s3.8 2 6.4-2.4 3.8 2 6.4-2.4"/></g>
+<g filter="url(#riso-kebabtallrik-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M55.8 39.2A26 13 0 0 1 8.4 50A26 13 0 0 1 6 45"/>
+<path d="M9.5 45.8C7 40.5 9.5 33.5 13.5 32.5C14 27 18.5 23.5 23.5 25C26.5 21 33.5 22 35 27C38.5 28.5 40 35 37.5 39.5C37.5 44.5 33.5 48.5 27.5 49C22 49.8 15.5 49.3 11.8 47.6"/>
+<path stroke-width="2.4" d="M38.8 28.2L37.7 19.7L33.3 20.3L34.4 28.8M44.2 42L44.2 16.5L39.8 16.5L39.8 42M48.6 42.2L50.7 18.7L46.3 18.3L44.2 41.8M52.7 43L57.1 24.5L52.9 23.5L48.5 42M39.6 46.8c1.6-1.8 3.4-1.8 5 0s3.4 1.8 5 0 3.4-1.8 5 0"/></g>
+</g>
+</svg>

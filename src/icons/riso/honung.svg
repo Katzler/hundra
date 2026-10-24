@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-honung-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="13" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="8"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-honung-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="21"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 0)">
+    <g filter="url(#riso-honung-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="none" stroke="#DCA660" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M33 21L49.4 6.2"/>
+      <path fill="#F28C28" d="M14.6 25C14.6 26.8 15.4 27.8 16.4 28.6C11 32.4 9.8 40.6 12.6 46.8C15.8 53.6 23.2 56.2 30 56.2C36.8 56.2 44.2 53.6 47.4 46.8C50.2 40.6 49 32.4 43.6 28.6C44.6 27.8 45.4 26.8 45.4 25Z"/>
+      <path fill="#F28C28" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M38.8 30C44 32.4 47.6 38 46.4 44.4C45 51 38 55.6 30 56.2C36.8 56.2 44.2 53.6 47.4 46.8C50.2 40.6 49 32.4 43.6 28.6C42 29.4 40.4 29.8 38.8 30Z"/>
+      <path fill="#F28C28" d="M13.6 23.4C13.6 18.1 46.4 18.1 46.4 23.4C46.4 28.7 13.6 28.7 13.6 23.4Z"/>
+      <path fill="#FFD02E" d="M16.6 23.2C16.6 19.7 43.4 19.7 43.4 23.2C43.4 26.7 16.6 26.7 16.6 23.2Z"/>
+      <path fill="#FFD02E" d="M18 26.6C19.2 27.2 20.4 27.6 20.6 28.6C20.8 32 21 34.4 23 34.6C25 34.8 25 31.6 25.6 28.8C28 29.2 31 29.4 34 29.2C34.2 33.6 34.6 37.6 36.8 37.8C39 37.8 38.8 33.6 39.4 28.4C41.2 28 42.6 27.4 43.6 26.6Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15.8 38C15.6 42 16.6 45.6 18.6 48.4"/>
+    </g>
+    <g filter="url(#riso-honung-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14.2 25.4C12.6 17.8 46.6 17.4 46.4 23.4C46.2 28.7 15.2 29.1 13.6 23.8"/>
+      <path d="M14.6 25C14.6 26.8 15.4 27.8 16.4 28.6C11 32.4 9.8 40.6 12.6 46.8C15.8 53.6 23.2 56.2 30 56.2C36.8 56.2 44.2 53.6 47.4 46.8C50.2 40.6 49 32.4 43.6 28.6C44.6 27.8 45.4 26.8 45.4 25"/>
+      <path stroke-width="2.4" d="M20.6 27.6C20.8 31 21 34.4 23 34.6C25 34.8 25 31.6 25.6 28.8M34 29C34.2 33.6 34.6 37.6 36.8 37.8C39 37.8 38.8 33.6 39.4 28.4"/>
+      <path d="M33 20.6L49.4 6.2"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-bonor-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="8" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="1"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-bonor-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="12"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.8 -2)">
+    <g filter="url(#riso-bonor-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#F28C28" d="M8.6 39C9 25.6 19.6 16.6 32 16.6C44.4 16.6 55 25.6 55.4 39C47 42.6 17 42.6 8.6 39Z"/>
+      <g stroke-width="1.47" stroke-linejoin="round"><path fill="#FFF1CF" stroke="#9A4E24" transform="translate(33 26.4) rotate(6) scale(1.5)" d="M-7.2-.6C-7.2-4-3.8-5 0-4.4C4-3.8 7.4-2 7.2 1.4C7 4.6 3.6 5.2 1.4 3.4C0 2.2-1.6 1.6-3.4 2.8C-5.6 4.4-7.2 2.6-7.2-.6Z"/><path fill="#9B1B30" stroke="#6B3A1E" transform="translate(20 32.6) rotate(-14) scale(1.5)" d="M-7.2-.6C-7.2-4-3.8-5 0-4.4C4-3.8 7.4-2 7.2 1.4C7 4.6 3.6 5.2 1.4 3.4C0 2.2-1.6 1.6-3.4 2.8C-5.6 4.4-7.2 2.6-7.2-.6Z"/><path fill="#9B1B30" stroke="#6B3A1E" transform="translate(45 32.4) rotate(18) scale(1.5)" d="M-7.2-.6C-7.2-4-3.8-5 0-4.4C4-3.8 7.4-2 7.2 1.4C7 4.6 3.6 5.2 1.4 3.4C0 2.2-1.6 1.6-3.4 2.8C-5.6 4.4-7.2 2.6-7.2-.6Z"/></g>
+      <g fill="none" stroke="#FFF1CF" stroke-width="1.47" stroke-linecap="round"><path transform="translate(20 32.6) rotate(-14) scale(1.5)" d="M-4.4-1.8C-2.6-2.8-.4-2.8 1.6-2.2"/><path transform="translate(45 32.4) rotate(18) scale(1.5)" d="M-4.4-1.8C-2.6-2.8-.4-2.8 1.6-2.2"/></g>
+      <path fill="#3D78D8" d="M8 39C9 47.8 19.6 53.4 32 53.4C44.4 53.4 55 47.8 56 39C50 42.5 14 42.5 8 39Z"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M56 39C55 47.8 44.4 53.4 32 53.4C41 50.2 47 45.4 48 41.2C52 40.8 54.6 40 56 39Z"/>
+    </g>
+    <g filter="url(#riso-bonor-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.8 38.7C9 47.8 19.6 53.6 32 53.6C44.4 53.6 55 47.8 56.2 39C50 42.7 14 42.7 8.6 39.8"/>
+      <path stroke-width="2.4" d="M9.8 37.6C11 25.6 20.6 16.4 32 16.4C43.4 16.4 53 25.6 54.4 37.6"/>
+    </g>
+  </g>
+</svg>

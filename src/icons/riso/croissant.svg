@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-croissant-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="6" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="2"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-croissant-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="14"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.8 -1.4)">
+    <g filter="url(#riso-croissant-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" d="M11.7 47.9c-1.7-.1-3.4-5.4-3.6-8c-.1-2.5 1.7-4.4 2.6-7.2c.9-2.8 1.1-7.2 3-9.5c2-2.3 5.7-2.8 8.8-4.3c3-1.5 6.3-4.5 9.5-4.5c3.2 0 6.5 3 9.5 4.5c3.1 1.5 6.8 2 8.8 4.3c1.9 2.3 2.1 6.7 3 9.5c.9 2.8 2.7 4.7 2.6 7.2c-.2 2.6-1.9 7.9-3.6 8c-1.7 0-3.3-5.8-6.7-7.5c-3.4-1.7-9.1-3-13.6-3c-4.5 0-10.2 1.3-13.6 3c-3.4 1.7-5 7.5-6.7 7.5Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M55.6 41.8c-.6 2.7-2 6-3.3 6.1c-1.7 0-3.3-5.8-6.7-7.5c-3.4-1.7-9.1-3-13.6-3c-4.5 0-10.2 1.3-13.6 3c-3.4 1.7-5 7.5-6.7 7.5c-1.3-.1-2.7-3.4-3.3-6.1c.8.9 0 4.2 2.5 2.8c2.4-1.3 7.2-9 12.2-10.8c5-1.9 12.8-1.9 17.8 0c5 1.8 9.8 9.5 12.2 10.8c2.5 1.4 1.7-1.9 2.5-2.8Z"/>
+      <path fill="none" stroke="#EFCF9C" stroke-width="2.4" stroke-linecap="round" d="M28.2 19.4c2.4-1 5.2-1 7.6 0M15.4 28.4c.8-1.8 2.2-3.4 3.8-4.4M44.8 24c1.6 1 3 2.6 3.8 4.4"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M11.8 45c1.2-1.2 2.6-2 4-2.4M52.2 45c-1.2-1.2-2.6-2-4-2.4"/>
+    </g>
+    <g filter="url(#riso-croissant-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11.7 47.9c-1.7-.1-3.4-5.4-3.6-8c-.1-2.5 1.7-4.4 2.6-7.2c.9-2.8 1.1-7.2 3-9.5c2-2.3 5.7-2.8 8.8-4.3c3-1.5 6.3-4.5 9.5-4.5c3.2 0 6.5 3 9.5 4.5c3.1 1.5 6.8 2 8.8 4.3c1.9 2.3 2.1 6.7 3 9.5c.9 2.8 2.7 4.7 2.6 7.2c-.2 2.6-1.9 7.9-3.6 8c-1.7 0-3.3-5.8-6.7-7.5c-3.4-1.7-9.1-3-13.6-3c-4.5 0-10.2 1.3-13.6 3c-2.4 1.2-3.9 4.4-5.1 6.2"/>
+      <path stroke-width="2.4" d="M10.7 32.7c1.4 2.3 3.7 5 6.9 8.3M22.5 18.9c.9 5.3 2.2 11.6 3.9 18.9M41.5 18.9c-.9 5.3-2.2 11.6-3.9 18.9M53.3 32.7c-1.4 2.3-3.7 5-6.9 8.3"/>
+    </g>
+  </g>
+</svg>

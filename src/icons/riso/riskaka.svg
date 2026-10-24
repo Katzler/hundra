@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-riskaka-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="5" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="12"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-riskaka-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="23"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-.5 1.6)">
+<g filter="url(#riso-riskaka-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#EFCF9C" d="M8.5 24L8.9 32.6A21.1 12.4 0 0 0 51.1 32.6L51.5 24Z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M34 36.4V45A21.5 12.4 0 0 0 51.1 32.6L51.5 24A21.5 12.4 0 0 1 34 36.4Z"/>
+<path stroke="#DCA660" stroke-width="2.4" stroke-linecap="round" d="M13.4 33.4h0M20 37.4h0M28 39h0M36 38.6h0M43 36h0M48.4 31.6h0M24 34.6h0M40 33h0"/>
+<path fill="#FFF1CF" d="M51.2 24C51.2 25.3 51.6 26.7 50.9 27.9S48.5 30.1 47.2 31.2S44.7 33.5 42.9 34.3S38.7 35.2 36.6 35.7S32.2 36.7 30 36.7S25.6 36.1 23.4 35.7S18.9 35 17.1 34.3S14.1 32.3 12.8 31.2S9.8 29.1 9.1 27.9S8.8 25.3 8.8 24S8.4 21.3 9.1 20.1S11.5 17.9 12.8 16.8S15.3 14.5 17.1 13.7S21.3 12.8 23.4 12.3S27.8 11.3 30 11.3S34.4 11.9 36.6 12.3S41.1 13 42.9 13.7S45.9 15.7 47.2 16.8S50.2 18.9 50.9 20.1S51.2 22.7 51.2 24Z"/>
+<path fill="none" stroke="#EFCF9C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M32.9 17.4l-1.8 .5M21.7 19l2 .1M19.2 27.2l.8 1.1M17.5 18.9l-1.9 .3M32.2 27.6l.7 1.1M29.2 22.8l.5 1.2M25.7 15.2l2 .2M37.7 32.5l.5 1.2M27.7 28.6l-.7 1.1M21.5 31.8l-1.9 .3M44.7 20.3l-1.1 1M43.9 24.3l-.7 1.1M14.5 27.7l-.7 1.1M45.3 27.7l1.6 .7"/>
+<path fill="none" stroke="#DCA660" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M32 31.5l-1.8 .5M35.9 21.2l.9 1.1M42.3 16.9l1.9 .4M12.1 24.6l1.7 .6M39.5 28.3l1.8 .5M37 13.8l-.8 1.1M22.1 22.9l.6 1.1M38.6 18l-1.8 .6"/>
+</g>
+<g filter="url(#riso-riskaka-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M9.1 20.1C9.8 18.9 11.5 17.9 12.8 16.8S15.3 14.5 17.1 13.7S21.3 12.8 23.4 12.3S27.8 11.3 30 11.3S34.4 11.9 36.6 12.3S41.1 13 42.9 13.7S45.9 15.7 47.2 16.8S50.2 18.9 50.9 20.1S51.2 22.7 51.2 24S51.6 26.7 50.9 27.9S48.5 30.1 47.2 31.2S44.7 33.5 42.9 34.3S38.7 35.2 36.6 35.7S32.2 36.7 30 36.7S25.6 36.1 23.4 35.7S18.9 35 17.1 34.3S14.1 32.3 12.8 31.2S9.8 29.1 9.1 27.9S8.8 25.3 8.8 24C8.8 22.7 8.4 21.3 9.1 20.1C9.6 19.3 9.8 19 10.1 18.7"/>
+<path d="M8.7 25.6L9 32.6A21 12.4 0 0 0 51 32.6L51.3 26.4"/>
+</g>
+</g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-chips-nave-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="14" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="6"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-chips-nave-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="9"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.6 -1.6)">
+<g filter="url(#riso-chips-nave-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#FFD02E" d="M52.1 12.9C53.9 15 51.7 19.3 46.4 23.7C41.8 27.6 36.2 29.4 34.7 27.5C32.8 25.3 35 21.2 40.4 16.7C45.3 12.6 50.5 10.9 52.1 12.9ZM30.7 21.7C32.3 26.7 29.3 31.4 23.3 33.4C17.8 35.2 12 32.9 10.5 28.3C8.9 23.2 11.8 18.6 17.9 16.6C23.2 14.9 29.3 17.3 30.7 21.7ZM56.5 45.1C54.9 49.1 49.5 50.7 44.5 48.6C39 46.4 36.5 42.1 38.3 37.7C39.8 33.9 45.6 32.2 50.3 34.2C55.8 36.4 58.3 40.7 56.5 45.1Z"/>
+<path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 0.8)" d="M30.6 19.6C31.6 24.4 27.6 30.6 21.2 33.6C17.4 35.2 13.6 35 11.6 32.8C15.6 33.4 20.4 31.6 24 28.6C27.2 26 29.6 22.8 30.6 19.6ZM56.8 44.8C55 48.6 50 50 45 48.6C42 47.8 39.6 46 38.4 43.8C42 46.4 47.6 47.4 51.6 46.6C54 46.2 55.8 45.4 56.8 44.8Z"/>
+<path fill="none" stroke="#DCA660" stroke-width="2.4" stroke-linecap="round" d="M12.2 27.6C17 25.4 21.4 21 26.2 18.8M14.8 32.4C19.6 30.2 24 25.8 28.8 23.6M41 37.2C45.4 39.2 50.2 39.4 54.8 41.4M39.2 41.6C43.4 43.6 48.4 43.8 52.6 45.6"/>
+<path fill="#FFD02E" d="M45.3 36.4C46.5 42.3 41.8 47.4 33.3 49.2C25.9 50.8 18.2 47.5 17.1 42.4C15.9 36.6 20.7 31.4 29.1 29.6C37.3 27.9 44.1 30.7 45.3 36.4Z"/>
+<path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 0.8)" d="M45.4 37.6C46.2 43.2 39.8 48.4 30.8 49.4C24.2 50.2 18.6 48.6 17 45.4C20.8 47.4 26.8 47.6 32.4 46.6C38.8 45.4 43.8 42.2 45.4 37.6Z"/>
+<path fill="none" stroke="#DCA660" stroke-width="2.4" stroke-linecap="round" d="M19.4 38.6C24 37.4 28.6 33.8 33.6 36.4S38 34.8 40.4 33.2M20.2 42.8C24.8 41.6 29.4 38 34.4 40.6S39.4 38.6 41.8 37.4M21.6 47C26.2 45.8 30.6 42.4 35.6 45S40.2 42.8 42.6 41.6"/>
+<path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M25 22h.1M41 22.5h.1M36 36.5h.1M22 42h.1M50 44h.1"/>
+</g>
+<g filter="url(#riso-chips-nave-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M52.1 12.9C53.9 15 51.7 19.3 46.4 23.7C41.8 27.6 36.2 29.4 34.7 27.5C32.8 25.3 35 21.2 40.4 16.7C45.3 12.6 50.5 10.9 52.1 12.9M30.7 21.7C31.6 24.6 31 27.3 29.3 29.5M20 34C15.6 34.2 11.7 32 10.5 28.3C8.9 23.2 11.8 18.6 17.9 16.6C23.2 14.9 29.3 17.3 30.7 21.7M56.5 45.1C54.9 49.1 49.5 50.7 44.5 48.6C43 48 41.8 47.3 40.7 46.4M44.2 33.5C46.2 33.2 48.3 33.4 50.3 34.2C55.8 36.4 58.3 40.7 56.5 45.1M17.1 42.4C15.9 36.6 20.7 31.4 29.1 29.6C37.3 27.9 44.1 30.7 45.3 36.4C46.5 42.3 41.8 47.4 33.3 49.2C25.9 50.8 18.2 47.5 17.1 42.4"/>
+</g>
+</g>
+</svg>

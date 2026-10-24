@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-kaffe-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="33" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="20"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-kaffe-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1 0)">
+    <g filter="url(#riso-kaffe-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#A9C8F0" d="M4.6 47.4C4.6 39.6 52.4 39.6 52.4 47.4C52.4 55.2 4.6 55.2 4.6 47.4Z"/>
+      <path fill="none" stroke="#3D78D8" stroke-width="5" stroke-linecap="round" d="M43.4 28.6C49.8 26.8 53.6 30.2 52.2 34.8C51 38.6 46.6 39.6 41.6 38.4"/>
+      <path fill="#3D78D8" d="M12 24C12 18.8 44 18.8 44 24C43.6 35.4 39 44.6 28 44.8C17 44.6 12.4 35.4 12 24Z"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M34.8 28.4C38.8 27.8 42.6 26.6 44 24C43.6 35.4 39 44.6 28 44.8C26 44.8 24.4 44.4 23 43.8C31.6 41.6 35.4 36 34.8 28.4Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M16.4 30.6C17.2 34 18.8 37.2 21 39.6"/>
+      <g transform="translate(-2.2 -2)">
+      <path fill="#6B3A1E" d="M13.1 23.2C13.1 18.8 40.3 18.8 40.3 23.2C40.3 27.6 13.1 27.6 13.1 23.2Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" d="M31.4 20.8C33.8 20.8 36 21.4 37 22.4"/>
+      </g>
+    </g>
+    <g filter="url(#riso-kaffe-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12.6 25.4C10.6 19 44.4 18.2 44 24C43.8 29.4 13.2 30 12 24.6"/>
+      <path d="M12.1 25.2C12.6 35.6 17.4 44.6 28 44.8C38.6 44.6 43.4 35.6 44 25"/>
+      <path d="M43.6 28.8C50 26.6 54 30 52.6 34.8C51.4 38.8 47 40 41.8 38.6"/>
+      <path d="M15.6 42.4C8.6 43.2 4.6 45 4.6 47.6C4.8 55 52.2 55.2 52.4 47.4C52.4 45 48.4 43.2 41 42.4"/>
+      <path d="M22.4 15.2C19.8 12.6 25.2 10 22.6 6.2M32.4 15C29.8 12.2 35.2 9.2 32.6 5.4"/>
+    </g>
+  </g>
+</svg>

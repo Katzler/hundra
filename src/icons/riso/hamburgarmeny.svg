@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-hamburgarmeny-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="14" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="23"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-hamburgarmeny-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="8"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-.5 0)">
+    <g filter="url(#riso-hamburgarmeny-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="none" stroke="#E8453C" stroke-width="3" stroke-linecap="round" d="M19.5 10.5l4-7.5"/>
+      <path fill="#3D78D8" d="M8 15l20 0-2.8 32-14.4 0-2.8-32z"/>
+      <path fill="#FFF1CF" d="M6.5 15.5s-.9-3.1 1-4 7-1.5 10.5-1.5 8.6.6 10.5 1.5 1 4 1 4l-23 0z"/>
+      <path fill="#FFD02E" d="M35.2 14l3.5-.7 3.1 14.7-3.5.7-3.1-14.7z"/>
+      <path fill="#FFD02E" d="M40.8 10.1l3.6-.2 .8 17-3.6.2-.8-17z"/>
+      <path fill="#FFD02E" d="M46.5 11.4l3.6.3-1.6 15.9-3.6-.3 1.6-15.9z"/>
+      <path fill="#FFD02E" d="M51.9 15.3l3.5.9-3.3 12.5-3.5-.9 3.3-12.5z"/>
+      <path fill="#E8453C" d="M35.2 28.5c-.2-3.4-1.9-1.3 1.3-1.5s14.8-.2 18 0 1.5-1.9 1.3 1.5-1.9 15.6-2.6 19 .6 1.3-1.7 1.5-9.7.2-12 0-1 1.9-1.7-1.5-2.4-15.6-2.6-19z"/>
+      <path fill="#E8453C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M56 27c.5 1.5-1.2 18.3-3 22s-7.5 1.5-8 0 3.2-5.3 5-9 5.5-14.5 6-13z"/>
+      <path fill="#DCA660" d="M16 48.5l28 0s.8 3.5-1.5 4.5-8.3 1.5-12.5 1.5-10.2-.5-12.5-1.5-1.5-4.5-1.5-4.5z"/>
+      <path fill="#6B3A1E" d="M14 45.5c0-.9-.7-2 2-2.5s9.3-.5 14-.5 11.3 0 14 .5 2 1.6 2 2.5 .7 2.4-2 3-9.3.5-14 .5-11.3.1-14-.5-2-2.1-2-3z"/>
+      <path fill="#3BAA5C" d="M15 43.5l3 2 3-2 3 2 3-2 3 2 3-2 3 2 3-2 3 2 3-2v-1H15Z"/>
+      <path fill="#DCA660" d="M15 43s.7-4.4 2-6 3.8-2.7 6-3.5 4.7-1 7-1 4.8.3 7 1 4.7 1.9 6 3.5 2 6 2 6l-30 0z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M24 37h.1M31 35.5h.1M37 38h.1"/>
+    </g>
+    <g filter="url(#riso-hamburgarmeny-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="2.4" d="M19.5 10.5l4-7.5"/>
+      <path d="M10.6 33c0 2.3-.9 11.6.2 14s5.2.3 6.2.3M8 15.5c.2 2.4 1 12.1 1.2 14.5M28 15.5c-.2 2.6-.8 12.9-1 15.5M6.5 15.5s-.9-3.1 1-4 7-1.5 10.5-1.5 8.6.6 10.5 1.5 1 4 1 4l-23 0s0 0 0 0"/>
+      <path d="M35.2 28.5c-.2-3.4-1.9-1.3 1.3-1.5s14.8-.2 18 0 1.5-1.9 1.3 1.5-1.9 15.6-2.6 19 .6 1.3-1.7 1.5-9.7.2-12 0-1 1.9-1.7-1.5-2.4-15.6-2.6-19c0-.2 0-.3 0-.4"/>
+      <path stroke-width="2.4" d="M38.3 28.7l-3.1-14.7 3.5-.7 3.1 14.7M41.6 27.1l-.8-17 3.6-.2 .8 17M44.9 27.3l1.6-15.9 3.6.3-1.6 15.9M48.6 27.8l3.3-12.5 3.5.9-3.3 12.5"/>
+      <path d="M15 43s.7-4.4 2-6 3.8-2.7 6-3.5 4.7-1 7-1 4.8.3 7 1 4.7 1.9 6 3.5 2 6 2 6l-30 0s0 0 0 0M14 45.5c0-.9-.7-2 2-2.5s9.3-.5 14-.5 11.3 0 14 .5 2 1.6 2 2.5 .7 2.4-2 3-9.3.5-14 .5-11.3.1-14-.5-2-2.1-2-3c0 0 0-.1 0-.1M44 48.5s.8 3.5-1.5 4.5-8.3 1.5-12.5 1.5-10.2-.5-12.5-1.5-1.5-4.5-1.5-4.5"/>
+    </g>
+  </g>
+</svg>

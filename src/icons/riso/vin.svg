@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-vin-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="17" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="3"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-vin-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="8"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.8 0.6)">
+    <g filter="url(#riso-vin-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#9B1B30" d="M15.8 19C18 15.8 42 15.8 44.2 19C44 26 39.6 33.6 30 33.6C20.4 33.6 16 26 15.8 19Z"/>
+      <path fill="#E8453C" d="M15.8 19C18 15.8 42 15.8 44.2 19C42 22.2 18 22.2 15.8 19Z"/>
+      <path fill="#9B1B30" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M36.8 22C40 21.4 42.6 20.4 44.2 19C44 26 39.6 33.6 30 33.6C28.6 33.6 27.4 33.4 26.2 33.2C33.4 30.6 37 27 36.8 22Z"/>
+      <path fill="none" stroke="#A9C8F0" stroke-width="3.4" d="M30 34V49"/>
+      <path fill="#A9C8F0" d="M19 51.4C19 47.4 41 47.4 41 51.4C41 55.4 19 55.4 19 51.4Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M19.8 24C20.6 26.6 22 28.6 24 30"/>
+    </g>
+    <g filter="url(#riso-vin-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15.6 8.6C13.6 4.6 45.2 3.2 45 7C44.8 10.6 16.6 11 15 7.4"/>
+      <path d="M15 7.6C14.4 22 19 33.6 30 33.8C41 33.6 45.6 22 45 7.6"/>
+      <path d="M30 34.4V49.4"/>
+      <path d="M19.6 52.6C17.6 48.2 41 47.2 41 51.4C41 55.2 20 55.4 19 51.2"/>
+      <path stroke-width="2.4" d="M16 19.4C18 22.2 42 22.2 44 19.4"/>
+    </g>
+  </g>
+</svg>

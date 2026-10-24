@@ -36,8 +36,8 @@ function score(food: Food, query: string, terms: string[]): number | null {
       worst = Math.max(worst, 5)
       continue
     }
-    // Sammansatta ord: "klyftpotatis" ska hittas på "potatis".
-    if (name.includes(term)) {
+    // Sammansatta ord: "klyftpotatis" ska hittas på "potatis". Korta sökord ger för mycket brus.
+    if (term.length >= 3 && name.includes(term)) {
       worst = Math.max(worst, 3)
       continue
     }

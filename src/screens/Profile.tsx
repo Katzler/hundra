@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { CustomFoodForm } from '../components/CustomFoodForm'
+import { FoodIcon } from '../components/FoodIcon'
 import { ChevronRight } from '../components/icons'
 import { AboutFields, ActivityPicker, formFromProfile, toProfile } from '../components/ProfileFields'
 import { Sheet } from '../components/Sheet'
@@ -105,7 +106,7 @@ export function Profile() {
           {custom.map((f) => (
             <button key={f.id} type="button" className="row nav-row" onClick={() => setEditFood(f)}>
               <span className="emoji" aria-hidden>
-                {f.emoji}
+                <FoodIcon id={f.id} emoji={f.emoji} />
               </span>
               <span className="row-text">
                 <span className="row-title">{f.name}</span>

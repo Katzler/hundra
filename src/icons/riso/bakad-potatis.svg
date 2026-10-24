@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-bakad-potatis-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="6" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="10"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-bakad-potatis-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="4"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.6 -1.2)">
+<g filter="url(#riso-bakad-potatis-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#DCA660" d="M9.2 38.4C8.7 36.2 8 33 8.4 30.6S10 25.7 11.4 24S15.2 21.5 17 20.4S20.5 17.8 22.4 17.4S26.4 18.6 28.4 18.2S32.2 15.7 34.4 15S39.2 13.8 41.4 13.8S45.5 14.3 47.6 15S52.3 16.4 53.8 17.8S56.3 21.4 56.6 23.4S56.4 27.8 55.8 30S54.3 34.8 52.8 36.8S48.7 40.4 46.6 42S42.4 45.1 40 46.2S34.7 48.2 32 48.6S26.7 49 24 48.8S18.1 48.1 16 47.2S12.5 45.1 11.4 43.6S9.7 40.6 9.2 38.4Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M56.6 23.4C56.7 23.7 56.4 27.8 55.8 30S54.3 34.8 52.8 36.8S48.7 40.4 46.6 42S42.4 45.1 40 46.2S34.7 48.2 32 48.6S26.7 49 24 48.8S18.1 48.1 16 47.2S11.5 43.9 11.4 43.6S13.6 45.1 15.6 45.5S20.7 45.8 23.3 45.6S28.5 45.1 31.1 44.4S36.6 42.8 39 41.7S43.5 39.2 45.7 37.8S50.5 35.2 52.1 33.6S54.7 30 55.4 28.3S56.5 23.1 56.6 23.4Z"/>
+<path stroke="#9A4E24" stroke-width="2.6" stroke-linecap="round" d="M14.6 39h0M51.4 31.4h0M18 26.6h0M44 41.4h0M25.6 44.6h0"/>
+<path fill="#FFD02E" d="M32 23.6C34.3 23.2 36.9 22 38.7 22.1S41.2 23.3 42.7 23.8S47.3 24.2 47.9 24.9S46.5 26.9 46.1 27.9S46.9 30 45.8 30.8S41.6 32.1 39.6 32.9S36 35 34.1 35.4S30.2 35 28.1 34.9S22.9 35.5 21.6 35.1S21 33.3 20.3 32.5S17.3 31.1 17.6 30.2S20.8 28.4 22.1 27.4S23.6 25.1 25.2 24.4S29.8 24 32 23.6Z"/>
+<path fill="#FFF1CF" d="M24.6 30.6C23.1 29.6 23.7 27.3 24.2 26S26.4 23.4 27.6 22.6S30.5 22.1 31.4 21.2S32.5 17.1 33.2 17S34.3 20 35.4 20.8S38.7 21.2 39.8 22S41.9 24.2 42.2 25.4S43.1 28.3 41.6 29.4S36 31.6 33.2 31.8S26.1 31.6 24.6 30.6Z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M39.8 22C40.2 22.1 41.9 24.2 42.2 25.4S43.1 28.3 41.6 29.4S33.6 31.9 33.2 31.8S37.9 29.7 39 28.5S39.5 25.6 39.6 24.5S39.4 21.9 39.8 22Z"/>
+<path fill="none" stroke="#3BAA5C" stroke-width="2.4" stroke-linecap="round" d="M28.6 25.2L30.2 23.8M35.4 24.2L37.2 25.2M31.4 28.6L33 27.4M37.6 28.4L38.8 26.8"/>
+</g>
+<g filter="url(#riso-bakad-potatis-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M22.1 17.7C23.2 17.8 26.4 18.7 28.4 18.2S32.2 15.7 34.4 15S39.2 13.8 41.4 13.8S45.5 14.3 47.6 15S52.3 16.4 53.8 17.8S56.3 21.4 56.6 23.4S56.4 27.8 55.8 30S54.3 34.8 52.8 36.8S48.7 40.4 46.6 42S42.4 45.1 40 46.2S34.7 48.2 32 48.6S26.7 49 24 48.8S18.1 48.1 16 47.2S12.5 45.1 11.4 43.6S9.7 40.6 9.2 38.4S8 33 8.4 30.6S10 25.7 11.4 24S15.2 21.5 17 20.4S21 17.9 22.4 17.4S24.8 17.3 25.3 17.2"/>
+<path stroke-width="2.4" d="M17 33.4L20.6 32.4L18.4 29.2M46.2 22.6L44.6 26.2L48.6 26.4M24.3 30.9C24.3 30.1 23.7 27.4 24.2 26S26.4 23.4 27.6 22.6S30.5 22.1 31.4 21.2S32.5 17.1 33.2 17S34.3 20 35.4 20.8S38.7 21.2 39.8 22S41.9 24.2 42.2 25.4S43.1 28.3 41.6 29.4S34.6 31.4 33.2 31.8"/>
+</g>
+</g>
+</svg>

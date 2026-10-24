@@ -25,6 +25,11 @@ describe('sök', () => {
     expect(names('pommes')[0]).toBe('Pommes frites')
   })
 
+  it('hittar sammansatta ord men inte brus från korta sökord', () => {
+    expect(names('potatis')).toContain('Klyftpotatis')
+    expect(names('ol')).not.toContain('Broccoli')
+  })
+
   it('matchar flera ord', () => {
     expect(names('pasta bol')[0]).toBe('Pasta bolognese')
   })

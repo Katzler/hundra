@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-muffin-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="9" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="3"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-muffin-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="15"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -2.6)">
+    <g filter="url(#riso-muffin-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#3D78D8" d="M12.6 33l38.8 0l-4.8 21c-6.6 2-22.6 2-29.2 0l-4.8-21Z"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M51.4 33l-4.8 21c-5.8 1.8-18.7 2-26.3.7c3.9-.6 7.9-1.1 11.7-1.7c3.8-.6 9.1-1.3 11.1-2.1c2-.9.3-1.2 1-3c.7-1.8 1.9-5.1 3.1-7.6c1.2-2.5 2.8-4.9 4.2-7.3Z"/>
+      <path fill="#DCA660" d="M9 34c-2-10 7-20 23-20c16 0 25 10 23 20c-5 2.6-13 3.6-23 3.6c-10 0-18-1-23-3.6Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M55.2 30.3c.1 1.2.1 2.5-.2 3.7c-5 2.6-13 3.6-23 3.6c-9.6 0-17.3-.9-22.4-3.3c2.8.1 5.3.2 8.4.2c3.2 0 6.8-.2 10.4-.3c3.7-.1 8.1-.1 11.6-.2c3.5-.1 6.8.4 9.3-.2c2.6-.6 4-2.4 5.9-3.5Z"/>
+      <path fill="#7A4BB0" d="M21 22.2c.9 0 2.7 2 2.7 2.8c0 .8-1.8 2.3-2.7 2.3c-.9 0-2.6-1.5-2.6-2.3c0-.8 1.7-2.8 2.6-2.8ZM34.7 18c.6.5.7 2.6.2 3.3c-.6.6-2.8.9-3.4.5c-.6-.4-.9-2.5-.4-3.1c.5-.6 2.9-1.1 3.6-.7ZM46.7 25.3c.3.8-.9 3.1-1.9 3.3c-.9.3-3.3-1.1-3.5-1.9c-.3-.8 1.1-2.7 2-2.9c.9-.2 3.2.7 3.4 1.5ZM29.2 32.2c-.3.6-2.3 1.6-3.1 1.3c-.8-.3-1.8-2.3-1.5-2.9c.3-.7 2.4-1.3 3.2-1c.7.3 1.7 1.9 1.4 2.6ZM40.3 33.5c-.7.4-3 0-3.5-.7c-.5-.6 0-3 .7-3.4c.7-.4 3 .4 3.4 1.1c.5.7.1 2.6-.6 3Z"/>
+      <path fill="none" stroke="#EFCF9C" stroke-width="2.4" stroke-linecap="round" d="M15.4 26c1.8-4 5.6-7.2 10-8.4"/>
+    </g>
+    <g filter="url(#riso-muffin-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M50.8 35.6l-4.2 18.4c-6.6 2-22.6 2-29.2 0l-4.2-18.4"/>
+      <path d="M9 34c-2-10 7-20 23-20c16 0 25 10 23 20c-5 2.6-13 3.6-23 3.6c-9.2 0-16.7-.8-21.7-3"/>
+      <path stroke-width="2.4" d="M22.8 39l2 14.8M32 39.2l0 15.4M41.2 39l-2 14.8"/>
+    </g>
+  </g>
+</svg>

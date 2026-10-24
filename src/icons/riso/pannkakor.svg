@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-pannkakor-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="8" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="14"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-pannkakor-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(0 1)">
+    <g filter="url(#riso-pannkakor-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" d="M6 24s1.2-3.4 3.2-4.7 5.3-2.7 8.8-3.5 8-1.3 12-1.3 8.5.5 12 1.3 6.8 2.1 8.8 3.4 3.2 4.8 3.2 4.8l0 13.5s-1.2 3.4-3.2 4.8-5.3 2.6-8.8 3.4-8 1.3-12 1.3-8.5-.5-12-1.3-6.8-2.1-8.8-3.4-3.2-4.8-3.2-4.8l0-13.5z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M6 24s1.2 3.4 3.2 4.8 5.3 2.6 8.8 3.4 8 1.3 12 1.3 8.5-.5 12-1.3 6.8-2.1 8.8-3.4 3.2-4.8 3.2-4.8l0 13.5s-1.2 3.4-3.2 4.8-5.3 2.6-8.8 3.4-8 1.3-12 1.3-8.5-.5-12-1.3-6.8-2.1-8.8-3.4-3.2-4.8-3.2-4.8l0-13.5z"/>
+      <path fill="#EFCF9C" d="M52 23.6c0 1.9-2.8 4.4-6.4 5.8s-10.4 2.4-15.6 2.4-11.9-1-15.6-2.4-6.4-3.9-6.4-5.8 2.8-4.4 6.4-5.8 10.4-2.4 15.6-2.4 11.9 1 15.6 2.4 6.4 3.9 6.4 5.8z"/>
+      <path fill="#E8453C" stroke="#9B1B30" stroke-width="2.2" stroke-linejoin="round" d="M17.5 23.5c.5-1.2 1.8-3 3.5-4s4.5-1.7 7-2 5.7 0 8 .5 4.8 1.4 6 2.5 1.4 2.8 1 4-2.7 2.3-3.5 3-1.2.4-1.5 1.5 .3 3.6 0 5-1.2 3.4-1.8 3.5-1.4-1.7-1.8-3 .8-3.7-.4-4.5-5.4-.2-7 0-1.9.3-2.4 1 0 2.7-.4 3.5-1.3 1.6-1.8 1.1-1.2-3-1.4-4.1 .7-1.9.2-2.7-2.6-1.4-3.2-2.3-1-1.8-.5-3z"/>
+      <path fill="#FFF1CF" d="M24 22c-.8-.8.1-2.5.8-3.4s2.2-1.1 3.2-1.8 1.7-2.2 2.6-2.2 2.1 1.4 3 2.2 2.2 1.8 2.4 2.8-.3 2.3-1.4 3-3.2 1.1-5 1-4.8-.8-5.6-1.6z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M12 25h.1M47 26.5h.1M44 19h.1"/>
+    </g>
+    <g filter="url(#riso-pannkakor-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30 14.5c4 0 8.5.5 12 1.3s6.8 2.1 8.8 3.4 3.2 4.8 3.2 4.8l0 13.5s-1.2 3.4-3.2 4.8-5.3 2.6-8.8 3.4-8 1.3-12 1.3-8.5-.5-12-1.3-6.8-2.1-8.8-3.4-3.2-4.8-3.2-4.8l0-13.5s1.2-3.4 3.2-4.7 5.3-2.7 8.8-3.5 8-1.3 12-1.3c.2 0 .5 0 .7 0"/>
+      <path stroke-width="2.6" d="M6 24.3c.6.8 1.5 3.3 3.5 4.6s5.3 2.6 8.7 3.4 7.9 1.2 11.8 1.2 8.3-.5 11.8-1.2 6.7-2 8.7-3.4 2.9-3.8 3.5-4.6"/>
+      <path stroke-width="2.4" d="M6.1 30.1c.7.7 2.1 2.9 4.2 4s5.1 2.2 8.3 2.8 7 1.1 10.5 1.1 7.4-.3 10.6-.9 6.3-1.6 8.5-2.7 3.8-3.3 4.6-3.9M7.2 35c.8.6 2.5 2.8 4.7 3.9s5.4 2.1 8.7 2.7 7.2.9 10.7.9 7.5-.5 10.6-1.2 6.1-1.7 8.2-2.9 3.3-3.4 4-4.1"/>
+    </g>
+  </g>
+</svg>

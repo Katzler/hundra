@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FoodIcon } from '../components/FoodIcon'
 import { ChevronLeft } from '../components/icons'
 import { AboutFields, ActivityPicker, aboutValid, emptyForm, toProfile } from '../components/ProfileFields'
 import { Ring } from '../components/Ring'
@@ -77,7 +78,7 @@ export function Onboarding() {
               {EXAMPLES.map((f) => (
                 <div key={f.id} className="row">
                   <span className="emoji" aria-hidden>
-                    {f.emoji}
+                    <FoodIcon id={f.id} emoji={f.emoji} />
                   </span>
                   <span className="row-text">
                     <span className="row-title">{f.name}</span>

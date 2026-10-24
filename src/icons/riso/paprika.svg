@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-paprika-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="9" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="6"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-paprika-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="23"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.2 -.7)">
+    <g filter="url(#riso-paprika-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#3BAA5C" d="M31 19.5c2 0 3.8-2.7 6-3c2.2-.3 4.9-.1 7 1c2.1 1.1 4.3 2.9 5.5 5.5c1.3 2.6 1.9 6.5 2 10c.1 3.5-.5 7.8-1.5 11c-1 3.3-2.7 6.8-4.5 8.5c-1.7 1.7-4.3 1.7-6 1.5c-1.7-.2-2.6-2.7-4-2.5c-1.4 .3-3 4-4.5 4c-1.5 0-3.1-3.7-4.5-4c-1.4-.2-2.3 2.3-4 2.5c-1.7 .2-4.2 .2-6-1.5c-1.7-1.7-3.5-5.2-4.5-8.5c-1-3.2-1.6-7.5-1.5-11c.1-3.5 .8-7.4 2-10c1.3-2.6 3.4-4.4 5.5-5.5c2.1-1.1 4.8-1.3 7-1c2.2 .3 4 3 6 3Z"/>
+      <path fill="#3BAA5C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M49.5 23c.6 3 1.9 6.5 2 10c.1 3.5-.5 7.8-1.5 11c-1 3.3-2.7 6.8-4.5 8.5c-1.7 1.7-4.3 1.7-6 1.5c-1.7-.2-2.6-2.7-4-2.5c-1.4 .3-3.1 2.8-4.5 4c.5-1.6 1.1-4.6 1.8-5.2c.6-.7 .7 1.6 1.9 1.5c1.2 0 3.6-.1 5.3-1.8c1.8-1.7 3.8-5.1 5.2-8.2c1.5-3 2.8-6.9 3.6-10c.7-3.2 .5-6.2 .7-8.8Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.6" stroke-linecap="round" d="M16 29c-.1 1.3-.6 5.4-.4 8c.2 2.6 1.3 6.3 1.6 7.5"/>
+      <path fill="#3BAA5C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M23.5 18.5c-.7-1 2.3-2.9 3.5-3.3c1.3-.3 2.7 1.2 4 1.2c1.3 0 2.8-1.5 4-1.2c1.3 .4 4.2 2.3 3.5 3.3c-.7 1.1-5 3-7.5 3c-2.5 0-6.8-1.9-7.5-3Z"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="4.6" stroke-linecap="round" d="M31 18c-.1-.9-.7-3.9-.4-5.5c.3-1.6 1-3 2-3.9c1-.9 3.3-1.3 3.9-1.6"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="4.6" stroke-linecap="round" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M31 18c-.1-.9-.7-3.9-.4-5.5c.3-1.6 1-3 2-3.9c1-.9 3.3-1.3 3.9-1.6"/>
+    </g>
+    <g filter="url(#riso-paprika-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M31 19.5c2 0 3.8-2.7 6-3c2.2-.3 4.9-.1 7 1c2.1 1.1 4.3 2.9 5.5 5.5c1.3 2.6 1.9 6.5 2 10c.1 3.5-.5 7.8-1.5 11c-1 3.3-2.7 6.8-4.5 8.5c-1.7 1.7-4.3 1.7-6 1.5c-1.7-.2-2.6-2.7-4-2.5c-1.4 .3-3 4-4.5 4c-1.5 0-3.1-3.7-4.5-4c-1.4-.2-2.3 2.3-4 2.5c-1.7 .2-4.2 .2-6-1.5c-1.7-1.7-3.5-5.2-4.5-8.5c-1-3.2-1.6-7.5-1.5-11c.1-3.5 .8-7.4 2-10c1.3-2.6 3.4-4.4 5.5-5.5c2.1-1.1 4.8-1.3 7-1c1.1 .2 2.1 .9 3.1 1.6"/>
+      <path stroke-width="2.4" d="M24 26c-.3 1.5-1.6 6-1.8 9c-.2 3 .7 7.5 .8 9M38.5 26c.3 1.5 1.6 6 1.8 9c.2 3-.7 7.5-.8 9"/>
+      <path d="M31 18c-.1-.9-.7-3.9-.4-5.5c.3-1.6 1-3 2-3.9c1-.9 3.3-1.3 3.9-1.6"/>
+      <path stroke-width="2.4" d="M24 19c.6 .4 2.3 2 3.5 2.5c1.2 .5 2.3 .5 3.5 .5c1.2 0 2.3 0 3.5-.5c1.2-.5 2.9-2.1 3.5-2.5"/>
+    </g>
+  </g>
+</svg>

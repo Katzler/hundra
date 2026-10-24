@@ -1596,3 +1596,16 @@ strong {
 .group > .field-hint::before {
   display: none;
 }
+
+/* ───────── Handritade ikoner ───────── */
+
+.food-icon {
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.reference .food-icon {
+  display: inline-block;
+  vertical-align: -4px;
+}

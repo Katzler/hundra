@@ -6,6 +6,7 @@ import { searchFoods } from '../lib/search'
 import { haptic, useUI } from '../store/ui'
 import { allFoods, recentFoods, useStore } from '../store/useStore'
 import { CustomFoodForm } from './CustomFoodForm'
+import { FoodIcon } from './FoodIcon'
 import { FoodRow } from './FoodRow'
 import { ChevronLeft, ChevronRight, PlusIcon, SearchIcon, XIcon } from './icons'
 import { Sheet } from './Sheet'
@@ -136,7 +137,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
                 e.preventDefault()
                 haptic()
                 add(results[0])
-                showToast(`${results[0].emoji} ${results[0].name} +1`)
+                showToast(`${results[0].name} +1`)
                 setQuery('')
               }
             }}
@@ -163,7 +164,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
             onSubmit={(f) => {
               const food = addCustomFood(f)
               add(food)
-              showToast(`${food.emoji} ${food.name} sparad och tillagd`)
+              showToast(`${food.name} sparad och tillagd`)
               setQuery('')
               setView({ kind: 'home' })
             }}
@@ -210,7 +211,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
               {CATEGORIES.filter((c) => c.id !== 'egna' || custom.length > 0).map((c) => (
                 <button key={c.id} type="button" className="category" onClick={() => setView({ kind: 'category', id: c.id })}>
                   <span className="category-emoji" aria-hidden>
-                    {c.emoji}
+                    <FoodIcon id={c.icon} emoji={c.emoji} size={36} />
                   </span>
                   <span className="category-name">{c.name}</span>
                 </button>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-fralla-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="1" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="16"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-fralla-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="10"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g filter="url(#riso-fralla-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+    <path fill="#DCA660" d="M10.6 42C10 39.5 9.9 35.9 10.6 33C11.3 30.1 12.7 26.9 14.6 24.4C16.5 21.9 19.2 19.6 22 18C24.8 16.4 28.3 15.2 31.6 15C34.9 14.8 38.6 15.6 41.6 17C44.6 18.4 47.4 20.8 49.4 23.4C51.4 26 52.9 29.4 53.6 32.4C54.3 35.4 54.4 39.1 53.6 41.6C52.8 44.1 51.3 46.1 49 47.6C46.7 49.1 43 50 40 50.6C37 51.2 34 51 31 51C28 51 24.8 50.9 22 50.4C19.2 49.9 16.3 49.4 14.4 48C12.5 46.6 11.2 44.5 10.6 42Z"/>
+    <path fill="#EFCF9C" d="M10.6 40.4C10.6 40.4 12.9 42.6 15 43.4C17.1 44.2 20.2 44.8 23 45.2C25.8 45.6 29 45.7 32 45.6C35 45.5 38.2 45.3 41 44.8C43.8 44.3 46.5 43.6 48.6 42.6C50.7 41.6 53.6 38.6 53.6 38.6C53.6 38.6 54.4 40.1 53.6 41.6C52.8 43.1 51.3 46.1 49 47.6C46.7 49.1 43 50 40 50.6C37 51.2 34 51 31 51C28 51 24.8 50.9 22 50.4C19.2 49.9 16.3 49.7 14.4 48C12.5 46.3 10.6 40.4 10.6 40.4Z"/>
+    <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M49.4 23.4C50.3 23.6 52.9 29.9 53.6 32.4C54.3 34.9 54.4 36.9 53.6 38.6C52.8 40.3 50.7 41.6 48.6 42.6C46.5 43.6 41.5 45.4 41 44.8C40.5 44.2 44.4 41.3 45.6 39C46.8 36.7 47.4 33.6 48 31C48.6 28.4 48.5 23.2 49.4 23.4Z"/>
+    <path fill="none" stroke="#EFCF9C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M18.6 33.6C24 26.6 33 22.6 43.4 24.4"/>
+    <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M24 21.6h.4M36 19h.4M46 27.4h.4M20.4 38h.4M38.4 34.4h.4M30 36.6h.4"/>
+  </g>
+  <g filter="url(#riso-fralla-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.6 42C10.6 40.5 9.9 35.9 10.6 33C11.3 30.1 12.7 26.9 14.6 24.4C16.5 21.9 19.2 19.6 22 18C24.8 16.4 28.3 15.2 31.6 15C34.9 14.8 38.6 15.6 41.6 17C44.6 18.4 47.4 20.8 49.4 23.4C51.4 26 52.9 29.4 53.6 32.4C54.3 35.4 54.4 39.1 53.6 41.6C52.8 44.1 51.3 46.1 49 47.6C46.7 49.1 43 50 40 50.6C37 51.2 34 51 31 51C28 51 24.8 50.9 22 50.4C19.2 49.9 15.7 48.4 14.4 48"/>
+    <path stroke-width="2.6" d="M18 34C23.6 27 33 22.8 43.8 24.6"/>
+  </g>
+</svg>

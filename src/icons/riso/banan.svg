@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-banan-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="13" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="10"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-banan-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="29"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-3.6 .1)">
+    <g filter="url(#riso-banan-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="none" stroke="#3BAA5C" stroke-width="4.6" stroke-linecap="round" d="M55 18.5c.1-.9 .1-4 .5-5.5c.4-1.5 1.7-2.9 2-3.5"/>
+      <path fill="#FFD02E" d="M8 25c2.4 2.7 4.7 6.6 8 9c3.3 2.4 8 5 12 5.5c4 .5 8.7-.8 12-2.5c3.3-1.7 6.1-4.8 8-7.5c1.9-2.7 2.7-6.4 3.5-8.5c.8-2.1 1.1-2.8 1.5-4c1.2 .5 2.8 1.1 4 1.5c.3 3.5 1.8 7.6 1 11.5c-.8 3.9-3.1 8.8-6 12c-2.9 3.3-7.2 6.1-11.5 7.5c-4.3 1.4-10.2 1.9-14.5 1c-4.2-.9-8.2-3.7-11-6.5c-2.7-2.7-4.3-6.8-5.5-10c-1.2-3.2-1-6.3-1.5-9Z"/>
+      <path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58 30c-1.8 3.6-3.1 8.8-6 12c-2.9 3.3-7.2 6.1-11.5 7.5c-4.3 1.4-10.2 1.9-14.5 1c-4.2-.9-8.2-3.7-11-6.5c-2.7-2.7-3.8-7-5.5-10c1.2 2.2 1.7 5.3 4 7.4c2.4 2 6 4.2 10.1 4.8c4.1 .7 10 .2 14.5-1c4.5-1.1 9.1-3.3 12.4-5.8c3.3-2.6 5.3-6.6 7.5-9.4Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M19 38.5c1.6 .8 6.2 4 9.5 4.5c3.3 .5 8.8-1.2 10.5-1.5"/>
+      <ellipse fill="#9A4E24" cx="9.6" cy="26" rx="2.6" ry="2.4"/>
+    </g>
+    <g filter="url(#riso-banan-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M57 18.5c.3 3.5 1.8 7.6 1 11.5c-.8 3.9-3.1 8.8-6 12c-2.9 3.3-7.2 6.1-11.5 7.5c-4.3 1.4-10.2 1.9-14.5 1c-4.2-.9-8.2-3.7-11-6.5c-2.7-2.7-4.3-6.8-5.5-10c-1.2-3.2-1-6.3-1.5-9c2.4 2.7 4.7 6.6 8 9c3.3 2.4 8 5 12 5.5c4 .5 8.7-.8 12-2.5c3.3-1.7 6.1-4.8 8-7.5c1.9-2.7 2.7-6.4 3.5-8.5c.8-2.1 1.1-2.8 1.5-4c1.2 .5 2.8 1.1 4 1.5c.1 1 .3 2.1 .5 3.3"/>
+      <path stroke-width="2.4" d="M22 44c1.8 .4 7.3 2.7 11 2.5c3.7-.2 7.9-1.6 11-3.5c3.1-1.9 6.3-6.7 7.5-8"/>
+      <path d="M55 18.5c.1-.9 .1-4 .5-5.5c.4-1.5 1.7-2.9 2-3.5"/>
+    </g>
+  </g>
+</svg>

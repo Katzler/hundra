@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-kex-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="5" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="11"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-kex-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="17"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -1.2)">
+    <g filter="url(#riso-kex-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" d="M11.9 17.4l26.2-5.8c1.9-.4 3.1.4 3.5 2.3l3.2 15.8c.4 1.9-.4 3.1-2.3 3.5l-26.2 5.8c-1.9.4-3.1-.4-3.5-2.3l-3.2-15.8c-.4-1.9.4-3.1 2.3-3.5Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.8" stroke-linecap="round" d="M17.4 22.9h.1M26.3 21h.1M35.3 19h.1"/>
+      <path fill="#EFCF9C" d="M23 29.2l26-3.6c2-.3 3.1.6 3.4 2.6l2.2 16.8c.3 2-.6 3.1-2.6 3.4l-26.4 3.6c-2 .3-3.1-.6-3.3-2.6l-2-16.8c-.2-2 .7-3.1 2.7-3.4Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M52.3 27.5c0 .2.1.5.1.7l2.2 16.8c.3 2-.6 3.1-2.6 3.4l-26.4 3.6c-1.2.2-2-.1-2.6-.7c2.2-.7 2.3-1.1 6.7-2c4.4-1 16-3.3 19.6-3.9c3.7-.6 1.7 1.2 2.1.2c.3-1.1.1-3.6.2-6.6c.2-3 .4-7.7.7-11.5Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.8" stroke-linecap="round" d="M27.8 35.5h.1M28.9 44.6h.1M36.8 34.2h.1M38 43.4h.1M45.8 33h.1M47 42.1h.1"/>
+    </g>
+    <g filter="url(#riso-kex-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.9 38l-4.6 1c-1.9.4-3.1-.4-3.5-2.3l-3.2-15.8c-.4-1.9.4-3.1 2.3-3.5l26.2-5.8c1.9-.4 3.1.4 3.5 2.3l2.5 12.4"/>
+      <path d="M23 29.2l26-3.6c2-.3 3.1.6 3.4 2.6l2.2 16.8c.3 2-.6 3.1-2.6 3.4l-26.4 3.6c-2 .3-3.1-.6-3.3-2.6l-2-16.8c-.2-1.9.6-3 2.4-3.4"/>
+    </g>
+  </g>
+</svg>

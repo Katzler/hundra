@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-lax-potatis-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="15" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="6"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-lax-potatis-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="12"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.2 -8)">
+<g filter="url(#riso-lax-potatis-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32.3" cy="40" rx="26.2" ry="17"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58.4 42.4A26.2 17 0 0 1 6.1 42.4A26.2 11 0 0 0 58.4 42.4Z"/>
+<ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.6" ry="12"/>
+<path fill="#F49AB0" d="M31 41.5C37 40.2 44 38.6 50 37.5V41C44 42.2 37 43.8 31 45.2Z"/>
+<path fill="#F28C28" d="M27 30.5c.9-.9 7.7-1.5 10-2s8.2-2.4 9.5-2 1.6 4.2 2 5.5 2.4 4.6 1.5 5.5-7.3 1.5-9.5 2-8.2 2.4-9.5 2-1.5-4.2-2-5.5-2.9-4.6-2-5.5z"/>
+<path fill="#F49AB0" style="mix-blend-mode:multiply" d="M31 41.5C37 40.2 44 38.6 50 37.5V41C44 42.2 37 43.8 31 45.2Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M31.5 33.5c3 1 5.5 3.5 6 7.2M37 31c3.5 1 6 3.5 6.6 7.8M42.5 29c2.6 1.2 4.4 3.5 5 7"/>
+<path fill="#EFCF9C" stroke="#DCA660" stroke-width="2.2" d="M11.6 37.2a5 3.8 0 1 0 10 0a5 3.8 0 1 0-10 0M14.4 45a5 3.8 0 1 0 10 0a5 3.8 0 1 0-10 0M23.2 48.6a5 3.8 0 1 0 10 0a5 3.8 0 1 0-10 0"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" d="M14 36.6c.6-1.2 1.6-1.8 2.8-1.8M16.8 44.4c.6-1.2 1.6-1.8 2.8-1.8M25.6 48c.6-1.2 1.6-1.8 2.8-1.8"/>
+<path fill="none" stroke="#3BAA5C" stroke-width="2.2" stroke-linecap="round" d="M15.6 33.8l1.2-1.4M17.2 33.6l1.4-.8M18.4 41.6l1.2-1.4M20 41.4l1.4-.8"/>
+<path fill="#FFD02E" stroke="#F28C28" stroke-width="2.2" stroke-linejoin="round" d="M39 47.5C43 45.5 48 45 51.5 47C49 51 42.5 52 39 47.5Z"/>
+<path fill="#3BAA5C" d="M20 30Q22.4 33.1 26 31.5Q23.6 28.4 20 30ZM22 31.5Q25.2 30.3 24.5 27Q21.3 28.2 22 31.5Z"/>
+</g>
+<g filter="url(#riso-lax-potatis-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7.1 34.2c2-1.5 7-7.3 12.2-9.1s12.8-2.6 18.5-1.8 12.3 3.6 15.8 6.6 5.6 7.9 5 11.7-3.9 8.3-8.2 10.9-11.6 4.6-17.5 4.7-13.4-1.4-18-3.8-8.5-6.8-9.5-10.6 3.1-10 3.7-12"/>
+<path stroke-width="2.6" d="M27 30.5C33 29 40 27.6 46.5 26.5C48 30 49.5 34 50 37.5V41C44 42.2 37 43.8 31 45.2V41.5C29.4 38 28 34 27 30.5Z"/>
+</g>
+</g>
+</svg>

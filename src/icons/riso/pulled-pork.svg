@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-pulled-pork-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="15" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="3"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-pulled-pork-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="10"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-2 -3)">
+    <g filter="url(#riso-pulled-pork-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#A9C8F0" d="M6 43C6 36 18 32 31 32C44 32 56 36 56 43C56 50 44 54 31 54C18 54 6 50 6 43Z"/>
+      <path fill="none" stroke="#3D78D8" stroke-width="2.2" stroke-linecap="round" d="M12.4 44.6C15 49 24 50.8 31 50.8C38 50.8 47 49 49.6 44.6"/>
+      <path fill="#9A4E24" d="M13.6 43.6C11.4 41 11.6 37.4 14 35.6C12.8 32.2 14.8 29.2 18.2 28.8C18.6 25.2 21.8 23.2 25 24C26.8 21.4 30.6 20.4 33.4 22.2C36.6 20.6 40.4 21.8 41.6 24.8C45 24.8 47.6 27.8 47.2 31C50 32.4 50.8 36.2 49 38.6C50.4 40.4 49.6 42.6 47.6 43.4C38 45.6 22 45.6 13.6 43.6Z"/>
+      <path fill="#9A4E24" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M41.6 24.8C45 24.8 47.6 27.8 47.2 31C50 32.4 50.8 36.2 49 38.6C50.4 40.4 49.6 42.6 47.6 43.4C42 44.6 35 45 29 45C38 40 42 33 41.6 24.8Z"/>
+      <path fill="none" stroke="#DCA660" stroke-width="2.4" stroke-linecap="round" d="M15.6 39.2C17.6 36.6 20 38.6 22.4 35.6M19.6 32C22 29.6 24.4 31.6 27 29M25.2 41.2C27.6 38.6 30 40.6 32.6 37.8M27.4 26.6C29.8 24.4 32 26.4 34.6 24.4M37.8 41C40.2 38.4 42.6 40.4 45.2 37.6M41.8 33.6C43.6 31.6 45.2 33.4 47 31.8M38.8 23.6C38.6 20.4 40.4 18.6 42.4 18"/>
+      <path fill="none" stroke="#6B3A1E" stroke-width="2.4" stroke-linecap="round" d="M31.4 33.6C33.8 31 36.2 33 38.8 30.2M18.4 43C20.4 41.2 22.4 42.4 24.4 40.6"/>
+    </g>
+    <g filter="url(#riso-pulled-pork-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12.2 35.8C8.2 37.6 6 40.2 6 43.2C6 50.2 18 54.2 31 54.2C44 54.2 56 50.2 56 43.2C56 40.4 54 37.8 50.6 36"/>
+      <path d="M14.2 43.8C11.4 41 11.6 37.4 14 35.6C12.8 32.2 14.8 29.2 18.2 28.8C18.6 25.2 21.8 23.2 25 24C26.8 21.4 30.6 20.4 33.4 22.2C35 21.4 36.8 21.2 38.4 21.6M42.4 25.2C45.4 25.6 47.6 28.2 47.2 31C50 32.4 50.8 36.2 49 38.6C49.8 39.6 49.8 40.8 49.2 41.8"/>
+      <path stroke-width="2.4" d="M14.2 43.8C12.6 45.6 13.6 47.6 16.2 47.6M49 38.6C51.6 38.6 53 40 52.8 42"/>
+      <path d="M54.8 8.8L46.6 18.4"/>
+      <path stroke-width="2.4" d="M46 15.4L40.2 22.2M49.2 18L43.4 24.8M44.6 13.6C43.4 15.8 48.8 20.6 50.6 19.4"/>
+    </g>
+  </g>
+</svg>

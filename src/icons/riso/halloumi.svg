@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-halloumi-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="2" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="15"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-halloumi-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="6"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(0 -.4)">
+    <g filter="url(#riso-halloumi-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <g transform="rotate(-6 32 32)">
+      <path fill="#EFCF9C" d="M14 17.6H46A4 4 0 0 1 50 21.6V28.6A4 4 0 0 1 46 32.6H14A4 4 0 0 1 10 28.6V21.6A4 4 0 0 1 14 17.6Z"/>
+      <path fill="#FFF1CF" d="M14 12H46A4 4 0 0 1 50 16V23A4 4 0 0 1 46 27H14A4 4 0 0 1 10 23V16A4 4 0 0 1 14 12Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.8" stroke-linecap="round" d="M20 14.6L16.6 24.4M28 14.6L24.6 24.4M36 14.6L32.6 24.4M44 14.6L40.6 24.4"/>
+      </g>
+      <g transform="rotate(5 32 32)">
+      <path fill="#EFCF9C" d="M18 37.6H50A4 4 0 0 1 54 41.6V48.6A4 4 0 0 1 50 52.6H18A4 4 0 0 1 14 48.6V41.6A4 4 0 0 1 18 37.6Z"/>
+      <path fill="#FFF1CF" d="M18 32H50A4 4 0 0 1 54 36V43A4 4 0 0 1 50 47H18A4 4 0 0 1 14 43V36A4 4 0 0 1 18 32Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.8" stroke-linecap="round" d="M24 34.6L20.6 44.4M32 34.6L28.6 44.4M40 34.6L36.6 44.4M48 34.6L44.6 44.4"/>
+      </g>
+    </g>
+    <g filter="url(#riso-halloumi-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="rotate(-6 32 32)">
+      <path d="M14 12H46A4 4 0 0 1 50 16V28.6A4 4 0 0 1 46 32.6H14A4 4 0 0 1 10 28.6V16A4 4 0 0 1 14.2 12"/>
+      <path stroke-width="2.4" d="M10.4 24.6C11 26.4 12.4 27 14 27H46C47.6 27 49 26.4 49.6 24.6"/>
+      </g>
+      <g transform="rotate(5 32 32)">
+      <path d="M18 32H50A4 4 0 0 1 54 36V48.6A4 4 0 0 1 50 52.6H18A4 4 0 0 1 14 48.6V36A4 4 0 0 1 18.2 32"/>
+      <path stroke-width="2.4" d="M14.4 44.6C15 46.4 16.4 47 18 47H50C51.6 47 53 46.4 53.6 44.6"/>
+      </g>
+    </g>
+  </g>
+</svg>

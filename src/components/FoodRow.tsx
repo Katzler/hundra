@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import type { Food } from '../data/foods'
 import { formatPoints, type Entry } from '../lib/calc'
 import { haptic } from '../store/ui'
+import { FoodIcon } from './FoodIcon'
 import { PlusIcon, StarIcon } from './icons'
 import { Stepper } from './Stepper'
 
@@ -52,7 +53,7 @@ export function FoodRow({ food, points, qty, favorite, onAdd, onQty, onLongPress
         }}
       >
         <span className="emoji" aria-hidden>
-          {food.emoji}
+          <FoodIcon id={food.id} emoji={food.emoji} />
         </span>
         <span className="row-text">
           <span className="row-title">
@@ -89,7 +90,7 @@ export function EntryRow({ entry, points, onQty }: EntryRowProps) {
   return (
     <div className="row entry-row">
       <span className="emoji" aria-hidden>
-        {entry.emoji}
+        <FoodIcon id={entry.foodId} emoji={entry.emoji} />
       </span>
       <span className="row-text">
         <span className="row-title">{entry.name}</span>

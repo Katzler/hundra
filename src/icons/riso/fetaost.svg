@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-fetaost-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="5" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="14"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-fetaost-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="9"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.6 -4.6)">
+<g filter="url(#riso-fetaost-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#FFF1CF" d="M7 26.4L11.6 23.4L13.2 22L18 18.4L21.4 16.8L24.2 19L27.8 17.2L31 19.4L34.6 17.8L37.8 20.2L41.4 18.8L45 21L44 24.6L45.6 28L45 40L34 49L7 46.4Z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" d="M34 30L45 21L44 24.6L45.6 28L45 40L34 49Z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M7 42.6L34 45.4L34 49L7 46.4Z"/>
+<path fill="none" stroke="#EFCF9C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12.6 34l1.4.8M20.4 40.2l1.6-.5M26.8 35.2l.8 1.2M14 42.2l1.4-.2M29 43.8l1 .9M25 23.2h1.6M36.4 24.8l1 .8M39.4 31l1 1.4"/>
+<g transform="translate(-2 -1.8)">
+<ellipse fill="#7A4BB0" cx="53" cy="43.4" rx="6.6" ry="5.2"/>
+<path fill="#3BAA5C" d="M45.6 40.6Q49.4 36.2 55 37.4Q51.4 41.6 45.6 40.6Z"/>
+<ellipse fill="#7A4BB0" cx="43.4" cy="50.2" rx="7.8" ry="5.4"/>
+<path fill="#7A4BB0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M51.2 50.2A7.8 5.4 0 0 1 35.6 50.2A7.8 3 0 0 0 51.2 50.2Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M38.6 48.6c1.2-1.6 3-2.2 5-2.2M49.4 41.8c1-1.2 2.4-1.8 4-1.8"/>
+</g>
+</g>
+<g filter="url(#riso-fetaost-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7 26.4L11.6 23.4L13.2 22L18 18.4L21.4 16.8L24.2 19L27.8 17.2L31 19.4L34.6 17.8L37.8 20.2L41.4 18.8L45 21L44 24.6L45.6 28L45 40L34 49L7 46.4L7 30"/>
+<path stroke-width="2.4" d="M7 26.4L26.4 28.8L28.6 31.4L31 29.6L34 30M34 30L34 49"/>
+<path d="M53 38.2A6.6 5.2 0 1 1 52.5 48.6M46.4 43.6A6.6 5.2 0 0 1 53 38.2"/>
+<ellipse cx="43.4" cy="50.2" rx="7.8" ry="5.4"/>
+</g>
+</g>
+</svg>

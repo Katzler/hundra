@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-musli-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="2" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="13"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-musli-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-2 -3)">
+    <g filter="url(#riso-musli-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#EFCF9C" d="M8.4 51.8C5.6 49.6 5.4 45 8.4 43.4C7.6 38.6 10.2 34.4 14.4 33.4C13.8 28.4 17.6 24.4 22.4 24.4C23.8 19 28.6 15.4 33.6 16C38.6 16.4 42.2 20 42.4 24C47 24.4 50.6 28.6 50 33C54.2 34.6 56.6 39.6 55 43.6C57 45.6 57 49.6 54.8 51.8C44 54.4 19 54.4 8.4 51.8Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M54.8 51.8C44 54.4 19 54.4 8.4 51.8C20 52.4 36 52 45 50.4C51 49.4 54.6 47 55 43.6C57 45.6 57 49.6 54.8 51.8Z"/>
+      <path fill="#FFF1CF" stroke="#DCA660" stroke-width="2.2" d="M17 33.2a5.2 3.2-25 1 0 9.4-4.4a5.2 3.2-25 1 0-9.4 4.4ZM28.6 21a5.2 3.2 15 1 0 10 2.8a5.2 3.2 15 1 0-10-2.8ZM7.6 43.2a5.2 3.2 15 1 0 10 2.8a5.2 3.2 15 1 0-10-2.8ZM22.6 42.4a5.2 3.2-10 1 0 10.2-1.8a5.2 3.2-10 1 0-10.2 1.8ZM37.2 47.2a5.2 3.2-20 1 0 9.8-3.6a5.2 3.2-20 1 0-9.8 3.6ZM37.4 31.8a5 3 10 1 0 9.8 1.8a5 3 10 1 0-9.8-1.8Z"/>
+      <path fill="#9A4E24" d="M12.4 38.8c1.8-3.2 6.2-3.6 7.6-.8c-1.2 3-5.4 3.8-7.6.8ZM28 32.2c2-2.8 6.2-2.8 7.4 0c-1.6 2.8-5.8 3-7.4 0ZM44.2 39.8c1.6-3 5.8-3.4 7.2-.8c-1.2 2.8-5.2 3.6-7.2.8Z"/>
+      <path fill="none" stroke="#6B3A1E" stroke-width="3.6" stroke-linecap="round" d="M26.4 26.4h.8M34.4 37.6h.8M19.4 48.6h.8M48.6 49.8h.8M23.2 37.6h.8M39 26.8h.8"/>
+    </g>
+    <g filter="url(#riso-musli-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11.6 52.6C5.6 51.8 4.6 45.6 8.4 43.4C7.6 38.6 10.2 34.4 14.4 33.4C13.8 28.4 17.6 24.4 22.4 24.4C23.8 19 28.6 15.4 33.6 16C38.6 16.4 42.2 20 42.4 24C47 24.4 50.6 28.6 50 33C54.2 34.6 56.6 39.6 55 43.6C57 45.6 57 49.6 54.8 51.8C48.6 53.4 36 54 24.4 53.8"/>
+    </g>
+  </g>
+</svg>

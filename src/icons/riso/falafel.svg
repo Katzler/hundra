@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-falafel-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="7" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="19"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-falafel-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="28"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+<g transform="translate(3.2 1)">
+<g filter="url(#riso-falafel-grain)" style="isolation:isolate" transform="translate(3.5 3)"><g transform="translate(-2.4 -2.2) rotate(-28 32 33)">
+<path fill="#3BAA5C" d="M19.5 17.5Q20.7 21.2 17.5 22.2Q15.5 24.9 13.5 22.2Q10.3 21.2 11.5 17.5Q10.3 13.8 13.5 12.8Q15.5 10.1 17.5 12.8Q20.7 13.8 19.5 17.5ZM52.5 17Q53.7 20.7 50.5 21.7Q48.5 24.4 46.5 21.7Q43.3 20.7 44.5 17Q43.3 13.3 46.5 12.3Q48.5 9.6 50.5 12.3Q53.7 13.3 52.5 17Z"/>
+<path fill="#9A4E24" d="M30.5 12.5A7 7 0 0 1 16.5 12.6A7 7 0 0 1 30.5 12.3A7 7 0 0 1 30.5 12.5ZM47.5 12A7 7 0 0 1 33.5 12.1A7 7 0 0 1 47.5 11.8A7 7 0 0 1 47.5 12ZM39.4 14.5A7.4 7.4 0 0 1 24.6 14.6A7.4 7.4 0 0 1 39.4 14.2A7.4 7.4 0 0 1 39.4 14.5Z"/>
+<path fill="#3BAA5C" d="M36.6 14.6A4.6 4.2 0 0 1 27.4 14.7A4.6 4.2 0 0 1 36.6 14.5A4.6 4.2 0 0 1 36.6 14.6Z"/>
+<path fill="none" stroke="#DCA660" stroke-width="2.2" stroke-linecap="round" d="M20.5 11h.1M24.5 7.5h.1M43.5 10.5h.1M39.5 7h.1"/>
+</g><g transform="rotate(-28 32 33)">
+<path fill="#EFCF9C" d="M18 20C23 25 41 25 46 20C46 31 45.5 42 44 49C42.4 57.5 21.6 57.5 20 49C18.5 42 18 31 18 20Z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M46 20C46 31 45.5 42 44 49C42.4 57.5 31 58 27 56.5C36 54.5 41 46 42 24Z"/>
+<path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M25 31h.1M37 29h.1M29 40h.1M39 46h.1M25 50h.1"/>
+</g></g>
+<g filter="url(#riso-falafel-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(-28 32 33)">
+<path d="M18 21.5C18 31 18.5 42 20 49C21.6 57.5 42.4 57.5 44 49C45.5 42 46 31 46 21.5"/>
+<path d="M18.6 20.8C23.5 25 40.5 25 45.4 20.8"/>
+<path d="M19.5 18.2A7 7 0 0 1 27 6.4M37 5.9A7 7 0 0 1 44.5 17.7M24.6 15.1A7.4 7.4 0 0 1 39.4 13.7A7.4 7.4 0 0 1 39.4 15.1"/>
+<path stroke-width="2.4" d="M18.3 28C26 30 33 36 37.5 45.5"/>
+</g></g>
+</g>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-carbonara-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="9" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="5"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-carbonara-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="19"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2 -3.6)">
+<g filter="url(#riso-carbonara-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32.3" cy="40" rx="26.2" ry="17"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58.4 42.4A26.2 17 0 0 1 6.1 42.4A26.2 11 0 0 0 58.4 42.4Z"/>
+<ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.6" ry="12"/>
+<path fill="#EFCF9C" d="M51.9 38c0 2.5-2.9 5.4-5.7 7.4s-6.9 3.9-10.8 4.4-9-.6-12.7-1.8-8-3.4-9.5-5.8-1-5.9.5-8.3 5-5.1 8.6-6.3 8.9-1.5 13-1 8.5 2 11.3 3.9 5.4 5 5.3 7.5z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M50.8 41.1c.2.6-3.8 4.9-6.9 6.4s-7.9 2.5-11.9 2.5-8.7-1-11.9-2.5-7.1-5.8-6.9-6.4 5 2 8.1 2.9 7.1 2.2 10.7 2.2 7.5-1.4 10.7-2.2 7.9-3.5 8.1-2.9z"/>
+<path fill="none" stroke="#FFD02E" stroke-width="2.8" stroke-linecap="round" d="M25.4 45.8A11.6 6.4 0 0 1 22.8 33.3M39 31.5A11.2 7 0 0 1 38.6 45.4M46.9 43.1A15.4 5.8 0 0 1 17.1 43.1M15 34.7A16.6 7.4 0 0 1 21.5 30.5M38.4 28.9A14.6 7.8 0 0 1 47.1 33.5"/>
+<path fill="none" stroke="#A9C8F0" stroke-width="3.6" stroke-linecap="round" d="M38.5 30L51 9.5"/>
+<path fill="#F49AB0" stroke="#9A4E24" stroke-width="2.2" stroke-linejoin="round" d="M19.1 32L24 33.1L22.9 38L18 36.9ZM38.4 33.7L43.3 32.4L44.6 37.3L39.7 38.6ZM25.6 39.2L29.8 41.6L27.4 45.8L23.2 43.4ZM36.4 40.2L41.3 40.9L40.6 45.8L35.7 45.1ZM30.2 44.7L34.3 43.2L35.8 47.3L31.7 48.8Z"/>
+<path stroke="#6B3A1E" stroke-width="2.2" stroke-linecap="round" d="M25 38.5h.1M34 39.5h.1M44 30.5h.1M19 41.5h.1M36 30.5h.1"/>
+<path fill="#FFD02E" stroke="#F28C28" stroke-width="2.4" stroke-linejoin="round" d="M37.1 34c0 1.4-.8 3.1-1.9 4.1s-3.1 1.7-4.7 1.7-3.6-.7-4.7-1.7-1.9-2.7-1.9-4.1.8-3.1 1.9-4.1 3.1-1.7 4.7-1.7 3.6.7 4.7 1.7 1.9 2.7 1.9 4.1z"/>
+<path stroke="#FFF1CF" stroke-width="3" stroke-linecap="round" d="M28.4 32.2h.1"/>
+</g>
+<g filter="url(#riso-carbonara-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7.1 34.2c2-1.5 7-7.3 12.2-9.1s12.8-2.6 18.5-1.8 12.3 3.6 15.8 6.6 5.6 7.9 5 11.7-3.9 8.3-8.2 10.9-11.6 4.6-17.5 4.7-13.4-1.4-18-3.8-8.5-6.8-9.5-10.6 3.1-10 3.7-12"/>
+<path stroke-width="2.4" d="M25.4 45.8A11.6 6.4 0 0 1 22.8 33.3M39 31.5A11.2 7 0 0 1 38.6 45.4M46.9 43.1A15.4 5.8 0 0 1 17.1 43.1M15 34.7A16.6 7.4 0 0 1 21.5 30.5M38.4 28.9A14.6 7.8 0 0 1 47.1 33.5"/>
+<path stroke-width="2.8" d="M38 29.5L50.5 9"/>
+</g>
+</g>
+</svg>

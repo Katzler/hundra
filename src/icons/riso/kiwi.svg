@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-kiwi-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="20" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="18"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-kiwi-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="43"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(.2 -3)">
+    <g filter="url(#riso-kiwi-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" d="M55.7 17.1A14.6 10.8 -24 0 1 29.1 28.9A14.6 10.8 -24 0 1 55.7 17.1Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M53.4 14A14.6 10.8 -24 0 1 33 33.1Q44 30 53.4 14Z"/>
+      <path fill="#DCA660" d="M37.4 37.2A16.2 15.2 -10 0 1 5.4 42.8A16.2 15.2 -10 0 1 37.4 37.2Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" d="M37.4 37.2A16.2 15.2 -10 0 1 5.4 42.8A16.2 15.2 -10 0 1 37.4 37.2Z"/>
+      <path fill="#9A4E24" d="M39.1 15.6A1.1 1.1 0 0 1 36.9 15.6A1.1 1.1 0 0 1 39.1 15.6ZM47.1 14.4A1.1 1.1 0 0 1 44.9 14.4A1.1 1.1 0 0 1 47.1 14.4ZM53.5 19A1.1 1.1 0 0 1 51.3 19A1.1 1.1 0 0 1 53.5 19ZM49.7 24.4A1.1 1.1 0 0 1 47.5 24.4A1.1 1.1 0 0 1 49.7 24.4ZM43.1 20.4A1.1 1.1 0 0 1 40.9 20.4A1.1 1.1 0 0 1 43.1 20.4ZM55.1 26.6A1.1 1.1 0 0 1 52.9 26.6A1.1 1.1 0 0 1 55.1 26.6ZM11.5 47A1.1 1.1 0 0 1 9.3 47A1.1 1.1 0 0 1 11.5 47ZM18.5 53A1.1 1.1 0 0 1 16.3 53A1.1 1.1 0 0 1 18.5 53Z"/>
+      <path fill="#3BAA5C" d="M40 34.8A16.2 15.2 -10 0 1 8 40.4A16.2 15.2 -10 0 1 40 34.8Z"/>
+      <path fill="#3BAA5C" style="mix-blend-mode:multiply" d="M37 35.3A13.2 12.2 -10 0 1 11 39.9A13.2 12.2 -10 0 1 37 35.3M40 34.8A16.2 15.2 -10 0 1 8 40.4A16.2 15.2 -10 0 1 40 34.8" fill-rule="evenodd"/>
+      <path fill="#FFF1CF" d="M29.1 36.7A5 4.4 -10 0 1 19.3 38.5A5 4.4 -10 0 1 29.1 36.7Z"/>
+      <path fill="none" stroke="#6B3A1E" stroke-width="2.4" stroke-linecap="round" d="M32.6 37.5L30.8 37.5M30.9 42.2L29.4 41.2M26.6 45.2L26 43.6M21.3 45.3L21.8 43.6M17 42.4L18.5 41.4M15.4 37.7L17.2 37.7M17.1 33L18.6 34M21.4 30L22 31.6M26.7 29.9L26.2 31.6M31 32.8L29.5 33.8"/>
+    </g>
+    <g filter="url(#riso-kiwi-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M29.4 21.2A14.6 10.8 -24 1 1 41.5 34.4"/>
+      <path d="M28.8 53.4A16.2 15.2 -10 0 1 7.5 32.5"/>
+      <path d="M27 22.6A16.2 15.2 -10 1 1 24.2 22.4"/>
+    </g>
+  </g>
+</svg>

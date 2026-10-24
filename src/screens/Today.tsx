@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { AddSheet } from '../components/AddSheet'
+import { FoodIcon } from '../components/FoodIcon'
 import { EntryRow } from '../components/FoodRow'
 import { ChevronLeft, ChevronRight, PlusIcon } from '../components/icons'
 import { Ring } from '../components/Ring'
@@ -55,7 +56,7 @@ export function Today() {
   const quickAdd = (food: Food) => {
     haptic()
     addFood(food, date)
-    showToast(`${food.emoji} ${food.name} +1`, {
+    showToast(`${food.name} +1`, {
       label: 'Ångra',
       run: () => {
         const e = useStore.getState().entries.find((x) => x.date === date && x.foodId === food.id)
@@ -113,7 +114,7 @@ export function Today() {
           {quick.map((f) => (
             <button key={f.id} type="button" className="chip" onClick={() => quickAdd(f)}>
               <span className="chip-emoji" aria-hidden>
-                {f.emoji}
+                <FoodIcon id={f.id} emoji={f.emoji} size={26} />
               </span>
               <span className="chip-name">{f.name}</span>
               <span className="chip-points">{formatPoints(toPoints(f.kcal, budget))}</span>

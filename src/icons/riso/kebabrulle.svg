@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-kebabrulle-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="18" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="5"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-kebabrulle-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="21"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+<g transform="translate(-3.5 0)">
+<g filter="url(#riso-kebabrulle-grain)" style="isolation:isolate" transform="translate(3.5 3)"><g transform="rotate(30 32 33)">
+<path fill="#3BAA5C" d="M20.3 15Q21.5 18.5 18.4 19.3Q16.5 22 14.6 19.3Q11.5 18.5 12.7 15Q11.5 11.5 14.6 10.7Q16.5 8 18.4 10.7Q21.5 11.5 20.3 15ZM51.3 14Q52.5 17.5 49.4 18.3Q47.5 21 45.6 18.3Q42.5 17.5 43.7 14Q42.5 10.5 45.6 9.7Q47.5 7 49.4 9.7Q52.5 10.5 51.3 14Z"/>
+<path fill="#DCA660" d="M18 19C18 31 18.5 42 20 49C21.6 57.5 42.4 57.5 44 49C45.5 42 46 31 46 19Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M46 19C46 31 45.5 42 44 49C42.4 57.5 31 58 27 56.5C36 54.5 41 46 42 22Z"/>
+<path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M26 26h.1M37 29h.1"/>
+<path fill="#A9C8F0" d="M18.3 30L21.5 31.5L23.5 29L26 32.5L28.5 31L30.5 35L33 34L35 38.5L37.5 38L39.5 42.5L42 42.5L44.6 46C44.5 47 44.3 48 44 49C42.4 57.5 21.6 57.5 20 49C18.8 43 18.3 36 18.3 30Z"/><path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" d="M23.5 38l1.2 6M33 45l-.6 5"/>
+<path fill="#6B3A1E" d="M17.5 19.5C15.8 14.5 18 10 22 10.5C23 6.5 28.5 5 31.5 8C34.5 4.5 40.5 6 41.5 10C45.5 10 48 14.5 46.5 19.5C41 24.5 23 24.5 17.5 19.5Z"/>
+<path fill="none" stroke="#DCA660" stroke-width="2.4" stroke-linecap="round" d="M21 15.5c2-1.6 4.5-1.6 6 0M32.5 12c2-1.6 4.5-1.6 6 0M37.5 18c1.6-1.2 3.6-1.2 5 0"/>
+<path fill="#E8453C" d="M27.3 9.8A2.8 2.2 0 0 1 21.7 9.8A2.8 2.2 0 0 1 27.3 9.7A2.8 2.2 0 0 1 27.3 9.8ZM43.3 9.5A2.8 2.2 0 0 1 37.7 9.5A2.8 2.2 0 0 1 43.3 9.4A2.8 2.2 0 0 1 43.3 9.5Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20.5 18.5c2.2-3.6 3.8 1.5 6.4-2.6s3.8 1.5 6.4-2.6 3.8 1.5 6.4-2.6"/>
+</g></g>
+<g filter="url(#riso-kebabrulle-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(30 32 33)">
+<path d="M18 20.5C18 31 18.5 42 20 49C21.6 57.5 42.4 57.5 44 49C45.5 42 46 31 46 20"/>
+<path d="M18.5 20C23 24.2 41 24.2 45.6 20.5"/>
+<path d="M17.7 18.5C16.4 14 18.4 10.2 22 10.5C23 6.5 28.5 5 31.5 8C34.5 4.5 40.5 6 41.5 10C45.5 10 47.6 14 46.6 18.2"/>
+<path stroke-width="2.4" d="M18.3 30L21.5 31.5L23.5 29L26 32.5L28.5 31L30.5 35L33 34L35 38.5L37.5 38L39.5 42.5L42 42.5L44.6 46"/>
+</g></g>
+</g>
+</svg>

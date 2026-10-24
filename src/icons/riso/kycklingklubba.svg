@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-kycklingklubba-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="1" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="12"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-kycklingklubba-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="18"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.6 -1)">
+<g filter="url(#riso-kycklingklubba-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#FFF1CF" d="M37 37.4L40.6 34L49.6 43.2L46 46.8Z"/>
+<ellipse fill="#FFF1CF" cx="51" cy="44.4" rx="4.3" ry="4.3"/>
+<ellipse fill="#FFF1CF" cx="44.8" cy="50.6" rx="4.3" ry="4.3"/>
+<path fill="#DCA660" d="M9.6 27.6C8.7 24.5 9.1 20.8 10.2 18S13.4 12.4 16 10.6S22.4 7.6 25.6 7.4S32.4 8.2 35 9.6S40 13.7 41.4 16S43.4 21.1 43.6 23.6S43.1 28.9 42.4 31S40.6 34.9 39.6 36.4S37.7 39.1 36.2 39.8S32.7 40.6 30.6 40.6S25.9 40.3 23.4 39.6S17.9 38.6 15.6 36.6S10.5 30.7 9.6 27.6Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M41.4 16C41.7 16.3 43.4 21.1 43.6 23.6S43.1 28.9 42.4 31S40.6 34.9 39.6 36.4S37.7 39.1 36.2 39.8S32.7 40.6 30.6 40.6S23.7 39.9 23.4 39.6S27.2 39.3 28.9 38.9S32 37.8 33.2 36.8S35.1 34.4 36.1 32.9S38.4 29.8 39.4 28S41.5 23.8 41.9 21.9S41.1 15.7 41.4 16Z"/>
+<path stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M20 16h0M30 14.4h0M17.6 27h0M35.4 25.6h0M26 31.6h0"/>
+</g>
+<g filter="url(#riso-kycklingklubba-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M36.2 39.8C35.3 39.9 32.7 40.6 30.6 40.6S25.9 40.3 23.4 39.6S17.9 38.6 15.6 36.6S10.5 30.7 9.6 27.6S9.1 20.8 10.2 18S13.4 12.4 16 10.6S22.4 7.6 25.6 7.4S32.4 8.2 35 9.6S40 13.7 41.4 16S43.4 21.1 43.6 23.6S43.1 28.9 42.4 31S40.1 35.5 39.6 36.4"/>
+<path d="M39.6 36.4L46.8 43.6M36.2 39.8L43.1 46.7M46.8 43.6A4.3 4.3 0 1 1 48.5 47.9M48.8 49.1A4.3 4.3 0 1 1 43.1 46.7"/>
+</g>
+</g>
+</svg>

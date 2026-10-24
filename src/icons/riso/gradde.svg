@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-gradde-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="19" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="26"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-gradde-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="10"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -1)">
+    <g filter="url(#riso-gradde-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="none" stroke="#3D78D8" stroke-width="5" stroke-linecap="round" d="M46.6 26.4C54.4 24.4 58.2 30.6 56.4 37.2C55 42.4 51.2 45.4 47.4 46.2"/>
+      <path fill="#3D78D8" d="M17.6 21.4C13.4 26 10 32.4 10.2 39.2C10.4 48 15.8 55 30 55.2C44.2 55 49.8 48 50 39.2C50.2 32.4 47.2 26 43.8 19.6C38 22.6 23.4 23.2 17.6 21.4Z"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M41.4 23C45.8 28.8 47.2 35.6 46.2 42C45.2 48.6 39.4 53.8 30 55.2C44.2 55 49.8 48 50 39.2C50.2 32.4 47.2 26 43.8 19.6C43 20.8 42.4 22 41.4 23Z"/>
+      <path fill="#FFF1CF" d="M7.4 11.6C10.6 12.6 13.4 13.6 17 14C22 11.4 38.6 11.2 43.6 14.8C46 17.2 43.2 21.4 37.6 22.6C30.6 24 22.4 23.6 18.4 22C14.8 20.6 11 16.6 7.4 11.6Z"/>
+      <path fill="#FFF1CF" d="M6.4 12.6C5.2 16.6 4.6 20.6 5.4 23.4C6.2 26.2 10 26.2 10.6 23.4C11.2 20.6 10.2 17 8.8 13.8Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M17.6 34C17.2 38.8 18.2 43.2 20.6 46.4"/>
+    </g>
+    <g filter="url(#riso-gradde-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.4 11.6C10.6 12.6 13.4 13.6 17 14C22 11.4 38.6 11.2 43.6 14.8C46 17.2 43.2 21.4 37.6 22.6C30.6 24 22.4 23.6 18.4 22C14.8 20.6 11 16.6 7.2 11.4"/>
+      <path d="M17.6 21.8C13.4 26.2 10 32.4 10.2 39.2C10.4 48 15.8 55 30 55.2C44.2 55 49.8 48 50 39.2C50.2 32.6 47.6 26.4 44.8 20.8"/>
+      <path d="M46.6 26.4C54.4 24.4 58.2 30.6 56.4 37.2C55 42.4 51.2 45.4 47.4 46.2"/>
+      <path stroke-width="2.4" d="M6.4 12.8C5.2 16.6 4.6 20.6 5.4 23.4C6.2 26.2 10 26.2 10.6 23.4C11.2 20.8 10.4 17.6 9.2 14.8"/>
+    </g>
+  </g>
+</svg>

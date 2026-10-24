@@ -13,20 +13,21 @@ export type Food = {
 }
 
 export const CATEGORIES = [
-  { id: 'frukost', name: 'Frukost', emoji: '🥣' },
-  { id: 'brod', name: 'Bröd & smörgås', emoji: '🥪' },
-  { id: 'kolhydrat', name: 'Potatis, pasta & ris', emoji: '🥔' },
-  { id: 'protein', name: 'Kött, fisk & protein', emoji: '🍗' },
-  { id: 'gront', name: 'Grönt & frukt', emoji: '🥦' },
-  { id: 'mejeri', name: 'Mejeri & ägg', emoji: '🥚' },
-  { id: 'maltid', name: 'Måltider', emoji: '🍝' },
-  { id: 'snabbmat', name: 'Snabbmat', emoji: '🍔' },
-  { id: 'fika', name: 'Fika & bakverk', emoji: '🥐' },
-  { id: 'snacks', name: 'Snacks & godis', emoji: '🍫' },
-  { id: 'dryck', name: 'Dryck', emoji: '☕' },
-  { id: 'alkohol', name: 'Alkohol', emoji: '🍷' },
-  { id: 'tillbehor', name: 'Sås & tillbehör', emoji: '🧈' },
-  { id: 'egna', name: 'Mina varor', emoji: '⭐' },
+  // icon: en typisk vara vars ikon får representera kategorin
+  { id: 'frukost', name: 'Frukost', emoji: '🥣', icon: 'grot' },
+  { id: 'brod', name: 'Bröd & smörgås', emoji: '🥪', icon: 'macka-ost' },
+  { id: 'kolhydrat', name: 'Potatis, pasta & ris', emoji: '🥔', icon: 'potatis' },
+  { id: 'protein', name: 'Kött, fisk & protein', emoji: '🍗', icon: 'kycklingklubba' },
+  { id: 'gront', name: 'Grönt & frukt', emoji: '🥦', icon: 'broccoli' },
+  { id: 'mejeri', name: 'Mejeri & ägg', emoji: '🥚', icon: 'agg' },
+  { id: 'maltid', name: 'Måltider', emoji: '🍝', icon: 'bolognese' },
+  { id: 'snabbmat', name: 'Snabbmat', emoji: '🍔', icon: 'hamburgare' },
+  { id: 'fika', name: 'Fika & bakverk', emoji: '🥐', icon: 'kanelbulle' },
+  { id: 'snacks', name: 'Snacks & godis', emoji: '🍫', icon: 'chokladkaka' },
+  { id: 'dryck', name: 'Dryck', emoji: '☕', icon: 'kaffe-mjolk' },
+  { id: 'alkohol', name: 'Alkohol', emoji: '🍷', icon: 'vin' },
+  { id: 'tillbehor', name: 'Sås & tillbehör', emoji: '🧈', icon: 'smor' },
+  { id: 'egna', name: 'Mina varor', emoji: '⭐', icon: 'kategori-egna' },
 ] as const
 
 export type CategoryId = (typeof CATEGORIES)[number]['id']

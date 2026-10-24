@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-socker-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="27" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="11"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-socker-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.4 -.4)">
+    <g filter="url(#riso-socker-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#3D78D8" d="M36.3 31.1L46.9 14.7C48.4 11.4 51.6 9.2 54.4 9.8C57.4 10.8 57 15.4 52.9 19.3L39.7 33.7Z"/>
+      <ellipse fill="#3D78D8" cx="25" cy="41" rx="19" ry="12.5"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M44 41A19 12.5 0 0 1 16 52C28 51.6 39.6 48 44 41Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M9.8 45c1.6 2.6 4 4.4 7 5.4"/>
+      <path fill="#FFF1CF" d="M10.4 38C11.4 33.4 15.2 29.8 18.2 26.2C20.2 23.4 22.6 20.2 25.6 20.4C28.6 20.6 30.8 23.6 32.8 26.4C35.4 29.8 39 33.2 39.4 38A14.5 7 0 0 1 10.4 38Z"/>
+      <path fill="#A9C8F0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M28.4 21.6C30.6 23 32 25.4 33.6 27.4C36 30.6 39 33.4 39.4 38A14.5 7 0 0 1 24 45C31 42.6 34 34 28.4 21.6Z"/>
+      <path fill="none" stroke="#A9C8F0" stroke-width="2.4" stroke-linecap="round" d="M17.4 33.6h.1M23.6 27h.1M26 36h.1"/>
+    </g>
+    <g filter="url(#riso-socker-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.2 35.1A19 12.5 0 1 0 40.4 33.6"/>
+      <path d="M11 37C11.6 33.4 15.2 29.8 18.2 26.2C20.2 23.4 22.6 20.2 25.6 20.4C28.6 20.6 30.8 23.6 32.8 26.4C35.4 29.8 38.8 33 39 37.2"/>
+      <path stroke-width="2.4" d="M13.4 42.2A14.5 7 0 0 0 36.4 42.2"/>
+      <path d="M37.4 29.4L46.9 14.7C48.4 11.4 51.6 9.2 54.4 9.8C57.4 10.8 57 15.4 52.9 19.3L41.2 32.1"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-bolognese-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="7" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="3"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-bolognese-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="15"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.6 -3)">
+<g filter="url(#riso-bolognese-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="31" cy="43" rx="24.6" ry="13.4"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M55.6 44.6A24.6 13.4 0 0 1 6.4 44.6A24.6 8.6 0 0 0 55.6 44.6Z"/>
+<path fill="#FFD02E" d="M13.7 39.0A5.5 5.5 0 0 1 17.9 33.2A9.3 9.3 0 0 1 29.4 29.4A6.7 6.7 0 0 1 38.5 30.5A8.2 8.2 0 0 1 46.9 36.0A4.3 4.3 0 0 1 48.6 41.7A4.5 4.5 0 0 1 45.1 46.7A8.2 8.2 0 0 1 34.1 50.5A7.1 7.1 0 0 1 24.5 49.9A7.3 7.3 0 0 1 15.8 45.8A6 6 0 0 1 13.7 39.0Z"/>
+<path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M48.6 41C48.6 46.6 40 50.8 31 50.8C25 50.8 20 49.4 17 47.4C24 48 36 47.4 42 44.4C46 42.4 47.8 41 48.6 41Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M15.6 38.6c2-2.6 4.6-3.6 7.2-3.4M38.6 31.6c3 .4 5.6 2 6.8 4.6"/>
+<path fill="#E8453C" d="M23.2 37.6C22.8 34.4 26.6 32.4 31 32.4C35.4 32.4 38.8 34.4 38.4 37.4C38 40.4 34.6 41.8 30.6 41.8C26.6 41.8 23.6 40.6 23.2 37.6Z"/>
+<path fill="#E8453C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M38.4 37.4C38 40.4 34.6 41.8 30.6 41.8C26.6 41.8 23.6 40.6 23.2 37.6C26.4 39.4 35.4 39.6 38.4 37.4Z"/>
+<path fill="none" stroke="#6B3A1E" stroke-width="2.6" stroke-linecap="round" d="M27.4 35.6h.1M32.4 34.8h.1M35.2 37.8h.1M29.6 38.8h.1"/>
+<path fill="#FFD02E" d="M12.2 24.6C12 21.2 14.8 19.6 17.6 19.8C20.4 20 22.4 21.8 22.2 24.8C22 27.8 19.8 29.4 17 29.2C14.2 29 12.4 27.6 12.2 24.6Z"/>
+<path fill="none" stroke="#FFD02E" stroke-width="2.8" stroke-linecap="round" d="M18.2 29.4c-1.4 1.6.6 3.2-.4 5"/>
+</g>
+<g filter="url(#riso-bolognese-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M14.4 32.6C9.2 35 6.2 38.6 6.4 43C6.8 50.6 17.6 56.4 31 56.4C44.4 56.4 55.2 50.8 55.6 43.6C56 37.6 50 32.4 41.4 30.2"/>
+<path stroke-width="2.6" d="M13.7 39.0A5.5 5.5 0 0 1 17.9 33.2A9.3 9.3 0 0 1 29.4 29.4A6.7 6.7 0 0 1 38.5 30.5A8.2 8.2 0 0 1 46.9 36.0A4.3 4.3 0 0 1 48.6 41.7A4.5 4.5 0 0 1 45.1 46.7A8.2 8.2 0 0 1 34.1 50.5A7.1 7.1 0 0 1 24.5 49.9A7.3 7.3 0 0 1 15.8 45.8A6 6 0 0 1 13.7 39.0Z"/>
+<path stroke-width="2.4" d="M16.6 43.6c3 2 6.4-.2 9.6 1.4M36.8 46.2c2.8.2 5.4-1 7.4-3.2"/>
+<path d="M17.8 19.6L13.4 8.2"/>
+<path stroke-width="2.4" d="M12.2 24.6C12 21.2 14.8 19.6 17.6 19.8C20.4 20 22.4 21.8 22.2 24.8C22 27.8 19.8 29.4 17 29.2C14.2 29 12.4 27.6 12.2 24.6ZM12.8 23.4c2.8 1.6 6.4 1.6 9.2-.2M13 26.6c2.6 1.4 5.8 1.4 8.4-.2M18.2 29.4c-1.4 1.6.6 3.2-.4 5"/>
+</g>
+</g>
+</svg>

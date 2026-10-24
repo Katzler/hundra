@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-lattol-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="15" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="2"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-lattol-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="24"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+<g transform="translate(-1.6 0)">
+    <g filter="url(#riso-lattol-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#A9C8F0" d="M18 13.4C18 9 42 9 42 13.4L44.8 19C45.2 29 45.2 40 45 50.6C45 56 15 56 15 50.6C14.8 40 14.8 29 15.2 19Z"/>
+      <path fill="#A9C8F0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M38.4 18.8L44.8 19C45.2 29 45.2 40 45 50.6C44.8 53.8 40.6 55 35.6 55.4C38.6 44 39.4 30 38.4 18.8Z"/>
+      <path fill="#FFF1CF" d="M18 13.4C18 9 42 9 42 13.4C42 16.8 18 16.8 18 13.4Z"/>
+      <path fill="#FFD02E" d="M15 29.6C22 31.4 38 31.4 45 29.6L45 46.6C38 48.4 22 48.4 15 46.6Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M30 46V35.4"/>
+      <path fill="#9A4E24" d="M30 44.4c-2.6.2-4.4-1.4-4.6-3.6c2.4-.2 4.2 1.4 4.6 3.6ZM30 44.4c2.6.2 4.4-1.4 4.6-3.6c-2.4-.2-4.2 1.4-4.6 3.6ZM30 40c-2.6.2-4.4-1.4-4.6-3.6c2.4-.2 4.2 1.4 4.6 3.6ZM30 40c2.6.2 4.4-1.4 4.6-3.6c-2.4-.2-4.2 1.4-4.6 3.6ZM30 36.2c-1.5-1.6-1.5-3.8 0-5.4c1.5 1.6 1.5 3.8 0 5.4Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" d="M19.6 20.4L19.4 25.6"/>
+      <path fill="#FFF1CF" d="M28.4 13.4C26.4 13 26.2 10.2 28.6 9.8C28.8 7 32 5.8 34.2 7.2C36.2 5.6 39.8 6.8 39.6 9.8C41.4 10.4 41.2 12.8 39.4 13.4L39.2 14.8C39.2 17.4 39.2 19.6 37.6 19.6C36 19.6 36 17.2 35.8 15.4C33 15.6 30.4 15 28.4 13.4Z"/>
+    </g>
+    <g filter="url(#riso-lattol-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M28.6 13.2C26.2 12.8 26.2 10.2 28.6 9.8C28.8 7 32 5.8 34.2 7.2C36.2 5.6 39.8 6.8 39.6 9.8C41.4 10.4 41.4 12.6 40 13.2"/>
+      <path d="M17.8 14L15.2 19.2C14.8 29 14.8 40 15 50.6C15.2 56.2 44.8 56.4 45 50.6C45.2 40 45.2 29 44.8 19L42.2 13.8M26.6 10.2C21.4 10.6 18 11.8 18 13.4"/>
+      <path stroke-width="2.4" d="M18.6 14.2C20.6 16.8 26.6 17.4 33.4 17.2M41.6 14.2C41.2 14.8 40.6 15.2 39.6 15.6M35.8 17C36 18.4 36.2 19.6 37.6 19.6C39 19.6 39.2 18.2 39.4 16.8M15.4 30C22 31.8 38 31.8 44.6 30M15.4 47C22 48.8 38 48.8 44.6 47"/>
+    </g>
+  </g>
+</svg>

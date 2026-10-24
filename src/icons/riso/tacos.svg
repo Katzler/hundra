@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-tacos-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="11" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="2"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-tacos-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="8"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.2 -2.8)">
+<g filter="url(#riso-tacos-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#3BAA5C" d="M20 25.5c-3.7-1.2-.2-6.1 1.5-7.5s6.8-.4 9-1 2.4-2.9 4.5-2.5 6.5 3.2 8 5 4.8 5 1 6-20.2 1.3-24 0z"/><path fill="#6B3A1E" d="M42.5 23c0 .9-1.8 2.2-4 2.8s-6.2.9-8.8.7-6-1.1-7.2-1.9-1.1-2.3 0-3.2 4.5-1.7 7.2-1.9 6.7.1 8.8.7 4 1.9 4 2.8z"/><path stroke="#E8453C" stroke-width="4.2" stroke-linecap="round" d="M27 20.1h.1M35.5 19.5h.1"/><path fill="#FFD02E" stroke="#F28C28" stroke-width="2.4" stroke-linejoin="round" d="M19.5 24.5A12.5 11.875 0 0 0 44.5 24.5Z"/><path stroke="#DCA660" stroke-width="2.2" stroke-linecap="round" d="M27 28.5h.1M34 31.5h.1M38.5 27h.1M31 27h.1"/><path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M44.5 24.5A12.5 11.875 0 0 1 28.25 35.75C35.75 30.75 39.5 27 44.5 24.5Z"/>
+<g transform="rotate(-20 19 39)"><path fill="#3BAA5C" d="M6 40c-4.1-1.2-.4-6.1 1.5-7.5s7.6-.4 10-1 2.3-2.9 4.5-2.5 7.3 3.2 9 5 5.2 5 1 6-21.9 1.3-26 0z"/><path fill="#6B3A1E" d="M30.5 37.5c0 .9-2 2.2-4.3 2.8s-6.8.9-9.8.7-6.5-1.1-7.8-1.9-1.3-2.3 0-3.2 4.9-1.7 7.8-1.9 7.4.1 9.8.7 4.3 1.9 4.3 2.8z"/><path stroke="#E8453C" stroke-width="4.2" stroke-linecap="round" d="M14 34.6h.1M22.5 34h.1"/><path fill="#FFD02E" d="M5.5 39A13.5 12.825 0 0 0 32.5 39Z"/><path stroke="#DCA660" stroke-width="2.2" stroke-linecap="round" d="M14 43h.1M21 46h.1M25.5 41.5h.1M18 41.5h.1"/><path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M32.5 39A13.5 12.825 0 0 1 14.95 51.15C23.05 45.75 27.1 41.7 32.5 39Z"/></g>
+<g transform="rotate(20 45 39)"><path fill="#3BAA5C" d="M32 40c-4.1-1.2-.4-6.1 1.5-7.5s7.6-.4 10-1 2.3-2.9 4.5-2.5 7.3 3.2 9 5 5.2 5 1 6-21.9 1.3-26 0z"/><path fill="#6B3A1E" d="M56.5 37.5c0 .9-2 2.2-4.3 2.8s-6.8.9-9.8.7-6.5-1.1-7.8-1.9-1.3-2.3 0-3.2 4.9-1.7 7.8-1.9 7.4.1 9.8.7 4.3 1.9 4.3 2.8z"/><path stroke="#E8453C" stroke-width="4.2" stroke-linecap="round" d="M40 34.6h.1M48.5 34h.1"/><path fill="#FFD02E" d="M31.5 39A13.5 12.825 0 0 0 58.5 39Z"/><path stroke="#DCA660" stroke-width="2.2" stroke-linecap="round" d="M40 43h.1M47 46h.1M51.5 41.5h.1M44 41.5h.1"/><path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58.5 39A13.5 12.825 0 0 1 40.95 51.15C49.05 45.75 53.1 41.7 58.5 39Z"/></g>
+</g>
+<g filter="url(#riso-tacos-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+
+<g transform="rotate(-20 19 39)"><path d="M5.3 39.4C5.5 46 13 51.825 19 51.825S32.5 46 32.7 39.4"/></g>
+<g transform="rotate(20 45 39)"><path d="M31.3 39.4C31.5 46 39 51.825 45 51.825S58.5 46 58.7 39.4"/></g>
+</g>
+</g>
+</svg>

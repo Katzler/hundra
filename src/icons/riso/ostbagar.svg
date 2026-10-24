@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-ostbagar-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="2" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="9"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-ostbagar-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="26"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.4 -1.4)">
+    <g filter="url(#riso-ostbagar-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#F28C28" d="M17.4 31.6c3.5-11.8 9.7-15.7 21.8-14.1c7.4 1.1 9-10 1.6-11c-12.2-1.7-30.7 10.1-34.2 21.9c-2.1 7.2 8.6 10.4 10.8 3.2Z"/>
+      <path fill="#F28C28" d="M31.1 31.5c10.3-2.1 14.4.2 17.6 10.2c2.2 7.1 12.9 3.7 10.6-3.4c-3.2-10-20.2-19.9-30.4-17.8c-7.3 1.5-5.1 12.5 2.2 11Z"/>
+      <path fill="#F28C28" d="M14.7 50.9c8.7-4.8 14.3-4 21.3 3c5.3 5.3 13.2-2.5 8-7.8c-7-7.1-26-9.8-34.7-5c-6.5 3.6-1.1 13.4 5.4 9.8Z"/>
+      <path fill="#F28C28" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M17.4 31.6c3.5-11.8 9.7-15.7 21.8-14.1c-14.2-5.6-21.4-1-21.8 14.1ZM31.1 31.5c10.3-2.1 14.4.2 17.6 10.2c-.3-13.4-5.1-16.3-17.6-10.2ZM14.7 50.9c8.7-4.8 14.3-4 21.3 3c-6.4-11.5-12.9-12.3-21.3-3Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" d="M17 23h.1M26 15.6h.1M35 13.6h.1M38 27h.1M47 31.4h.1M20 44h.1M30 45.4h.1M16 47h.1"/>
+    </g>
+    <g filter="url(#riso-ostbagar-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.4 31.6c3.5-11.8 9.7-15.7 21.8-14.1c7.4 1.1 9-10 1.6-11c-12.2-1.7-30.7 10.1-34.2 21.9c-2 7 8 10.2 10.6 3.8M31.1 31.5c10.3-2.1 14.4.2 17.6 10.2c2.2 7.1 12.9 3.7 10.6-3.4c-3.2-10-20.2-19.9-30.4-17.8c-7.1 1.5-5.2 11.8 1.6 11.1M14.7 50.9c8.7-4.8 14.3-4 21.3 3c5.3 5.3 13.2-2.5 8-7.8c-7-7.1-26-9.8-34.7-5c-6.3 3.5-1.4 12.8 4.8 10.1"/>
+    </g>
+  </g>
+</svg>

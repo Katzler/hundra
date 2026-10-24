@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-bulgur-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="19" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="2"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-bulgur-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="11"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-.8 -9.4)">
+<g filter="url(#riso-bulgur-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#FFF1CF" cx="31" cy="40" rx="24.5" ry="16"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M55.5 41A24.5 16 0 0 1 6.5 41A24.5 9 0 0 0 55.5 41Z"/>
+<ellipse fill="none" stroke="#EFCF9C" stroke-width="2.2" cx="31" cy="40.6" rx="19.4" ry="11.6"/>
+<path fill="#DCA660" d="M14.4 42.2C13.6 39.6 15.4 37.4 17.2 36.4C17.4 33.6 19.8 31.6 22.4 31.8C23.6 29.2 26.4 27.8 29.2 28.4C31.4 27 34.6 27.6 36 29.6C38.8 29.2 41.6 31 42.2 33.6C44.8 34 47.2 36.6 46.8 39.2C48.4 40.8 48 43.2 46 44.4C42.6 46.8 37 47.8 30.8 47.8S18.4 46.6 15.6 44.4C14.8 43.8 14.5 43 14.4 42.2Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M46.8 39.2C48.4 40.8 48 43.2 46 44.4C42.6 46.8 37 47.8 30.8 47.8C35.8 46.2 41 44 43.8 40.8C44.8 39.6 45.2 38 45 36.4C46 37.2 46.8 38.2 46.8 39.2Z"/>
+<path fill="none" stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" d="M22 37.4l1.4 1M28.6 33.4l1.6.6M33 38.6l1.6.8M25.6 43l1.8.3M38.4 34.4l.4 1.7M40.6 42.4l-1 1.4M19 41.6l-.6 1.6"/>
+<path stroke="#EFCF9C" stroke-width="2.6" stroke-linecap="round" d="M21.2 34.6h0M31 31h0M35.4 43.4h0M42.4 38.4h0M27.4 39h0M37.2 38.6h0M17.6 39.6h0"/>
+</g>
+<g filter="url(#riso-bulgur-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7.7 44.9A24.5 16 0 1 1 9.8 48"/>
+<path d="M14.6 43.2C13.4 40.4 15.2 37.6 17.2 36.4C17.4 33.6 19.8 31.6 22.4 31.8C23.6 29.2 26.4 27.8 29.2 28.4C31.4 27 34.6 27.6 36 29.6C38.8 29.2 41.6 31 42.2 33.6C44.8 34 47.2 36.6 46.8 39.2C48.4 40.6 48.2 42.6 47 43.8"/>
+</g>
+</g>
+</svg>

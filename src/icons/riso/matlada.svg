@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-matlada-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="10" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="18"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-matlada-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="3"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.5 1.5)">
+    <g filter="url(#riso-matlada-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#3D78D8" d="M8.6 19.1c.9-2.9-4-2.2 3-2.6s31.8-.4 38.8 0 2.1-.3 3 2.6 2.2 11.5 2.7 14.8 .1 3.4 0 5.2-.1 4-.7 5.3 4.6 2.2-3 2.6-35.2.4-42.8 0-2.3-1.3-3-2.6-.6-3.6-.7-5.3-.4-1.8 0-5.2 1.7-11.9 2.7-14.8z"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M5.8 38.9c.2-1.4-5.9-2 2.1-2.4s38.2-.4 46.2 0 1.9 1 2.1 2.4-.3 4.4-.9 5.7 5 2-2.7 2.4-35.5.4-43.2 0-2.1-1-2.7-2.4-1.1-4.4-.9-5.7z"/>
+      <path fill="#FFF1CF" d="M11.8 21.6c.5-2-1-1.3 1.8-1.6s12.1-.3 14.8 0 1.3-.4 1.6 1.6 .3 8.3 0 10.3 1.5 1.3-1.6 1.6-13.8.3-16.8 0-1.4.4-1.4-1.6 1-8.3 1.6-10.3z"/>
+      <path fill="#DCA660" d="M31.5 21.6c.3-2-1.2-1.3 1.6-1.6s12.4-.3 15.3 0 1.3-.4 1.8 1.6 1.5 8.3 1.6 10.3 1.7 1.3-1.4 1.6-14.1.3-17.3 0-1.3.4-1.6-1.6-.3-8.3 0-10.3z"/>
+      <path fill="#6B3A1E" d="M40.2 25c0 1-.9 2.4-1.8 2.9s-2.8.4-3.7 0-1.9-1.9-1.9-2.9 .9-2.4 1.9-2.9 2.7-.4 3.7 0 1.8 1.9 1.8 2.9zM48.7 24.2c0 1-.9 2.4-1.8 2.9s-2.8.4-3.7 0-1.9-1.9-1.9-2.9 .9-2.4 1.9-2.9 2.7-.4 3.7 0 1.8 1.9 1.8 2.9zM44.7 30c0 1-.9 2.4-1.8 2.9s-2.8.4-3.7 0-1.9-1.9-1.9-2.9 .9-2.4 1.9-2.9 2.7-.4 3.7 0 1.8 1.9 1.8 2.9zM52 30c0 .9-.8 2.2-1.7 2.7s-2.5.4-3.4 0-1.7-1.8-1.7-2.7 .9-2.2 1.7-2.7 2.6-.4 3.4 0 1.7 1.8 1.7 2.7z"/>
+      <path fill="#3BAA5C" d="M22 24.7c.1.9-.6 2-1.5 2.8s-2.3 1.6-3.5 1.6-2.5-.8-3.1-1.5-1.3-2.1-.9-2.9 1.9-1.6 3.1-2 2.8-.7 3.8-.4 2 1.5 2.1 2.4z"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="2.4" stroke-linecap="round" d="M19 27.5l2 3.5"/>
+    </g>
+    <g filter="url(#riso-matlada-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.6 19.1c.9-2.9-4-2.2 3-2.6s31.8-.4 38.8 0 2.1-.3 3 2.6 2.2 11.5 2.7 14.8 .1 3.4 0 5.2-.1 4-.7 5.3 4.6 2.2-3 2.6-35.2.4-42.8 0-2.3-1.3-3-2.6-.6-3.6-.7-5.3-.4-1.8 0-5.2 1.7-11.9 2.7-14.8c0-.2 0-.3 0-.4"/>
+      <path d="M6 36.5c4.2 0 16.7 0 25 0s20.8 0 25 0"/>
+      <path stroke-width="2.4" d="M10.8 21.3c.5-2.1-4.4-1.5 2-1.8s30-.3 36.4 0 1.5-.3 2 1.8 1.6 8.8 1.6 10.9 5.4 1.5-1.6 1.8-33.4.3-40.4 0-1.5.3-1.6-1.8 1-8.8 1.6-10.9c0-.1 0-.1 0-.1M30.8 20v13.8M40.2 25c0 1-.9 2.4-1.8 2.9s-2.8.4-3.7 0-1.9-1.9-1.9-2.9 .9-2.4 1.9-2.9 2.7-.4 3.7 0 1.8 1.9 1.8 2.9c0 0 0 0 0 .1M48.7 24.2c0 1-.9 2.4-1.8 2.9s-2.8.4-3.7 0-1.9-1.9-1.9-2.9 .9-2.4 1.9-2.9 2.7-.4 3.7 0 1.8 1.9 1.8 2.9c0 0 0 0 0 .1M44.7 30c0 1-.9 2.4-1.8 2.9s-2.8.4-3.7 0-1.9-1.9-1.9-2.9 .9-2.4 1.9-2.9 2.7-.4 3.7 0 1.8 1.9 1.8 2.9c0 0 0 0 0 .1M52 30c0 .9-.8 2.2-1.7 2.7s-2.5.4-3.4 0-1.7-1.8-1.7-2.7 .9-2.2 1.7-2.7 2.6-.4 3.4 0 1.7 1.8 1.7 2.7c0 0 0 0 0 .1"/>
+    </g>
+  </g>
+</svg>

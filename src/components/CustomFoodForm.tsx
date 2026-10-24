@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FOODS, REFERENCE_FOOD_IDS, type Food } from '../data/foods'
 import { formatPoints, toKcal, toPoints } from '../lib/calc'
+import { FoodIcon } from './FoodIcon'
 import { MinusIcon, PlusIcon } from './icons'
 
 const EMOJIS = ['🍽️', '🥘', '🍲', '🍝', '🍛', '🥗', '🥪', '🌯', '🍕', '🍔', '🍗', '🐟', '🥩', '🥚', '🧀', '🍞', '🥔', '🍚', '🥦', '🍎', '🍌', '🫐', '🥛', '☕', '🍵', '🧃', '🍺', '🍷', '🍫', '🍪', '🍰', '🍦', '🍿', '🥜']
@@ -86,7 +87,7 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
           <div className="references">
             {references.map((f) => (
               <span key={f.id} className="reference">
-                {f.emoji} {f.name.replace('Smörgås med ost', 'Macka')} <strong>{formatPoints(toPoints(f.kcal, budgetKcal))} p</strong>
+                <FoodIcon id={f.id} emoji={f.emoji} size={18} /> {f.name.replace('Smörgås med ost', 'Macka')} <strong>{formatPoints(toPoints(f.kcal, budgetKcal))} p</strong>
               </span>
             ))}
           </div>

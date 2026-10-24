@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-quinoa-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="12" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="7"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-quinoa-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="3"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-.2 -1.6)">
+<g filter="url(#riso-quinoa-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#3D78D8" d="M4.399999999999999 32C5.399999999999999 41 15 48.6 30 48.6S54.6 41 55.6 32A25.6 7.6 0 0 1 4.399999999999999 32Z"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M38 48C48 46 54.6 40 55.6 32C52.6 38 48 42 38 48Z"/>
+<path fill="#EFCF9C" d="M6 32C2.5 29.8 7.5 28.4 9 26.6S12.7 22.8 15 21.4S20.3 19 23 18.4S28.3 17.7 31 17.8S36.5 18.1 39 18.8S44 20.7 46 22S49.7 24.9 51 26.6S57.5 29.8 54 32S38 39.6 30 39.6S9.5 34.2 6 32Z"/>
+<path stroke="#9B1B30" stroke-width="2.8" stroke-linecap="round" d="M39.5 34.9h0M30.8 30.8h0M43.5 32.6h0M25.6 29.7h0M33.5 36.4h0M13.9 28.1h0M43.4 26.1h0M27.6 35.7h0"/>
+<path stroke="#6B3A1E" stroke-width="2.8" stroke-linecap="round" d="M11.7 32.4h0M37.4 26h0M33.1 26.3h0M19.3 25.4h0M35.8 30h0M32.3 21h0M29 26.1h0M15.5 32.8h0"/>
+<path stroke="#FFF1CF" stroke-width="2.8" stroke-linecap="round" d="M23.8 25.1h0M23.9 36.5h0M19.2 30.3h0M47.7 30.6h0M39.6 30.5h0M19.8 34.3h0M25.4 21.4h0"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 41C14 44 17 46 20 47"/>
+</g>
+<g filter="url(#riso-quinoa-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M6 32C6.5 31.1 7.5 28.4 9 26.6S12.7 22.8 15 21.4S20.3 19 23 18.4S28.3 17.7 31 17.8S36.5 18.1 39 18.8S44 20.7 46 22S49.7 24.9 51 26.6S53.5 31.1 54 32"/>
+<path d="M4.199999999999998 31.6C5.399999999999999 41 15 48.6 30 48.6S54.6 41 55.800000000000004 31.6"/>
+<path stroke-width="2.6" d="M55.6 32.4A25.6 7.6 0 0 1 4.399999999999999 32.4"/>
+</g>
+</g>
+</svg>

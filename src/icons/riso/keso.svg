@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-keso-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="3" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="11"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-keso-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="5"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.8 -2)">
+<g filter="url(#riso-keso-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#FFF1CF" d="M9 30A23 7 0 0 0 55 30L52.4 47.4A20.4 6 0 0 1 11.6 47.4Z"/>
+<path fill="#3D78D8" d="M10.1 36.6A23 7 0 0 0 53.9 36.6L53 43A21.6 6.6 0 0 1 11 43Z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M44 36.4C49 35.4 53.4 33.4 55 30L52.4 47.4C50.4 50.4 45 52 40 52.8C43.6 48 44.4 42 44 36.4Z"/>
+<path fill="#EFCF9C" d="M11.6 30A3.6 3.6 0 0 1 15.1 26.5A4.6 4.6 0 0 1 19.8 21.6A3.8 3.8 0 0 1 25.4 19.3A5 5 0 0 1 33.7 18.7A4 4 0 0 1 40 19.9A4.8 4.8 0 0 1 46.1 23.2A3.8 3.8 0 0 1 49.2 26.7A3.6 3.6 0 0 1 52.4 30Z"/>
+<ellipse fill="#EFCF9C" cx="32" cy="30" rx="21" ry="5.4"/>
+<path fill="#FFF1CF" d="M11.2 28.6a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0-5.4 0M13 23.9a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0-7.4 0M19.5 19.8a2.9 2.9 0 1 0 5.8 0a2.9 2.9 0 1 0-5.8 0M25.3 18.7a4.1 4.1 0 1 0 8.2 0a4.1 4.1 0 1 0-8.2 0M34.1 18.7a3.1 3.1 0 1 0 6.2 0a3.1 3.1 0 1 0-6.2 0M39.5 21.3a3.9 3.9 0 1 0 7.8 0a3.9 3.9 0 1 0-7.8 0M45.3 24.7a2.9 2.9 0 1 0 5.8 0a2.9 2.9 0 1 0-5.8 0M47.4 28.6a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0-5.4 0M18.4 28.4a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0M26.6 29.6a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0M36 28.6a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0M44.2 29.6a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0-5.6 0M13.2 30a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0-5.6 0M22.2 22.4a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0M31.4 22a4 4 0 1 0 8 0a4 4 0 1 0-8 0M40 23.4a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0-6.8 0M17 23.8a3 3 0 1 0 6 0a3 3 0 1 0-6 0M27.4 16.6a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0M21.6 17.6a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0-5.6 0M35.6 17.4a3 3 0 1 0 6 0a3 3 0 1 0-6 0"/>
+</g>
+<g filter="url(#riso-keso-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M11.6 30A3.6 3.6 0 0 1 15.1 26.5A4.6 4.6 0 0 1 19.8 21.6A3.8 3.8 0 0 1 25.4 19.3A5 5 0 0 1 33.7 18.7A4 4 0 0 1 40 19.9A4.8 4.8 0 0 1 46.1 23.2A3.8 3.8 0 0 1 49.2 26.7A3.6 3.6 0 0 1 52.4 30M9 30A23 7 0 0 0 55 30M9.2 31.6L11.6 47.4A20.4 6 0 0 0 52.4 47.4L54.7 32"/>
+</g>
+</g>
+</svg>

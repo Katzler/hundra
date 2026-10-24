@@ -43,11 +43,65 @@ const empty: Data = {
   quickPicks: null,
 }
 
+// Hjälpfunktionerna är vanliga funktioner (inte const) så att de finns redan när lagringen läses in,
+// vilket sker direkt när modulen laddas – innan resten av filen har körts.
+function isDate(v: unknown): v is DateKey {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
+}
+function isNum(v: unknown, min = -Infinity): v is number {
+  return typeof v === 'number' && Number.isFinite(v) && v >= min
+}
+function isStr(v: unknown): v is string {
+  return typeof v === 'string'
+}
+function isObj(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v)
+}
+
+const cleanEntry = (e: unknown): Entry | null =>
+  isObj(e) &&
+  isStr(e.id) &&
+  isDate(e.date) &&
+  isStr(e.foodId) &&
+  isStr(e.name) &&
+  isNum(e.kcalPerUnit, 0) &&
+  isNum(e.qty, 0) &&
+  (e.qty as number) > 0
+    ? {
+        id: e.id,
+        date: e.date,
+        foodId: e.foodId,
+        name: e.name,
+        emoji: isStr(e.emoji) ? e.emoji : '🍽️',
+        unit: isStr(e.unit) ? e.unit : '',
+        kcalPerUnit: e.kcalPerUnit,
+        qty: e.qty,
+        at: isNum(e.at) ? e.at : 0,
+      }
+    : null
+
+const cleanFood = (f: unknown): Food | null =>
+  isObj(f) && isStr(f.id) && isStr(f.name) && isNum(f.kcal, 0)
+    ? {
+        id: f.id,
+        name: f.name,
+        emoji: isStr(f.emoji) ? f.emoji : '🍽️',
+        unit: isStr(f.unit) ? f.unit : '1 portion',
+        kcal: f.kcal,
+        category: 'egna',
+        custom: true,
+      }
+    : null
+
 // Om telefonens lagring är full sparas inget – då ska användaren få veta det, inte tro att allt är sparat.
 let warnedFull = false
+// Lagringen skrivs inte förrän sparad data har lästs in. Misslyckas inläsningen ska ett tomt
+// startläge aldrig kunna skriva över det som finns sparat.
+let hydrated = false
 const safeStorage: StateStorage = {
   getItem: (key) => localStorage.getItem(key),
   setItem: (key, value) => {
+    if (!hydrated) return
     try {
       localStorage.setItem(key, value)
       warnedFull = false
@@ -174,6 +228,13 @@ export const useStore = create<Data & Actions>()(
       migrate: (persisted) => persisted as Data,
       // Trasig eller gammal data i lagringen tvättas i stället för att krascha appen.
       merge: (persisted, current) => ({ ...current, ...sanitizeData(persisted).data }),
+      onRehydrateStorage: () => (_state, error) => {
+        if (error) {
+          console.error('Kunde inte läsa sparad data', error)
+          return
+        }
+        hydrated = true
+      },
       partialize: ({ profile, budgetHistory, entries, customFoods, favorites, usage, quickPicks }) => ({
         profile,
         budgetHistory,
@@ -240,10 +301,6 @@ export function exportData(s: Data): string {
   )
 }
 
-const isDate = (v: unknown): v is DateKey => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
-const isNum = (v: unknown, min = -Infinity): v is number => typeof v === 'number' && Number.isFinite(v) && v >= min
-const isStr = (v: unknown): v is string => typeof v === 'string'
-const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
 
 function cleanProfile(p: unknown): Profile | null {
   if (!isObj(p)) return null
@@ -256,40 +313,7 @@ function cleanProfile(p: unknown): Profile | null {
   return ok ? (p as unknown as Profile) : null
 }
 
-const cleanEntry = (e: unknown): Entry | null =>
-  isObj(e) &&
-  isStr(e.id) &&
-  isDate(e.date) &&
-  isStr(e.foodId) &&
-  isStr(e.name) &&
-  isNum(e.kcalPerUnit, 0) &&
-  isNum(e.qty, 0) &&
-  (e.qty as number) > 0
-    ? {
-        id: e.id,
-        date: e.date,
-        foodId: e.foodId,
-        name: e.name,
-        emoji: isStr(e.emoji) ? e.emoji : '🍽️',
-        unit: isStr(e.unit) ? e.unit : '',
-        kcalPerUnit: e.kcalPerUnit,
-        qty: e.qty,
-        at: isNum(e.at) ? e.at : 0,
-      }
-    : null
 
-const cleanFood = (f: unknown): Food | null =>
-  isObj(f) && isStr(f.id) && isStr(f.name) && isNum(f.kcal, 0)
-    ? {
-        id: f.id,
-        name: f.name,
-        emoji: isStr(f.emoji) ? f.emoji : '🍽️',
-        unit: isStr(f.unit) ? f.unit : '1 portion',
-        kcal: f.kcal,
-        category: 'egna',
-        custom: true,
-      }
-    : null
 
 /**
  * Tvättar data från en importfil eller från lagringen: det som är trasigt tas bort i stället för

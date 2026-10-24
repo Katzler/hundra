@@ -51,7 +51,6 @@ export type Data = {
 type Actions = {
   setProfile: (p: Profile, opts?: { fromStart?: boolean }) => void
   addFood: (food: Food, date: DateKey, qty?: number) => void
-  addQuickPoints: (kcal: number, name: string, date: DateKey) => void
   setQty: (entryId: string, qty: number) => void
   removeEntry: (entryId: string) => Entry | undefined
   restoreEntry: (entry: Entry) => void
@@ -400,25 +399,6 @@ export const useStore = create<Data & Actions>()(
         set((s) => ({
           usage: bumpUsage(s.usage, food.id, qty),
           entries: addToDay(s.entries, date, itemOf(food, qty)),
-        })),
-
-      // Ungefärliga poäng utan vara, t.ex. en restauranglunch. Varje rad är egen och slås inte ihop.
-      addQuickPoints: (kcal, name, date) =>
-        set((s) => ({
-          entries: [
-            ...s.entries,
-            {
-              id: uid(),
-              date,
-              foodId: 'snabbpoang',
-              name: name.trim() || 'Snabbpoäng',
-              emoji: '⚡',
-              unit: '',
-              kcalPerUnit: kcal,
-              qty: 1,
-              at: Date.now(),
-            },
-          ],
         })),
 
       // Ändrat antal följer med i användningen, så att + följt av − inte flyttar upp varan.

@@ -9,10 +9,9 @@ import { CustomFoodForm } from './CustomFoodForm'
 import { FoodIcon } from './FoodIcon'
 import { FoodRow } from './FoodRow'
 import { ChevronLeft, ChevronRight, PlusIcon, SearchIcon, XIcon } from './icons'
-import { QuickPointsForm } from './QuickPointsForm'
 import { Sheet } from './Sheet'
 
-type View = { kind: 'home' } | { kind: 'category'; id: CategoryId } | { kind: 'create' } | { kind: 'quick' }
+type View = { kind: 'home' } | { kind: 'category'; id: CategoryId } | { kind: 'create' }
 
 type Props = {
   open: boolean
@@ -31,7 +30,6 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const entries = useStore((s) => s.entries)
   const history = useStore((s) => s.budgetHistory)
   const addFood = useStore((s) => s.addFood)
-  const addQuickPoints = useStore((s) => s.addQuickPoints)
   const logMeal = useStore((s) => s.logMeal)
   const setDayEntries = useStore((s) => s.setDayEntries)
   const setQty = useStore((s) => s.setQty)
@@ -143,15 +141,13 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const title =
     view.kind === 'create'
       ? 'Ny vara'
-      : view.kind === 'quick'
-        ? 'Snabbpoäng'
-        : category
+      : category
           ? category.name
           : date === todayKey()
             ? 'Lägg till'
             : `Lägg till · ${dayTitle(date)}`
 
-  const formView = view.kind === 'create' || view.kind === 'quick'
+  const formView = view.kind === 'create'
 
   return (
     <Sheet
@@ -228,15 +224,6 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
               setView({ kind: 'home' })
             }}
           />
-        ) : view.kind === 'quick' ? (
-          <QuickPointsForm
-            budgetKcal={budget}
-            onSubmit={(kcal, name) => {
-              addQuickPoints(kcal, name, date)
-              showToast(`${name.trim() || 'Snabbpoäng'} tillagd${dayNote}`)
-              setView({ kind: 'home' })
-            }}
-          />
         ) : searching ? (
           <>
             {qty !== 1 && (
@@ -268,18 +255,6 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
           )
         ) : (
           <>
-            <div className="group">
-              <button type="button" className="row create-row" onClick={() => setView({ kind: 'quick' })}>
-                <span className="emoji" aria-hidden>
-                  <FoodIcon id="snabbpoang" emoji="⚡" />
-                </span>
-                <span className="row-text">
-                  <span className="row-title">Snabbpoäng</span>
-                  <span className="row-sub">Ungefärligt, t.ex. en restauranglunch</span>
-                </span>
-                <ChevronRight size={16} className="row-chevron" />
-              </button>
-            </div>
             {meals.length > 0 && (
               <>
                 <h3 className="section-title">Mina måltider</h3>

@@ -130,13 +130,6 @@ describe('store', () => {
     expect(rows.find((e) => e.foodId === 'kaffe-mjolk')?.qty).toBe(2)
   })
 
-  it('snabbpoäng blir egna rader som inte slås ihop', () => {
-    const s = useStore.getState()
-    s.addQuickPoints(500, 'Lunch', day)
-    s.addQuickPoints(300, '', day)
-    expect(useStore.getState().entries.map((e) => e.name)).toEqual(['Lunch', 'Snabbpoäng'])
-  })
-
   it('rätta från början gör att även gamla dagar räknas mot de nya uppgifterna', () => {
     const s = useStore.getState()
     s.importData({ ...emptyData, budgetHistory: [{ from: '2026-01-01', kcal: 3000 }] })

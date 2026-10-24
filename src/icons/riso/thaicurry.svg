@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-thaicurry-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="20" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="9"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-thaicurry-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="5"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.4 -8.6)">
+<g filter="url(#riso-thaicurry-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32" cy="40" rx="26" ry="17"/><path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58 42.4A26 17 0 0 1 6 42.4A26 11.1 0 0 0 58 42.4Z"/><ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.5" ry="11.9"/><path fill="#3BAA5C" d="M27 38C27 31 35 28.6 43 29.4C50 30 52.6 35 51 40C49.4 45.6 42 48.6 35 48C29 47.4 27 43 27 38Z"/><path fill="#3BAA5C" style="mix-blend-mode:multiply" d="M51 40C49.4 45.6 42 48.6 35 48C31 47.6 28.6 45.6 27.6 43C33 46 45 46 51 40Z"/><path fill="none" stroke="#FFF1CF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M31 41.4c3 2.4 8 2.6 11 1M41.6 33.4c2.6-.6 5.4.2 6.4 1.6"/><path fill="#EFCF9C" d="M34.3 33.5L39.1 34.9L37.7 39.7L32.9 38.3ZM42.2 39.1L46.9 37.4L48.6 42.1L43.9 43.8ZM34.7 42.3L39.3 43.1L38.5 47.7L33.9 46.9Z"/><path fill="none" stroke="#E8453C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M41.6 38.4a1.8 1.6 0 1 0 .1 0M30 36.4a1.8 1.6 0 1 0 .1 0M45.6 46a1.8 1.6 0 1 0 .1 0"/><path fill="#3BAA5C" style="mix-blend-mode:multiply" d="M38 30.6C40 26.4 45.6 25.6 48.6 27.6C46.6 31.4 41.6 32.4 38 30.6Z"/><path fill="#FFF1CF" d="M12 38.6C12 31 16 26.4 21.6 26.4S31.6 31 31.6 38.6C31.6 44 27 46.6 21.6 46.6S12 44 12 38.6Z"/><path fill="#EFCF9C" style="mix-blend-mode:multiply" d="M31.6 38.6C31.6 44 27 46.6 21.6 46.6C17.4 46.6 14 45 12.6 42C16 44 25 44.4 31.6 38.6Z"/><path fill="none" stroke="#EFCF9C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M17 34l2 .6M22.6 31l1.6 1M25 38l2-.4M17.6 40.4l1.6.8"/>
+</g>
+<g filter="url(#riso-thaicurry-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M57.4 35.5A26.3 17.3 0 1 1 51.5 28.4"/>
+</g>
+</g>
+</svg>

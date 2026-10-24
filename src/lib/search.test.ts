@@ -59,4 +59,10 @@ describe('sök', () => {
     expect(names('frukt')).toContain('Banan')
     expect(names('s')).not.toContain('Ägg')
   })
+
+  it('tål ett stavfel när nästan inget annat hittas', () => {
+    expect(names('kotbullar')).toContain('Köttbullar')
+    expect(names('bannan')).toContain('Banan')
+    expect(names('xyzqq')).toEqual([])
+  })
 })

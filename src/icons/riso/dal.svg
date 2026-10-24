@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-dal-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="3" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="8"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-dal-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="21"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-2.6 -2.4)">
+    <g filter="url(#riso-dal-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <ellipse fill="#3D78D8" cx="31" cy="35" rx="27" ry="16.6"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M4 35A27 16.6 0 0 0 58 35A27 10 0 0 1 4 35Z"/>
+      <path fill="none" stroke="#A9C8F0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M10 34.4A21 12 0 1 1 52 34.4A21 12 0 1 1 10 34.4Z"/>
+      <path fill="#FFD02E" d="M53.1 34.7Q53.8 36 53.8 37.4Q53.8 38.9 52.4 40Q51 41.2 49.2 42Q47.4 42.8 45.6 43.6Q43.8 44.4 41.6 44.8Q39.4 45.2 37.2 44.8Q35 44.4 33.2 43.6Q31.4 42.8 29.6 42Q27.8 41.2 26.4 40Q25 38.9 25 37.4Q25 36 25.7 34.7Q26.4 33.4 27.1 32.1Q27.8 30.8 29.1 29.7Q30.5 28.5 32.7 28.1Q35 27.6 37.2 27.6Q39.4 27.6 41.6 27.6Q43.8 27.6 46.1 28.1Q48.3 28.5 49.7 29.7Q51 30.8 51.7 32.1Q52.4 33.4 53.1 34.7Z"/>
+      <path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M25 36A14.4 8.8 0 0 0 53.8 36A14.4 4 0 0 1 25 36Z"/>
+      <path fill="none" stroke="#F28C28" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M33.4 35.6c3-2.4 8-2.4 11.4.4"/>
+      <path fill="none" stroke="#F28C28" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M31.4 32h.1M38 31h.1M45.4 32.4h.1M48.6 37.4h.1M33 39.6h.1M40 41h.1M45 40.8h.1"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" d="M39.4 37.6h.1M46 34.8h.1M34.4 36.8h.1"/>
+      <path fill="#FFF1CF" d="M8.6 36C7.6 27 13.6 21.6 20.6 21.6C28 21.6 32 27 31.6 35C26.6 39.6 13.6 39.8 8.6 36Z"/>
+      <path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M31.6 35C32 27 28 21.6 22.6 21.6C26.6 24.4 27.6 29.4 27 38C29 37.4 30.6 36.4 31.6 35Z"/>
+      <path fill="none" stroke="#EFCF9C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M13 31.6l1.6-.8M18.4 27.6l1.6.4M15.6 35.4l1.6.2M22.4 32.6l1.2-1M24 27l1.4.8"/>
+    </g>
+    <g filter="url(#riso-dal-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.9 30.7A27 16.6 0 0 1 57.9 36.4A27 16.6 0 0 1 6.5 42"/>
+      <path stroke-width="2.6" d="M8.6 36C7.6 27 13.6 21.6 20.6 21.6C28 21.6 32 27 31.6 34.4"/>
+    </g>
+  </g>
+</svg>

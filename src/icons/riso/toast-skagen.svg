@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-toast-skagen-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="11" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="13"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-toast-skagen-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="6"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2 -1.6)">
+<g filter="url(#riso-toast-skagen-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#9A4E24" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M12 27C8.6 17 15.4 11 22 14C26 8.6 38 8.6 42 14C48.6 11 55.4 17 52 27L52.6 50C52.6 53 50.6 54.4 47.6 54.4H16.4C13.4 54.4 11.4 53 11.4 50Z"/><path fill="#DCA660" d="M12 27C8.6 17 15.4 11 22 14C26 8.6 38 8.6 42 14C48.6 11 55.4 17 52 27L52.6 50C52.6 53 50.6 54.4 47.6 54.4H16.4C13.4 54.4 11.4 53 11.4 50Z"/><path fill="#EFCF9C" d="M16 28.4C12.6 20.4 18 15.6 23 18.4C27 13.6 37 13.6 41 18.4C46 15.6 51.4 20.4 48 28.4L48.6 48.6C48.6 50 48 50.6 46.6 50.6H17.4C16 50.6 15.4 50 15.4 48.6Z"/><path fill="none" stroke="#DCA660" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M19 46l6-6M38 26l6-6M41.6 47.4l5-5"/><path fill="#F49AB0" d="M16.6 38C16 30 23.6 25.6 32 26C41 26.4 47.6 31 47 38C46.4 44 39 47.4 31.6 47.4C23.4 47.4 17 44 16.6 38Z"/><path fill="#F49AB0" style="mix-blend-mode:multiply" d="M47 38C46.4 44 39 47.4 31.6 47.4C26 47.4 20.4 45.6 18 42.4C24 45 38 45.6 47 38Z"/><path fill="none" stroke="#FFF1CF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M22 35h.1M27 42h.1M38 41.4h.1M42.6 35.4h.1M21.4 40.6h.1"/><path fill="none" stroke="#E8453C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M23 39.4c1-2 3.4-2.6 5-1.4M33.4 43.6c1-2 3.4-2.6 5-1.4M38.6 34.4c1.6-1.6 4-1.4 5.2.2"/><path fill="#F28C28" d="M23.4 33.6c-.4-7 17.4-8 17.6-.8c.2 5.4-17.2 6.2-17.6.8Z"/><path fill="none" stroke="#FFD02E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M29 32.4h.1M33 33.6h.1M35.4 31.2h.1M31 30.6h.1"/><path fill="none" stroke="#3BAA5C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M37 30l6-5.4m-3 2.6l-.4-3.2m1.8 1.6l3 .2M38 28.6l-2.4-2.4"/><path fill="#FFD02E" stroke="#FFF1CF" stroke-width="2.2" d="M36.6 49.4A7.4 7.4 0 0 1 50.6 44.6Z"/>
+</g>
+<g filter="url(#riso-toast-skagen-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 27C8.6 17 15.4 11 22 14C26 8.6 38 8.6 42 14C48.6 11 55.4 17 52 27L52.6 50C52.6 53 50.6 54.4 47.6 54.4H16.4C13.4 54.4 11.4 53 11.4 50L11.8 31"/>
+</g>
+</g>
+</svg>

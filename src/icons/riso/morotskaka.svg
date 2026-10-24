@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-morotskaka-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="21" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="7"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-morotskaka-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="9"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-2.6 1.4)">
+    <g filter="url(#riso-morotskaka-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" d="M57 33L7 24L7 42.4L57 50Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" d="M57 41.6L7 33.4L7 42.4L57 50Z"/>
+      <path fill="#FFF1CF" d="M57 33L7 24L7 28.6L57 37Z"/>
+      <path fill="#FFF1CF" d="M57 41.6L7 33.4L7 36.2L57 44.2Z"/>
+      <path fill="none" stroke="#F28C28" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M14 31.4h.1M26 33.6h.1M38 35.8h.1M50 38.4h.1M20 40.4h.1M34 42.6h.1M46 45.4h.1"/>
+      <path fill="#FFF1CF" d="M57 33L24 13.6C18 13.6 11 17.6 7 24Z"/>
+      <path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M57 33L24 13.6C21 13.6 18 14.6 15 16.4Z"/>
+      <path fill="#F28C28" d="M17.6 19.6C17 16.6 19.6 14.6 22.4 15.8L35.4 21.4C32.6 24.8 23 23.4 17.6 19.6Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M22.4 20.2l1.4-1.8M27.6 21.6l1.2-1.8"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M18.4 16.4L13.4 12.2M19.8 15.4L18.4 9.6M17.4 18.2L11.6 17.4"/>
+    </g>
+    <g filter="url(#riso-morotskaka-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M57 33L24 13.6C18 13.6 11 17.6 7 24L7 42.4L57 50L57 35"/>
+      <path stroke-width="2.4" d="M7 24L57 33"/>
+      <path stroke-width="2.4" d="M17.6 19.6C17 16.6 19.6 14.6 22.4 15.8L35.4 21.4C32.6 24.8 23 23.4 18.4 20.2"/>
+    </g>
+  </g>
+</svg>

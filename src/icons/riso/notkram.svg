@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-notkram-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="16" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="4"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-notkram-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="11"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 0)">
+    <g filter="url(#riso-notkram-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#6B3A1E" d="M13.4 24.4C12.8 32 12.8 44 13.4 50C13.8 55.4 42.2 55.4 42.6 50C43.2 44 43.2 32 42.6 24.4Z"/>
+      <path fill="#6B3A1E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M37.6 25.4L42.6 24.4C43.2 32 43.2 44 42.6 50C42.4 53 39 54.4 34 54.8C38 46 38.8 34 37.6 25.4Z"/>
+      <path fill="#FFF1CF" d="M13.2 32.4C20 34 36 34 42.8 32.4L42.8 45.6C36 47.2 20 47.2 13.2 45.6Z"/>
+      <path fill="#DCA660" d="M24.4 39a3.6 3.2 0 1 0 7.2 0a3.6 3.2 0 1 0 -7.2 0Z"/>
+      <path fill="#A9C8F0" d="M12.8 24.6C12.8 20.6 43.2 20.6 43.2 24.6C43.2 28.2 12.8 28.2 12.8 24.6Z"/>
+      <path fill="#6B3A1E" d="M15 23.4C15 17.6 21 14.6 25.4 14.6C24.6 10.6 28 7.6 32.4 8C31.2 10.8 34.6 13 36.6 13.8C40.2 15 41.4 19 41 23.4C35 26.4 21 26.4 15 23.4Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M19.4 20.2C24.4 22 32 21.8 36.6 19.4M25.4 15C28.4 16.2 31.4 15.6 33.4 13.8"/>
+      <path fill="#DCA660" d="M48 40.4C52.4 40.4 56 44 56 48.6C56 53.2 52.4 56.4 48 56.4C43.6 56.4 40 53.2 40 48.6C40 44 43.6 40.4 48 40.4Z"/>
+      <path fill="#9A4E24" d="M40.6 45.6C41.6 42.2 44.6 40.4 48 40.4C51.4 40.4 54.4 42.2 55.4 45.6C51 47.2 45 47.2 40.6 45.6Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M43.6 50.4C44 52 45 53.2 46.4 53.8"/>
+    </g>
+    <g filter="url(#riso-notkram-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.6 25.4C12.8 32 12.8 44 13.4 50C13.8 55.4 39.6 55.6 41.4 52.8"/>
+      <path d="M42.6 25.4C43 30.6 43.2 36 43 40"/>
+      <path d="M13 24.8C12 20.8 43.2 20.2 43.2 24.4C43.2 28.2 14.4 28.6 12.8 25"/>
+      <path d="M15.4 22.4C15.8 17.4 21.2 14.6 25.4 14.6C24.6 10.6 28 7.6 32.4 8C31.2 10.8 34.6 13 36.6 13.8C39.8 14.8 41 18 41 21.6"/>
+      <path stroke-width="2.4" d="M13.4 32.6C20 34 36 34 42.6 32.6M13.4 45.6C20 47 30 47.2 37 46.6"/>
+      <path d="M48 40.4C52.4 40.4 56 44 56 48.6C56 53.2 52.4 56.4 48 56.4C43.6 56.4 40 53.2 40 48.6C40 44.4 43 41.2 46.8 40.6"/>
+      <path stroke-width="2.4" d="M40.8 45.6C45 47.2 51 47.2 55.2 45.6M48 40.4L48.4 37.6"/>
+    </g>
+  </g>
+</svg>

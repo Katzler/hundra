@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-rostat-brod-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="24" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="11"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-rostat-brod-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="39"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(0 0) rotate(-6 32 32)">
+<g filter="url(#riso-rostat-brod-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#9A4E24" d="M13 52.4C12.4 44 12 35 12.6 27.2C8.4 26 6.6 21.8 7.8 17.4C9.8 10.4 19.4 7.2 30.4 7.4C41.8 7.6 51 10.6 52.6 17.6C53.4 22 51.2 25.8 47.8 27C48.6 34 48.4 43.6 47.8 51.8C39.2 54.4 21.4 54.6 13 52.4Z"/>
+<path fill="#DCA660" d="M16.4 49.4C15.8 42 15.6 34 16.2 25.2C12.6 24.6 11 21.4 11.8 18.4C13.6 13 21 10.8 30.4 11C40 11.2 47.4 13.4 48.8 18.4C49.4 21.6 47.6 24.4 44.4 25.2C44.8 33 44.8 42 44.4 49C37 51 23.6 51.2 16.4 49.4Z"/>
+<path fill="#9A4E24" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M47.8 27C48.6 34 48.4 43.6 47.8 51.8C39.2 54.4 21.4 54.6 13 52.4L16.4 49.4C23.6 51.2 37 51 44.4 49C44.8 42 44.8 33 44.4 25.2Z"/>
+<path fill="none" stroke="#9A4E24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M19.4 41.6c1.4-.8 2.6-.6 3.6.4M37.6 44c1-.8 2.4-.8 3.4 0M20 18.6c1.2-1 2.8-1 3.8 0M39.6 17.4c1-.6 2.2-.4 3 .4"/>
+<path fill="#FFD02E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M42.1 33C42.2 35 41.6 38 39.7 39.3C37.8 40.5 33.6 40.3 30.6 40.3C27.6 40.3 23.3 40.5 21.4 39.3C19.5 38.1 19 35 19.1 33C19.3 31 20.2 28.5 22.1 27.2C24 25.9 27.8 25.3 30.6 25.3C33.4 25.2 37.3 25.8 39.2 27.1C41.1 28.4 42 31 42.1 33Z"/>
+<path fill="#FFD02E" d="M35 24.2C35.5 24.5 35.8 24.7 36.2 25.8C36.6 26.9 37.3 29.7 37.4 30.8C37.6 32 37.4 32.3 37.1 32.8C36.8 33.3 37.2 33.4 35.5 34C33.8 34.5 28.7 35.8 27 36.1C25.2 36.4 25.6 36.1 25 35.8C24.5 35.5 24.2 35.3 23.8 34.2C23.4 33.1 22.7 30.3 22.6 29.2C22.4 28 22.6 27.7 22.9 27.2C23.2 26.7 22.8 26.6 24.5 26C26.2 25.5 31.3 24.2 33 23.9C34.8 23.6 34.4 23.9 35 24.2Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M26 27.4C28.4 26.4 31 25.8 33.4 25.6"/>
+</g>
+<g filter="url(#riso-rostat-brod-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M48.4 38.8C48.6 34.6 48.4 30.6 47.8 27C51.2 25.8 53.4 22 52.6 17.6C51 10.6 41.8 7.6 30.4 7.4C19.4 7.2 9.8 10.4 7.8 17.4C6.6 21.8 8.4 26 12.6 27.2C12 35 12.4 44 13 52.4C19.6 54.2 31.6 54.6 43.4 53.4"/>
+<path stroke-width="2.6" d="M35 24.2C35.5 24.5 35.8 24.7 36.2 25.8C36.6 26.9 37.3 29.7 37.4 30.8C37.6 32 37.4 32.3 37.1 32.8C36.8 33.3 37.2 33.4 35.5 34C33.8 34.5 28.7 35.8 27 36.1C25.2 36.4 25.6 36.1 25 35.8C24.5 35.5 24.2 35.3 23.8 34.2C23.4 33.1 22.7 30.3 22.6 29.2C22.4 28 22.6 27.7 22.9 27.2C23.2 26.7 22.8 26.6 24.5 26C26.2 25.5 31.3 24.2 33 23.9C34.1 23.7 34.4 23.7 34.6 23.9"/>
+</g>
+</g>
+</svg>

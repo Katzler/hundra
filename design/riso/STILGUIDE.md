@@ -81,6 +81,11 @@ Rendera kontaktark: `node scripts/icon-sheet.mjs design/riso/<namn>.png src/icon
 och titta på PNG:en med Read. Visa gärna referenserna (potatis, macka-ost, kaffe-mjolk) på samma ark
 så att du ser att din ikon hör till samma familj.
 
+## Behöver varan en egen ikon?
+
+Inte alltid. Liknar varan något som redan finns (rökt lax → lax, fullkornspasta → pasta) räcker det
+att lägga in den i `ICON_FALLBACK` i `src/data/foods.ts`. Rita en egen ikon bara när ingen befintlig passar.
+
 ## I appen
 
 - Källan är SVG-filerna i `src/icons/riso/`. Appen visar dem som förrenderade WebP-bilder

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-risotto-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="9" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="16"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-risotto-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="4"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.4 -8.6)">
+<g filter="url(#riso-risotto-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32" cy="40" rx="26" ry="17"/><path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58 42.4A26 17 0 0 1 6 42.4A26 11.1 0 0 0 58 42.4Z"/><ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.5" ry="11.9"/><path fill="#FFF1CF" d="M14 39C14 32 22 28 32 28S50 32 50 39S42 50 32 50S14 46 14 39Z"/><path fill="#EFCF9C" style="mix-blend-mode:multiply" d="M50 39C50 45 42 50 32 50C24 50 17.6 47 15 42.6C20 46 28 47 34 46.4C42 45.6 48 43 50 39Z"/><path fill="none" stroke="#EFCF9C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 37l2 .6M24 43l2-.4M40 44.6l2 .2M45 38l1.6-1M28 31.4l2-.2M36 30.4l2 .4"/><path fill="#EFCF9C" stroke="#9A4E24" stroke-width="2.2" stroke-linejoin="round" transform="translate(24.6 36) rotate(-14)" d="M-5.6 0C-5.6-4.2 -2.8-5.8 0-5.8S5.6-4.2 5.6 0H2V4.6H-2V0Z"/><path fill="#EFCF9C" stroke="#9A4E24" stroke-width="2.2" stroke-linejoin="round" transform="translate(39 35) rotate(12)" d="M-5.6 0C-5.6-4.2 -2.8-5.8 0-5.8S5.6-4.2 5.6 0H2V4.6H-2V0Z"/><path fill="#EFCF9C" stroke="#9A4E24" stroke-width="2.2" stroke-linejoin="round" transform="translate(32 44.6) rotate(4)" d="M-5.6 0C-5.6-4.2 -2.8-5.8 0-5.8S5.6-4.2 5.6 0H2V4.6H-2V0Z"/><path fill="none" stroke="#FFD02E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M29 37.6l3.4-1.2M44.6 42l2.6-1.6M19.6 42l3 .6"/><path fill="none" stroke="#3BAA5C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M32 32h.1M22 41h.1M43.6 39.6h.1M36.6 40.4h.1M27.4 47.6h.1"/>
+</g>
+<g filter="url(#riso-risotto-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M57.4 35.5A26.3 17.3 0 1 1 51.5 28.4"/>
+</g>
+</g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-polsa-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="5" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="18"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-polsa-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="14"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.4 -8.6)">
+<g filter="url(#riso-polsa-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32" cy="40" rx="26" ry="17"/><path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58 42.4A26 17 0 0 1 6 42.4A26 11.1 0 0 0 58 42.4Z"/><ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.5" ry="11.9"/><path fill="#DCA660" d="M18 33C20 27 30 26 37 27C44 28 47 32 45.5 36.5C44 41 36 42.5 29 42C21 41.5 16.5 38 18 33Z"/><path fill="#DCA660" style="mix-blend-mode:multiply" d="M45.6 35C44.5 40.5 36 42.5 29 42C24 41.6 20 40 18.2 37.4C24 39.6 38 40 45.6 35Z"/><path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M24 32h.1M29 30h.1M35 31.6h.1M40 30h.1M27 36h.1M33 37h.1M39 35.4h.1M22 37h.1"/><path fill="none" stroke="#EFCF9C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M31.6 33.6h.1M37 33.6h.1M25.4 34.4h.1"/><ellipse fill="#EFCF9C" cx="17.4" cy="44" rx="6" ry="4.6"/><ellipse fill="#EFCF9C" cx="28" cy="47.4" rx="6" ry="4.6"/><path fill="#DCA660" style="mix-blend-mode:multiply" d="M23.4 44.4c-.4 2.8-3 4.4-6 4.2c-2 0-3.8-.9-5-2.4c3 1.6 8 1.4 11-1.8ZM34 47.8c-.4 2.8-3 4.4-6 4.2c-2 0-3.8-.9-5-2.4c3 1.6 8 1.4 11-1.8Z"/><ellipse fill="#7A4BB0" cx="41" cy="46.6" rx="4.8" ry="4.2"/><ellipse fill="none" stroke="#9B1B30" stroke-width="2.2" cx="41" cy="46.6" rx="2.3" ry="1.9"/><ellipse fill="#7A4BB0" cx="47.6" cy="40.8" rx="4.8" ry="4.2"/><ellipse fill="none" stroke="#9B1B30" stroke-width="2.2" cx="47.6" cy="40.8" rx="2.3" ry="1.9"/><ellipse fill="#7A4BB0" cx="49" cy="47.4" rx="4.8" ry="4.2"/><ellipse fill="none" stroke="#9B1B30" stroke-width="2.2" cx="49" cy="47.4" rx="2.3" ry="1.9"/>
+</g>
+<g filter="url(#riso-polsa-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M57.4 35.5A26.3 17.3 0 1 1 51.5 28.4"/>
+</g>
+</g>
+</svg>

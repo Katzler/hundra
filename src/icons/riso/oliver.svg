@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-oliver-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="3" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="8"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-oliver-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="27"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.8 -1.6)">
+    <g filter="url(#riso-oliver-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <ellipse fill="#FFF1CF" cx="31.6" cy="36" rx="22.6" ry="5"/>
+      <ellipse fill="#3BAA5C" transform="rotate(-20 24.4 18.6)" cx="24.4" cy="18.6" rx="5.6" ry="4.4"/>
+      <ellipse fill="#E8453C" transform="rotate(-20 24.4 18.6)" cx="27.5" cy="18.2" rx="1.6" ry="1.4"/>
+      <ellipse fill="#3BAA5C" transform="rotate(25 38.4 19.6)" cx="38.4" cy="19.6" rx="5.6" ry="4.4"/>
+      <ellipse fill="#E8453C" transform="rotate(25 38.4 19.6)" cx="41.5" cy="19.2" rx="1.6" ry="1.4"/>
+      <ellipse fill="#3BAA5C" transform="rotate(0 16.6 27.6)" cx="16.6" cy="27.6" rx="4.8" ry="4.8"/>
+      <ellipse fill="#E8453C" cx="16.8" cy="27.8" rx="2" ry="1.9"/>
+      <ellipse fill="#3BAA5C" transform="rotate(-10 31.4 27.2)" cx="31.4" cy="27.2" rx="5.6" ry="4.4"/>
+      <ellipse fill="#E8453C" transform="rotate(-10 31.4 27.2)" cx="34.5" cy="26.8" rx="1.6" ry="1.4"/>
+      <ellipse fill="#3BAA5C" transform="rotate(0 45.6 28.2)" cx="45.6" cy="28.2" rx="4.8" ry="4.8"/>
+      <ellipse fill="#E8453C" cx="45.8" cy="28.4" rx="2" ry="1.9"/>
+      <ellipse fill="#3BAA5C" transform="rotate(10 11.6 35.6)" cx="11.6" cy="35.6" rx="5" ry="3.8"/>
+      <ellipse fill="#E8453C" transform="rotate(10 11.6 35.6)" cx="14.4" cy="35.2" rx="1.6" ry="1.4"/>
+      <ellipse fill="#3BAA5C" transform="rotate(0 23.4 35.4)" cx="23.4" cy="35.4" rx="4.8" ry="4.8"/>
+      <ellipse fill="#E8453C" cx="23.6" cy="35.6" rx="2" ry="1.9"/>
+      <ellipse fill="#3BAA5C" transform="rotate(0 38.8 35.6)" cx="38.8" cy="35.6" rx="4.8" ry="4.8"/>
+      <ellipse fill="#E8453C" cx="39" cy="35.8" rx="2" ry="1.9"/>
+      <ellipse fill="#3BAA5C" transform="rotate(-10 51.6 35.8)" cx="51.6" cy="35.8" rx="5" ry="3.8"/>
+      <ellipse fill="#E8453C" transform="rotate(-10 51.6 35.8)" cx="54.4" cy="35.4" rx="1.6" ry="1.4"/>
+      <path fill="#FFF1CF" d="M9 36C10 46 19.4 52.6 31.6 52.6C43.8 52.6 53.2 46 54.2 36C47 39.6 16.2 39.6 9 36Z"/>
+      <path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M9 36C10 46 19.4 52.6 31.6 52.6C43.8 52.6 53.2 46 54.2 36C47 39.6 16.2 39.6 9 36Z"/>
+      <path fill="none" stroke="#EFCF9C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 43.4c2.4 3.6 6 5.6 10 6.6"/>
+    </g>
+    <g filter="url(#riso-oliver-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="2.4" d="M25 23A5.6 4.4 -20 0 1 22 14.9A5.6 4.4 -20 0 1 28.3 21.2"/>
+      <path stroke-width="2.4" d="M35.7 23.1A5.6 4.4 25 0 1 39.3 15.3A5.6 4.4 25 0 1 39.3 24.2"/>
+      <path stroke-width="2.4" d="M15.8 32.3A4.8 4.8 0 0 1 15.8 22.9A4.8 4.8 0 0 1 19 31.8"/>
+      <path stroke-width="2.4" d="M31.2 31.6A5.6 4.4 -10 0 1 29.7 23.1A5.6 4.4 -10 0 1 34.8 30.5"/>
+      <path stroke-width="2.4" d="M44.8 32.9A4.8 4.8 0 0 1 44.8 23.5A4.8 4.8 0 0 1 48 32.4"/>
+      <path stroke-width="2.4" d="M6.6 35.4A5 3.8 10 1 1 16.3 37.1"/>
+      <path stroke-width="2.4" d="M18.7 36.2A4.8 4.8 0 1 1 28.1 36.2"/>
+      <path stroke-width="2.4" d="M34.1 36.4A4.8 4.8 0 1 1 43.5 36.4"/>
+      <path stroke-width="2.4" d="M46.9 37.3A5 3.8 -10 1 1 56.6 35.6"/>
+      <path d="M9 36C10 46 19.4 52.6 31.6 52.6C43.8 52.6 53.2 46 54.2 36"/>
+      <path stroke-width="2.4" d="M9.2 36.6C16.2 39.6 47 39.6 54 36.6"/>
+    </g>
+  </g>
+</svg>

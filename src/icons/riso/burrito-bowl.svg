@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-burrito-bowl-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="3" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="8"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-burrito-bowl-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="16"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.8 -1.6)">
+<g filter="url(#riso-burrito-bowl-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#DCA660" d="M7 30C8 44 18 53 32 53C46 53 56 44 57 30Z"/><path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M57 30C56 44 46 53 32 53C40 49 46 41 47 32Z"/><path fill="none" stroke="#9A4E24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M14 38h.1M22 46h.1M31 41h.1M40 47h.1M48 39h.1M26 36h.1"/><ellipse fill="#FFF1CF" cx="17.6" cy="28.6" rx="9" ry="6"/><ellipse fill="#6B3A1E" cx="30" cy="25.4" rx="8" ry="5.6"/><path fill="none" stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M27 24h.1M31.6 23h.1M33 27h.1M28 27.4h.1"/><ellipse fill="#FFD02E" cx="44" cy="27" rx="9" ry="6"/><path fill="none" stroke="#F28C28" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M41 26h.1M45 24.4h.1M47.6 28h.1M43 29.4h.1"/><ellipse fill="#E8453C" cx="24" cy="34.4" rx="8" ry="4.6"/><path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M21.6 34h.1M26 35.4h.1"/><path fill="#3BAA5C" d="M33 36.6C35 30 44 28.6 50 32.4C45 37.6 38 38.6 33 36.6Z"/><path fill="none" stroke="#FFD02E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M36.4 34.6C40 32.4 44 31.6 47 32.4"/><path fill="#FFF1CF" d="M30 32.4c-.6-2.6 2.4-4 4.6-2.8c2 1.2 1.4 4-1 4.4c-1.4.2-3.2 0-3.6-1.6Z"/>
+</g>
+<g filter="url(#riso-burrito-bowl-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7 30C8 44 18 53 32 53C46 53 56 44 57 30"/><path stroke-width="2.4" d="M7 30l3.6 3.4l2.4-4l3.6 4l3-3.6l3.2 4.2l3.4-3.6l3.2 4l3.4-3.6l3.2 4l3.4-3.8l3 4l3.6-3.8l3 3.6l3.6-3.8l2.4 3.4l2.6-3.6"/>
+</g>
+</g>
+</svg>

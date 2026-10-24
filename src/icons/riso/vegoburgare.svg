@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-vegoburgare-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="12" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="2"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-vegoburgare-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="25"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -.8)">
+    <g filter="url(#riso-vegoburgare-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#DCA660" d="M10 44.6C20 43 44 43 54 44.6C54 50 51 53 44 53.6C36 54.2 28 54.2 20 53.6C13 53 10 50 10 44.6Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M54 44.6C54 50 51 53 44 53.6C36 54.2 28 54.2 20 53.6C30 51.6 46 50.6 54 44.6Z"/>
+      <path fill="#3BAA5C" d="M13 33.4L51 33.4Q56 33.4 56 38.4L56 39.4Q56 44.4 51 44.4L13 44.4Q8 44.4 8 39.4L8 38.4Q8 33.4 13 33.4Z"/>
+      <path fill="#3BAA5C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M8 39.4C20 42 44 42 56 39.4L56 40C56 43 54 44.4 51 44.4L13 44.4C10 44.4 8 43 8 40Z"/>
+      <path fill="none" stroke="#FFD02E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M14 37.4h.1M24 39.6h.1M33 36.6h.1M42 39.8h.1M50 36.8h.1"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M19 36h.1M29 40.6h.1M38 36.2h.1M47 40.4h.1"/>
+      <path fill="#E8453C" d="M11 33.6C10 31 12 28.6 15 29.4L49 29.4C52 28.6 54 31 53 33.6C47 35.6 17 35.6 11 33.6Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M18 32h.1M32 32.2h.1M46 32h.1"/>
+      <path fill="#DCA660" d="M9 28C9 17 19 10 32 10C45 10 55 17 55 28C45 30.4 19 30.4 9 28Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M55 28C55 17 45 10 36 10.4C44 13.6 48 20 47.4 29.4C50.6 29.2 53.2 28.6 55 28Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 19l2-1M27 14.6l2 .4M37 15l2 1M44 20.4l1.6 1.4M31 21.4l2-.2M22 24.6l1.8-.8M40 25.2l1.8.6"/>
+    </g>
+    <g filter="url(#riso-vegoburgare-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 28C9 17 19 10 32 10C45 10 55 17 55 28C45 30.4 19 30.4 9.6 28.2"/>
+      <path stroke-width="2.6" d="M13 33.4L51 33.4Q56 33.4 56 38.4L56 39.4Q56 44.4 51 44.4L13 44.4Q8 44.4 8 39.4L8 38.7"/>
+      <path d="M10 44.6C20 43 44 43 54 44.6C54 50 51 53 44 53.6C36 54.2 28 54.2 20 53.6C13 53 10.4 50.6 10.1 46"/>
+    </g>
+  </g>
+</svg>

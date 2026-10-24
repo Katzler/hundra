@@ -88,6 +88,13 @@ export function searchFoods(
     const s = score(food, query, terms)
     if (s !== null) hits.push({ food, s })
   }
+  // Stavfel: hittas nästan inget, tillåt ett fel per sökord (minst 4 tecken), t.ex. "köttfärsås".
+  if (hits.length < 3) {
+    for (const food of foods) {
+      if (hits.some((h) => h.food === food)) continue
+      if (fuzzyMatch(food, terms)) hits.push({ food, s: 7 })
+    }
+  }
   return hits
     .sort(
       (a, b) =>
@@ -96,4 +103,27 @@ export function searchFoods(
         a.food.name.length - b.food.name.length,
     )
     .map((h) => h.food)
+}
+
+/** Varje sökord liknar början av något ord i namnet eller aliasen, med högst ett fel. */
+function fuzzyMatch(food: Food, terms: string[]): boolean {
+  const candidates = [...words(food.name), ...(food.aliases ?? []).flatMap(words)]
+  return terms.every(
+    (term) =>
+      term.length >= 4 &&
+      candidates.some((w) => [term.length - 1, term.length, term.length + 1].some((n) => n > 0 && editDistance(term, w.slice(0, n)) <= 1)),
+  )
+}
+
+/** Levenshtein-avstånd, men avbryter tidigt – vi bryr oss bara om 0, 1 eller "fler". */
+function editDistance(a: string, b: string): number {
+  if (Math.abs(a.length - b.length) > 1) return 2
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i)
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i]
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))
+    if (Math.min(...cur) > 1) return 2
+    prev = cur
+  }
+  return prev[b.length]
 }

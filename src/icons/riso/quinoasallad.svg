@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-quinoasallad-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="14" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="7"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-quinoasallad-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="21"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.4 -6.4)">
+<g filter="url(#riso-quinoasallad-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32" cy="38" rx="26" ry="17"/><path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58 40.4A26 17 0 0 1 6 40.4A26 10 0 0 0 58 40.4Z"/><ellipse fill="#EFCF9C" cx="32" cy="36" rx="21" ry="12"/><path fill="#EFCF9C" style="mix-blend-mode:multiply" d="M11 36A21 12 0 0 1 53 36A21 8 0 0 0 11 36Z"/><path fill="none" stroke="#DCA660" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M16 37h.1M20 32h.1M25 42h.1M30 30h.1M22 38h.1M27 35h.1M18 42h.1M33 44h.1M36 29h.1"/><path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 35h.1M24 31h.1M28 39h.1M21 45h.1M31 37h.1"/><path fill="#3BAA5C" d="M35 38C37 31.6 46 29.6 51.6 32.6C49.6 39 41 41.4 35 38ZM37 44.6C40.4 39 49.4 38.6 53 41.6C49.6 46.6 42 47.6 37 44.6Z"/><path fill="none" stroke="#FFD02E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M37.8 37.4C41.6 34.4 46 33.4 49.6 33.6M39.6 44.4C43.4 42 47.2 41.4 50.6 42"/><ellipse fill="#E8453C" cx="29.6" cy="43.6" rx="4" ry="3.4"/><ellipse fill="#E8453C" cx="40" cy="28.6" rx="3.6" ry="3"/><path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M29.6 43.6h.1M40 28.6h.1"/><path fill="none" stroke="#9B1B30" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" d="M22.6 28.6h.1M16.6 40.4h.1M24.6 47h.1M33.6 34h.1"/><path fill="#3BAA5C" d="M13.4 33C15.6 27.6 22 26.6 26.4 28.8C23.4 33 18 34.8 13.4 33Z"/>
+</g>
+<g filter="url(#riso-quinoasallad-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M56.7 32.1A26.3 17.3 0 1 1 51.5 26.4"/><path stroke-width="2.4" d="M11.7 39.1A21 12 0 1 1 51.7 40.1"/>
+</g>
+</g>
+</svg>

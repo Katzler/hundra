@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-dipsas-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="1" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="14"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-dipsas-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="12"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.4 .4)">
+    <g filter="url(#riso-dipsas-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#FFD02E" d="M37.6 11.7L38.8 13.8L38.8 16.2L38.5 18.4L38.6 20.7L38.4 23L37 24.6L35.4 25.9L34.2 27.6L32.6 29.1L30.5 29.3L28.4 29.1L26.4 29.4L24.3 29.2L22.4 27.9L20.8 26.2L18.9 25L17.2 23.4L16.4 21.1L16 18.8L15.2 16.6L14.7 14.3L15.4 12.1L16.4 10.3L17 8.2L17.9 6.2L19.8 5.2L21.7 4.6L23.5 3.5L25.5 2.8L27.6 3.4L29.5 4.4L31.6 4.9L33.7 5.8L35.1 7.8L36.2 9.9Z"/>
+      <path fill="none" stroke="#F28C28" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M17.5 14.7L20.8 15.4L22.3 12.6L25.6 13.3L27.3 10.4L30.5 11.1L32.1 8.2M20.3 21.1L23.6 21.8L25.2 19L28.5 19.7L30.1 16.8L33.3 17.5L35 14.6"/>
+      <path fill="#9A4E24" d="M19.5 9.4a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0ZM32.8 22.1a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0ZM23.1 24.7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0Z"/>
+      <path fill="#E8453C" d="M8 36C8.6 47.2 18 55.4 30.4 55.4S52.2 47.2 52.8 36Z"/>
+      <path fill="#E8453C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M44.4 46.6C41.4 51.2 36.4 54.2 31.4 55C42.8 54.6 51 47 52.8 36C51 40.6 48 44 44.4 46.6Z"/>
+      <path fill="#E8453C" d="M8 36a22.4 7.6 0 1 0 44.8 0a22.4 7.6 0 1 0 -44.8 0Z"/>
+      <path fill="#FFF1CF" d="M11 36.4C12 32 18.6 29.2 25 29C28 27.6 33.4 27.6 36 29C42.4 29.2 48.8 32 49.8 36.4C43.6 40.4 17.2 40.4 11 36.4Z"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M16.6 35.4l1.8 -.4M23 32.6l1.6 .4M41.4 33.6l1.6 -.6M33 37l1.4 .4M24.6 37.4l1.6 -.2M38.6 30.8l.8 1M45 36.2l1.4 .2"/>
+    </g>
+    <g filter="url(#riso-dipsas-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M26.4 29.4L24.3 29.2L22.4 27.9L20.8 26.2L18.9 25L17.2 23.4L16.4 21.1L16 18.8L15.2 16.6L14.7 14.3L15.4 12.1L16.4 10.3L17 8.2L17.9 6.2L19.8 5.2L21.7 4.6L23.5 3.5L25.5 2.8L27.6 3.4L29.5 4.4L31.6 4.9L33.7 5.8L35.1 7.8L36.2 9.9L37.6 11.7L38.8 13.8L38.8 16.2L38.5 18.4L38.6 20.7L38.4 23L37 24.6L35.4 25.9L34.2 27.6L32.6 29.1L30.5 29.3L28.4 29.1"/>
+      <path d="M10.4 31.8C12.2 30.6 14 29.8 16 29.4M38.4 28.8C46.6 29.8 52.8 32.6 52.8 36C52.8 40.2 42.8 43.6 30.4 43.6S8 40.2 8 36C8 35.2 8.4 34.4 9 33.6"/>
+      <path d="M8.2 38C9.4 48.2 18.8 55.4 30.4 55.4S51.4 48.2 52.6 38"/>
+      <path stroke-width="2.4" d="M12.2 35C13.8 32 18 30 22.6 29.2M37.6 29.2C42.4 29.8 46.8 31.8 48.4 34.2"/>
+    </g>
+  </g>
+</svg>

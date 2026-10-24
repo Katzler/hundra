@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-overnight-oats-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="26" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="2"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-overnight-oats-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="41"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.4 -1.4)">
+<g filter="url(#riso-overnight-oats-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#A9C8F0" d="M15 20L15.6 48Q15.8 54 22 54L38 54Q44.2 54 44.4 48L45 20A15 3.4 0 0 0 15 20Z"/>
+<path fill="#A9C8F0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M45 20L44.4 48Q44.2 54 38 54L30 54C38 52 41 48 41.4 42L42 21Z"/>
+<path fill="#EFCF9C" d="M17.6 21.4L18.1 48Q18.3 51.4 22 51.4L38 51.4Q41.7 51.4 41.9 48L42.4 21.4A12.4 2.7 0 0 0 17.6 21.4Z"/>
+<path fill="#7A4BB0" d="M17.6 43C22 41.4 26 44.6 30 43C34 41.4 38 44.4 42.4 43L42 47.6Q41.6 51.6 37 51.6L23 51.6Q18.4 51.6 18 47.6Z"/>
+<path fill="none" stroke="#DCA660" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M37.1 32.4L39 33.2M40.6 37.7L38.6 38.4M39.9 31.2L41.5 32.2M29.2 31.3L29.6 32.6M29.3 37.9L27.3 38.6M19.2 39.6L16.9 39.8M21.1 36.5L19.8 37.6M37.4 33L38.1 34.2M23.9 35.6L22.2 36.6"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M18.6 27.6L19 38"/>
+<path fill="none" stroke="#DCA660" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" d="M36.8 19.4L49 4.4"/>
+<path fill="none" stroke="#7A4BB0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M20.6 20.6h.1M25.6 18.6h.1M24.4 23.4h.1"/>
+<path fill="#FFD02E" stroke="#F28C28" stroke-width="2.2" stroke-linejoin="round" d="M29.4 20.2a4 2.6 0 1 0 8 0a4 2.6 0 1 0 -8 0Z"/>
+</g>
+<g filter="url(#riso-overnight-oats-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M15 20.4L15.6 48Q15.8 54 22 54L38 54Q44.2 54 44.4 48L45 20"/>
+<path d="M45 20A15 3.4 0 0 1 15.1 20.4A15 3.4 0 0 1 44.5 19.1"/>
+<path stroke-width="2.4" d="M17.6 43C22 41.4 26 44.6 30 43C34 41.4 38 44.4 42.4 43"/>
+<path stroke-width="2.6" d="M37 19.2L48.6 4.8"/>
+</g>
+</g>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-fruktsallad-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="7" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="1"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-fruktsallad-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="25"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -2.4)">
+    <g filter="url(#riso-fruktsallad-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <ellipse fill="#A9C8F0" cx="31" cy="34" rx="23.4" ry="5.4"/>
+      <ellipse fill="#3BAA5C" cx="17.4" cy="28.6" rx="7.2" ry="6.6"/>
+      <ellipse fill="#FFF1CF" cx="17.4" cy="28.6" rx="3.2" ry="2.8"/>
+      <path fill="#E8453C" d="M25.6 20.6C27 16.6 33.4 16 36.6 19C39 21.4 37.6 26 31.4 31.4C27 27 24.8 23.6 25.6 20.6Z"/>
+      <path fill="#3BAA5C" d="M27.6 17.8C29.4 14 33.6 14 35.2 17.4C32.4 16.4 30 16.6 27.6 17.8Z"/>
+      <ellipse fill="#FFF1CF" cx="44.6" cy="26.8" rx="6.8" ry="6.2"/>
+      <ellipse fill="#FFD02E" style="mix-blend-mode:multiply" cx="44.6" cy="26.8" rx="4.2" ry="3.8"/>
+      <path fill="#F28C28" d="M24 37.2C26 32 33.6 30 39.6 34C34 33.6 29 35 24 37.2Z"/>
+      <ellipse fill="#7A4BB0" cx="41.6" cy="35.4" rx="4.2" ry="3.8"/>
+      <path fill="#FFD02E" d="M48 35.6L52.6 30.6L56 35.2L51.4 39.4Z"/>
+      <path fill="#A9C8F0" d="M7.6 34C8.4 46 18.4 53.6 31 53.6C43.6 53.6 53.6 46 54.4 34C48 38.6 14 38.6 7.6 34Z"/>
+      <path fill="#A9C8F0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M7.6 34C8.4 46 18.4 53.6 31 53.6C43.6 53.6 53.6 46 54.4 34C48 38.6 14 38.6 7.6 34Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M14.4 42.6c2.4 4 6 6.2 10 7.2"/>
+      <path fill="none" stroke="#FFD02E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M27.8 22.4h0M33 21h0M31.4 26h0"/>
+    </g>
+    <g filter="url(#riso-fruktsallad-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="2.6" d="M13.8 34.3A7.2 6.6 0 1 1 23.6 31.9"/>
+      <path stroke-width="2.6" d="M31.4 31.4C27 27 24.8 23.6 25.6 20.6C27 16.6 33.4 16 36.6 19C38.6 21 37.8 24.6 34.2 28.6"/>
+      <path stroke-width="2.6" d="M38.7 29.9A6.8 6.2 0 1 1 48 32.2"/>
+      <path stroke-width="2.6" d="M24 37.2C26 32 33.6 30 39.6 34"/>
+      <path stroke-width="2.4" d="M37.7 36.7A4.2 3.8 0 1 1 45.8 35.4"/>
+      <path stroke-width="2.4" d="M48.4 35.2L52.6 30.6L56 35.2"/>
+      <path d="M7.6 34C8.4 46 18.4 53.6 31 53.6C43.6 53.6 53.6 46 54.4 34M7.6 34C8 32 13 30.4 16.6 29.6"/>
+      <path stroke-width="2.6" d="M54.4 34C54.4 36 50 37.6 45 38.4"/>
+    </g>
+  </g>
+</svg>

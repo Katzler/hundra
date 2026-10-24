@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-irish-coffee-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="7" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="1"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-irish-coffee-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="15"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-2.6 .6)">
+    <g filter="url(#riso-irish-coffee-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="none" stroke="#A9C8F0" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" d="M44 17.4C51.6 17.4 52 31.2 41.4 32.4"/>
+      <path fill="#6B3A1E" d="M15.2 18.6C21 20.6 38 20.6 44 18.6C43.4 26 42 33 39.2 38.6C37.6 42 21.2 42 19.6 38.6C17 33 15.8 26 15.2 18.6Z"/>
+      <path fill="#6B3A1E" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M37.8 20.4C40.4 20 42.6 19.4 44 18.6C43.4 26 42 33 39.2 38.6C38.4 40.4 34 41.4 30 41.4C35.6 35 37.8 28 37.8 20.4Z"/>
+      <path fill="#FFF1CF" d="M14.8 11.4C16.8 8.4 42.4 8.4 44.4 11.2L44 18.6C38 20.6 21 20.6 15.2 18.6Z"/>
+      <path fill="#9A4E24" d="M23 12.4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0ZM30 11.6a1 1 0 1 0 2 0a1 1 0 1 0 -2 0ZM35.6 13a1 1 0 1 0 2 0a1 1 0 1 0 -2 0Z"/>
+      <path fill="none" stroke="#A9C8F0" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" d="M29.4 42V48.4"/>
+      <path fill="#A9C8F0" d="M19.6 51a10.6 3.6 0 1 0 21.2 0a10.6 3.6 0 1 0 -21.2 0Z"/>
+      <path fill="none" stroke="#DCA660" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M19.4 24.6C19.8 29 20.8 33 22.2 36"/>
+    </g>
+    <g filter="url(#riso-irish-coffee-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15.4 12.6C13.4 8.4 44.6 7.4 44.4 11.2C44.2 14.6 16.6 15.4 14.8 11.6"/>
+      <path d="M14.8 11.8C15.4 22 16.6 32 19.6 38.6C21.2 42 37.6 42 39.2 38.6C42.2 32 43.6 22 44.4 11.6"/>
+      <path stroke-width="2.4" d="M15.6 18.8C21 20.8 38 20.8 43.8 18.8"/>
+      <path d="M29.4 42.2V48.2"/>
+      <path d="M20 52C18 48 40.8 47 40.8 50.8C40.8 54.4 20.6 54.6 19.6 50.8"/>
+      <path d="M44 17.4C51.6 17.4 52 31.2 41.4 32.4"/>
+    </g>
+  </g>
+</svg>

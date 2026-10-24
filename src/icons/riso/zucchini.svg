@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-zucchini-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="4" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="9"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-zucchini-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="15"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-2.6 -1)">
+    <g filter="url(#riso-zucchini-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#3BAA5C" d="M52.3 21.1L57.6 17.5C59.3 16.7 60.4 19.5 59 20.6L54.2 25.1Z"/>
+      <path fill="#3BAA5C" style="mix-blend-mode:multiply" d="M52.3 21.1L57.6 17.5C59.3 16.7 60.4 19.5 59 20.6L54.2 25.1Z"/>
+      <path fill="#3BAA5C" d="M5.6 39.2C2.9 31 7.8 26.5 14.1 25.3L45.5 19.7C49.9 18.9 53 20 54 23.3C55.6 28.2 53 31.8 48.2 34.4L23 47.4C15.5 50.9 8.2 47.4 5.6 39.2Z"/>
+      <path fill="#3BAA5C" style="mix-blend-mode:multiply" d="M5.6 39.2C2.9 31 7.8 26.5 14.1 25.3L45.5 19.7C49.9 18.9 53 20 54 23.3C55.6 28.2 53 31.8 48.2 34.4L23 47.4C15.5 50.9 8.2 47.4 5.6 39.2Z"/>
+      <path fill="#FFF1CF" d="M6 35.9C5.7 31.2 9.4 28.3 14.7 27L45.8 21.1C49.3 20.4 51.8 21 52.4 22.7C52.2 24.7 49.8 26.5 46.5 27.8L18.9 38C13.2 40.1 8.1 39 6 35.9Z"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0 5" d="M13.8 34L42.5 25.3"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M13.4 44.6L17 44.5M23.4 44.3L27.2 43.1M33.3 40.3L36.3 38.7M42.5 35L45.2 33.5"/>
+    </g>
+    <g filter="url(#riso-zucchini-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.8 46.3C14.8 48.8 18.8 49.4 23 47.4L48.2 34.4C53 31.8 55.6 28.2 54 23.3C53 20 49.9 18.9 45.5 19.7L14.1 25.3C7.8 26.5 2.9 31 5.6 39.2C6.1 40.7 6.9 41.9 7.6 43"/>
+      <path stroke-width="2.4" d="M6.6 36.6C9.1 39.1 13.6 40 18.9 38L46.5 27.8C49.8 26.5 52.2 24.7 52.4 22.9"/>
+      <path d="M52.3 21.1L57.6 17.5C59.3 16.7 60.4 19.5 59 20.6L54.2 25.1"/>
+    </g>
+  </g>
+</svg>

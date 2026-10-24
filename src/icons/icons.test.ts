@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { existsSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { CATEGORIES, FOODS } from '../data/foods'
+import { CATEGORIES, FOODS, ICON_FALLBACK } from '../data/foods'
 import hashes from './riso/hashes.json'
 import { ICON_IDS } from './riso/ids'
 
@@ -9,8 +9,12 @@ const ICONS = import.meta.glob('./riso/*.svg', { query: '?raw', import: 'default
 const svgs = Object.entries(ICONS).map(([path, svg]) => [path.slice(7, -4), svg] as const)
 
 describe('ikoner', () => {
-  it('varje vara i grundlistan har en ikon', () => {
-    expect(FOODS.filter((f) => !ICON_IDS.has(f.id)).map((f) => f.id)).toEqual([])
+  it('varje vara i grundlistan har en ikon, egen eller lånad', () => {
+    expect(FOODS.filter((f) => !ICON_IDS.has(f.id) && !ICON_IDS.has(ICON_FALLBACK[f.id] ?? '')).map((f) => f.id)).toEqual([])
+  })
+
+  it('lånade ikoner pekar på ikoner som finns', () => {
+    expect(Object.entries(ICON_FALLBACK).filter(([, icon]) => !ICON_IDS.has(icon))).toEqual([])
   })
 
   it('listan över ikoner stämmer med SVG-filerna (kör npm run icons:raster)', () => {

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-cheesecake-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="13" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="19"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-cheesecake-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-2 1.2)">
+    <g filter="url(#riso-cheesecake-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#EFCF9C" d="M7 34L56 25L56 44L7 50Z"/>
+      <path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M56 25L56 44L40 46C44 40 45 32 44.6 27Z"/>
+      <path fill="#DCA660" d="M7 45.4L56 39L56 44L7 50Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" d="M7 45.4L56 39L56 44L7 50Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M14 46.8h.1M26 45.2h.1M38 43.6h.1M50 42h.1"/>
+      <path fill="#E8453C" d="M7 34L40 14.6C47 14.6 53 18.6 56 25Z"/>
+      <path fill="#E8453C" d="M7 34L56 25L56 29.4C55.6 32 52.6 32 52.6 29.4L52.6 28.4L44.2 30C44.2 34.6 40.4 34.6 40.4 30.6L30 32.6C30 36.6 26.6 36.6 26.6 33.2L17 35C17 38 13.6 38 13.6 35.6L7 36.8Z"/>
+      <ellipse fill="#9B1B30" cx="36" cy="22.6" rx="3" ry="2.6"/>
+      <ellipse fill="#9B1B30" cx="45.6" cy="20.6" rx="3" ry="2.6"/>
+      <ellipse fill="#9B1B30" cx="43" cy="26.4" rx="3" ry="2.6"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M34.8 21.6h.1M44.4 19.6h.1M41.8 25.4h.1"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M17 31.6L27 25.6"/>
+    </g>
+    <g filter="url(#riso-cheesecake-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 34L40 14.6C47 14.6 53 18.6 56 25L56 44L7 50L7 35.6"/>
+      <path stroke-width="2.4" d="M7 34L56 25"/>
+    </g>
+  </g>
+</svg>

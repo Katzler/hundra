@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-pasta-lax-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="38" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="12"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-pasta-lax-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="53"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.6 -3.4)">
+<g filter="url(#riso-pasta-lax-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="31" cy="41" rx="26" ry="15"/>
+<path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M57 43.7A26 15 0 0 1 5 43.7A26 9.3 0 0 0 57 43.7Z"/>
+<ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="31" cy="40.4" rx="19.8" ry="10.5"/>
+<path fill="#EFCF9C" d="M48.6 38.4C48.6 40.2 47.6 42.4 45.9 43.9C44.2 45.4 41.1 46.6 38.2 47.5C35.2 48.3 31.5 49.1 28.4 48.9C25.2 48.7 21.7 47.5 19.1 46.3C16.6 45.1 13.6 43.3 12.8 41.5C12.1 39.7 13.6 37.4 14.8 35.6C15.9 33.9 17.3 32 19.6 30.8C21.9 29.6 25.4 29 28.6 28.7C31.8 28.4 35.7 28.1 38.6 28.8C41.5 29.5 44.2 31.3 45.8 32.9C47.5 34.5 48.5 36.6 48.6 38.4Z"/>
+<path fill="#EFCF9C" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M48 39.4A17 10 0 0 1 14 39.4A17 5.5 0 0 0 48 39.4Z"/>
+<path fill="none" stroke="#FFD02E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M21 41A9 4.6 0 0 1 37 37.4M40 39A10 5 0 0 1 26 44.6M18 37A12 5 0 0 1 32 33.4"/>
+<path fill="#F49AB0" stroke="#F28C28" stroke-width="2.4" stroke-linejoin="round" d="M18 32.8C19.2 32.3 22.6 31.3 23.9 31.1C25.2 30.8 25.3 31 25.7 31.3C26.2 31.6 26.6 32.1 26.9 32.7C27.2 33.4 27.6 34.7 27.7 35.4C27.8 36.2 27.7 36.7 27.4 37.2C27.2 37.7 27.3 37.9 26 38.4C24.8 38.9 21.4 39.9 20.1 40.1C18.8 40.4 18.7 40.2 18.3 39.9C17.8 39.6 17.4 39.1 17.1 38.5C16.8 37.8 16.4 36.5 16.3 35.8C16.2 35 16.3 34.5 16.6 34C16.8 33.5 16.7 33.3 18 32.8ZM36.2 28.6C37.5 28.8 41 29.5 42.2 29.9C43.5 30.3 43.4 30.5 43.7 31C44 31.5 44.1 32 44.1 32.8C44 33.5 43.8 34.8 43.5 35.5C43.2 36.2 42.9 36.7 42.4 37C42 37.3 42 37.5 40.6 37.4C39.3 37.2 35.8 36.5 34.6 36.1C33.3 35.7 33.4 35.5 33.1 35C32.8 34.5 32.7 34 32.7 33.2C32.8 32.5 33 31.2 33.3 30.5C33.6 29.8 33.9 29.3 34.4 29C34.8 28.7 34.8 28.5 36.2 28.6ZM27.5 40.5C28.8 40.3 32.4 39.9 33.7 39.9C35 39.9 35 40.1 35.4 40.4C35.9 40.8 36.1 41.3 36.3 42C36.5 42.8 36.7 44.1 36.6 44.8C36.6 45.6 36.4 46.1 36.1 46.6C35.7 47 35.8 47.2 34.5 47.5C33.2 47.7 29.6 48.1 28.3 48.1C27 48.1 27 47.9 26.6 47.6C26.1 47.2 25.9 46.7 25.7 46C25.5 45.2 25.3 43.9 25.4 43.2C25.4 42.4 25.6 41.9 25.9 41.4C26.3 41 26.2 40.8 27.5 40.5Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M20 33L20.1 39.3M23.9 31.9L24 38.2M37.8 29.8L35 35.4M41.8 30.6L39 36.2M29.5 41.1L28.5 47.3M33.5 40.7L32.5 46.9"/>
+<path fill="none" stroke="#3BAA5C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M43.6 42L46.6 39M45 40.6L47.8 41.4M45.2 40.4L45 37.6M14.6 38.6L17.2 36M15.8 37.4L18.2 38.2"/>
+</g>
+<g filter="url(#riso-pasta-lax-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M57 41A26 15 0 0 1 5.9 44.9A26 15 0 0 1 53.5 33.5"/>
+<path stroke-width="2.8" d="M48.6 38.4C48.6 40.2 47.6 42.4 45.9 43.9C44.2 45.4 41.1 46.6 38.2 47.5C35.2 48.3 31.5 49.1 28.4 48.9C25.2 48.7 21.7 47.5 19.1 46.3C16.6 45.1 13.6 43.3 12.8 41.5C12.1 39.7 13.6 37.4 14.8 35.6C15.9 33.9 17.3 32 19.6 30.8C21.9 29.6 25.4 29 28.6 28.7C31.8 28.4 35.7 28.1 38.6 28.8C41.5 29.5 44.2 31.3 45.8 32.9C47 34 47.9 35.4 48.3 36.7"/>
+</g>
+</g>
+</svg>

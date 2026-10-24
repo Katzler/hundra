@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-persika-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="4" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="12"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-persika-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="26"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -2.2)">
+    <g filter="url(#riso-persika-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#FFD02E" d="M31.4 17C39 11.6 51.4 16.4 52.8 30C54.2 44 44.4 54 32 54C19.6 54 9.8 44 11.2 30C12.6 16.4 24 11.6 31.4 17Z"/>
+      <path fill="#F49AB0" style="mix-blend-mode:multiply" d="M33 17.6C42 15 52 20 52.8 30C54.2 44 44.4 54 32 54C24 54 18 50 15 44C26 48 38 42 38.6 32C39 25 36 20 33 17.6Z"/>
+      <path fill="#E8453C" style="mix-blend-mode:multiply" d="M44.4 26.6C49 31 49.4 40 44 46C40 50 34.6 51 31 50.6C38.6 46 43 37 44.4 26.6Z"/>
+      <path fill="#3BAA5C" d="M33 16.4C35 10.8 41.6 8.6 47.4 10.2C45.4 15.8 39.4 18.4 33 16.4Z"/>
+      <path fill="none" stroke="#9A4E24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M31.6 16.6c-.2-3-.4-5.2-1.6-7"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M18.4 28c1.2-4 3.6-6.4 6.4-7.6"/>
+    </g>
+    <g filter="url(#riso-persika-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M31.4 17C39 11.6 51.4 16.4 52.8 30C54.2 44 44.4 54 32 54C19.6 54 9.8 44 11.2 30C12 21.6 16.6 16.4 22 14.8"/>
+      <path stroke-width="2.4" d="M31.6 17.4C27 24 26 36 29 46"/>
+      <path stroke-width="2.4" d="M31.6 16.6c-.2-3-.4-5.2-1.6-7M33 16.4C35 10.8 41.6 8.6 47.4 10.2C45.4 15.8 39.4 18.4 33.6 16.6"/>
+    </g>
+  </g>
+</svg>

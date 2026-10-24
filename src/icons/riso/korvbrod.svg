@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-korvbrod-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="22" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="7"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-korvbrod-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="37"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-1.8 -2.4) rotate(-7 32 32)">
+<g filter="url(#riso-korvbrod-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<path fill="#DCA660" d="M9.4 38.6C9.6 43.6 12 46.6 18 47L44 47C50 46.6 52.4 43.6 52.6 38.6A21.6 3.8 0 0 0 9.4 38.6Z"/>
+<path fill="#EFCF9C" d="M9.4 38.6a21.6 3.8 0 1 0 43.2 0a21.6 3.8 0 1 0 -43.2 0Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M52.6 38.6C52.4 43.6 50 46.6 44 47L18 47C30 45 46 44 52.6 38.6Z"/>
+<path fill="#DCA660" d="M8 31C7.6 22.6 18 19.4 31 19.4C44 19.4 54.4 22.6 54 31C46 33.6 16 33.6 8 31Z"/>
+<path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M54 31C46 33.6 16 33.6 8 31C20 31 40 30 48 26C51 24.4 52 23 51.6 22C53.4 24.4 54.2 27.6 54 31Z"/>
+<path fill="none" stroke="#FFF1CF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M13.6 25.6C17.6 22.8 23 21.8 28 21.6"/>
+</g>
+<g filter="url(#riso-korvbrod-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M8.6 32.6C7 30 7.6 22.6 18 20.4C24 19.2 38 19.2 44 20.4C52 22 54.4 26 54 31"/>
+<path d="M52.6 38.6A21.6 3.8 0 0 1 9.5 38.9A21.6 3.8 0 0 1 52.3 37.9"/>
+<path d="M9.4 39C9.6 43.6 12 46.6 18 47L44 47C50 46.6 52.4 43.6 52.6 38.6"/>
+</g>
+</g>
+</svg>

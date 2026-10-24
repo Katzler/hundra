@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-kalops-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="7" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="3"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-kalops-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="11"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.4 -8)">
+<g filter="url(#riso-kalops-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32" cy="40" rx="26" ry="17"/><path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58 42.4A26 17 0 0 1 6 42.4A26 11.1 0 0 0 58 42.4Z"/><ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.5" ry="11.9"/><path fill="#6B3A1E" d="M22 36C23 29 33 27.5 41 28.5C49 29.5 52 34 51 39.5C50 45 43 49.5 35 49C27 48.5 21 43 22 36Z"/><path fill="#9A4E24" d="M27.5 35.5L34.1 37.1L32.5 43.7L25.9 42.1ZM38 34.4L44.6 33L46 39.6L39.4 41ZM37.4 40.8L43.2 43.4L40.6 49.2L34.8 46.6Z"/><path fill="none" stroke="#DCA660" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M28 37l3.6.8M40 34.6l3.6-.6M37.4 42.8l3 1.4"/><ellipse fill="#F28C28" cx="47.4" cy="42.6" rx="2.8" ry="2.4"/><ellipse fill="#F28C28" cx="31.5" cy="46.4" rx="2.8" ry="2.4"/><ellipse fill="#EFCF9C" cx="17.5" cy="36" rx="6" ry="4.8"/><ellipse fill="#EFCF9C" cx="20.5" cy="44.4" rx="6" ry="4.8"/><path fill="#DCA660" style="mix-blend-mode:multiply" d="M23.5 36.4c-.4 3-3 4.6-6 4.4c-2 0-3.8-.9-5-2.4c3 1.6 8 1.4 11-2ZM26.5 44.8c-.4 3-3 4.6-6 4.4c-2 0-3.8-.9-5-2.4c3 1.6 8 1.4 11-2Z"/><path fill="#3BAA5C" d="M27 31C32 22.6 45 20.6 52.6 25.4C48 33.4 35 36 27 31Z"/><path fill="none" stroke="#FFF1CF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M31 30.4C37.6 27.6 44 26 49.6 25.6"/>
+</g>
+<g filter="url(#riso-kalops-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M57.4 35.5A26.3 17.3 0 1 1 51.5 28.4"/><path stroke-width="2.4" d="M27 31C32 22.6 45 20.6 52.6 25.4C48 33.4 35 36 27 31"/>
+</g>
+</g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<filter id="riso-fisksoppa-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="21" result="w"/>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+<feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="5"/>
+<feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+<feComposite in2="d" operator="in"/>
+<feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+</filter>
+<filter id="riso-fisksoppa-ink" x="-8%" y="-8%" width="116%" height="116%">
+<feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="18"/>
+<feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+</defs>
+<g transform="translate(-2.4 -4.6)">
+<g filter="url(#riso-fisksoppa-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+<ellipse fill="#3D78D8" cx="32" cy="40" rx="26" ry="17"/><path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M58 42.4A26 17 0 0 1 6 42.4A26 11.1 0 0 0 58 42.4Z"/><ellipse fill="none" stroke="#A9C8F0" stroke-width="2.2" cx="32" cy="39" rx="19.5" ry="11.9"/><ellipse fill="#FFF1CF" cx="32" cy="39" rx="19" ry="11.5"/><path fill="#EFCF9C" style="mix-blend-mode:multiply" d="M13 39A19 11.5 0 0 1 51 39A19 6.9 0 0 0 13 39Z"/><path fill="#F28C28" d="M20.3 34.4L26.1 35.8L24.7 41.6L18.9 40.2ZM35.9 41.7L41.8 40.4L43.1 46.3L37.2 47.6ZM41.5 32.5L46.5 34.5L44.5 39.5L39.5 37.5Z"/><path fill="none" stroke="#F49AB0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M20.4 36.4l3.6 2.6M37.6 42.4l3.6 2.6"/><g transform="translate(31 36) rotate(-10) scale(1.1)"><path fill="none" stroke="#F49AB0" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" d="M-3.2 1.2A3.4 3.4 0 1 1 2.6 2.2"/><path fill="none" stroke="#E8453C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M-3.6 -1.6l2 1M0 -3.6v2M3.4 -1.2l-2 .6"/></g><g transform="translate(28.5 45) rotate(150) scale(1)"><path fill="none" stroke="#F49AB0" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" d="M-3.2 1.2A3.4 3.4 0 1 1 2.6 2.2"/><path fill="none" stroke="#E8453C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M-3.6 -1.6l2 1M0 -3.6v2M3.4 -1.2l-2 .6"/></g><path fill="none" stroke="#3BAA5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M46 40.6l3 3m-1.5-1.5l2.6-.8M17 42.4l3-2m-1.5 1l-.6-2.8M34 30l2.6 1.8m-1.3-.9l1.4-2.4"/>
+</g>
+<g filter="url(#riso-fisksoppa-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M57.4 35.5A26.3 17.3 0 1 1 51.5 28.4"/><path stroke-width="2.4" d="M13.8 43.1A19.4 11.9 0 1 1 50.2 43.1"/><path d="M26 23C23.4 20.4 28.8 17.6 26 13M37 22C34.4 19.4 39.8 16.6 37 12"/>
+</g>
+</g>
+</svg>

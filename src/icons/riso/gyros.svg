@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-gyros-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="10" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="3"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-gyros-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="27"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.4 2.6)">
+    <g filter="url(#riso-gyros-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#FFD02E" d="M26.2 14.3L20.2 3.2Q19.7 2.4 18.8 2.8L16 4.4Q15.1 4.8 15.6 5.7L21.6 16.8Q22.1 17.6 23 17.2L25.8 15.6Q26.7 15.1 26.2 14.3Z"/>
+      <path fill="#FFD02E" d="M39.1 16.4L45.7 5.8Q46.2 5 45.4 4.4L42.6 2.8Q41.8 2.2 41.3 3.1L34.7 13.6Q34.1 14.5 35 15L37.7 16.7Q38.6 17.2 39.1 16.4Z"/>
+      <path fill="#EFCF9C" d="M10 24C9 15 14 11 19 13C24 9.6 40 9.6 45 13C50 11 55 15 54 24Z"/>
+      <path fill="#6B3A1E" d="M13 24C12 19 16 16.4 20 18C22 14.4 28 14 30.4 17.4C33 14 39 14 41 17.6C44 15.6 50 16.6 51 22L51 26L13 26Z"/>
+      <ellipse fill="#E8453C" cx="24" cy="20" rx="3.6" ry="3.4"/>
+      <ellipse fill="#E8453C" cx="43" cy="20.4" rx="3.6" ry="3.4"/>
+      <path fill="#FFF1CF" d="M28.4 21C28.4 17 35.6 16 37.2 20.2C36.6 23 30 23.4 28.4 21Z"/>
+      <path fill="#DCA660" d="M10 23C15 28 23 29.4 32 29.4C41 29.4 49 28 54 23C53 33 45 44 35 54.4C33.4 55.6 30.6 55.6 29 54.4C19 44 11 33 10 23Z"/>
+      <path fill="#DCA660" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M54 23C53 33 45 44 35 54.4C33.4 55.6 31 55.6 29.6 54.6C38 44 45 34 47 26.6C50 25.8 52.4 24.6 54 23Z"/>
+      <path fill="#3D78D8" d="M13.4 35.6L51.4 29.6C48.6 39 42.6 46.6 35 54.4C33.4 55.6 30.6 55.6 29 54.4C22 47 16.4 41.4 13.4 35.6Z"/>
+      <path fill="#3D78D8" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M51.4 29.6C48.6 39 42.6 46.6 35 54.4C33.6 55.4 31.6 55.6 30.4 55C38 46 43.6 38 45.6 30.6Z"/>
+      <path fill="none" stroke="#FFF1CF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M19.6 41.4l3.6 5"/>
+    </g>
+    <g filter="url(#riso-gyros-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="2.4" d="M24.3 10.8L19.7 2.4L15.1 4.8L19.7 13.2"/>
+      <path stroke-width="2.4" d="M41.2 13L46.2 5L41.8 2.2L36.8 10.2"/>
+      <path stroke-width="2.6" d="M10 24C9 15 14 11 19 13C24 9.6 40 9.6 45 13C50 11 55 15 54 24"/>
+      <path d="M10 23C15 28 23 29.4 32 29.4C41 29.4 49 28 54 23C53 33 45 44 35 54.4C33.4 55.6 30.6 55.6 29 54.4C19 44 11 33 10.2 24.6"/>
+      <path stroke-width="2.6" d="M13.4 35.6L51.4 29.6"/>
+    </g>
+  </g>
+</svg>

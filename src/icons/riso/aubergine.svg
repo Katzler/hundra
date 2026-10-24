@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="riso-aubergine-grain" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="8" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" seed="3"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.5 0 0 0 -2.05"/>
+      <feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode/></feMerge>
+    </filter>
+    <filter id="riso-aubergine-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="12"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g transform="translate(-1.6 -2.4)">
+    <g filter="url(#riso-aubergine-grain)" style="isolation:isolate" transform="translate(3.5 3)">
+      <path fill="#7A4BB0" d="M41.4 16.3C46.7 19.2 47 25 45.4 30.9C43.7 37.5 45.4 44.1 40.8 50.7C36.6 56.4 29.3 57.5 21.7 53.4C14.1 49.4 10.8 42.7 13.2 36C16.1 28.5 22.5 26.2 27 21.2C31.1 16.5 36.1 13.5 41.4 16.3Z"/>
+      <path fill="#7A4BB0" style="mix-blend-mode:multiply" transform="translate(-1 .8)" d="M41.4 16.3C46.7 19.2 47 25 45.4 30.9C43.7 37.5 45.4 44.1 40.8 50.7C36.6 56.4 29.3 57.5 21.7 53.4C14.1 49.4 10.8 42.7 13.2 36C16.1 28.5 22.5 26.2 27 21.2C31.1 16.5 36.1 13.5 41.4 16.3Z"/>
+      <path fill="#FFF1CF" d="M39.3 20.3C43.5 22.6 43.7 27.4 42.3 32.3C40.8 37.9 42.1 43.3 38.2 48.9C34.8 53.7 28.8 54.7 22.7 51.5C16.6 48.2 14.1 42.7 16.2 37.1C18.6 30.8 23.9 28.9 27.6 24.5C30.9 20.6 35 18.1 39.3 20.3Z"/>
+      <path fill="none" stroke="#EFCF9C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M24.1 39.5L24.2 39.6M26.2 44.9L26.3 45M31.8 43.7L31.9 43.7M28.6 36.1L28.7 36.1M32.2 37.9L32.3 38M24.5 48.1L24.6 48.2"/>
+      <path fill="#3BAA5C" d="M27.2 20.8C31.4 15.1 36.8 13.5 41.6 16C46.3 18.5 48 23.9 45.6 30.6L43.1 25.9L38.8 28.5L38.3 22.2L32.6 25.2L32.6 20.1Z"/>
+      <path fill="none" stroke="#3BAA5C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M41.4 16.3L44.9 9.8"/>
+    </g>
+    <g filter="url(#riso-aubergine-ink)" fill="none" stroke="var(--ink, #2b2118)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M27 21.2C22.5 26.2 16.1 28.5 13.2 36C10.8 42.7 14.1 49.4 21.7 53.4C29.3 57.5 36.6 56.4 40.8 50.7C45.4 44.1 43.7 37.5 45.4 30.9"/>
+      <path d="M27.2 20.8C31.4 15.1 36.8 13.5 41.6 16C46.3 18.5 48 23.9 45.6 30.6L43.1 25.9L38.8 28.5L38.3 22.2L32.6 25.2L32.6 20.1L27.2 20.8"/>
+      <path stroke-width="3" d="M41.6 16L44.9 9.8"/>
+      <path stroke-width="2.4" d="M39.3 20.3C43.5 22.6 43.7 27.4 42.3 32.3C40.8 37.9 42.1 43.3 38.2 48.9C34.8 53.7 28.8 54.7 22.7 51.5C16.6 48.2 14.1 42.7 16.2 37.1C18.6 30.8 23.9 28.9 27.6 24.5C30.9 20.6 35 18.1 39.3 20.3"/>
+    </g>
+  </g>
+</svg>

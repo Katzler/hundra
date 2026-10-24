@@ -57,3 +57,11 @@ export function weekdayLetter(key: DateKey): string {
 export function dayOfMonth(key: DateKey): number {
   return fromKey(key).getDate()
 }
+
+/** En dag man bläddrat till, och vilken dag det var när man gjorde det. */
+export type PickedDay = { date: DateKey; on: DateKey }
+
+/** Den dag som visas. Ett val gäller bara samma kalenderdag – nästa morgon börjar appen på idag igen. */
+export function resolveDay(picked: PickedDay | null, today: DateKey): DateKey {
+  return picked && picked.on === today && picked.date < today ? picked.date : today
+}

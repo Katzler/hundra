@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { FoodIcon } from '../components/FoodIcon'
 import { ChevronLeft } from '../components/icons'
 import { AboutFields, ActivityPicker, aboutValid, emptyForm, toProfile } from '../components/ProfileFields'
 import { Ring } from '../components/Ring'
 import { FOODS } from '../data/foods'
+import { importBackup } from '../lib/backup'
 import { formatInt, formatPoints, tdee, toPoints } from '../lib/calc'
+import { isStandalone } from '../lib/hooks'
 import { useStore } from '../store/useStore'
 
 const EXAMPLES = ['potatis', 'macka-ost', 'banan', 'kaffe-mjolk', 'bolognese'].map((id) => FOODS.find((f) => f.id === id)!)
@@ -12,6 +14,7 @@ const EXAMPLES = ['potatis', 'macka-ost', 'banan', 'kaffe-mjolk', 'bolognese'].m
 export function Onboarding() {
   const [step, setStep] = useState(0)
   const [form, setForm] = useState(emptyForm)
+  const fileRef = useRef<HTMLInputElement>(null)
   const setProfile = useStore((s) => s.setProfile)
   const profile = toProfile(form)
   const budget = profile ? tdee(profile) : 0
@@ -51,6 +54,25 @@ export function Onboarding() {
               Hela din dag är <strong>100 poäng</strong>. Logga det du äter med ett par tryck. Du behöver varken väga eller räkna kalorier.
             </p>
             <p className="hero-text muted">Det är snittet över tid som räknas, inte varje enskild dag.</p>
+            <button type="button" className="link-btn" onClick={() => fileRef.current?.click()}>
+              Har du en backup? Återställ
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="application/json,.json"
+              hidden
+              onChange={(e) => {
+                const f = e.target.files?.[0]
+                if (f) importBackup(f)
+                e.target.value = ''
+              }}
+            />
+            {!isStandalone() && (
+              <p className="hint-text welcome-tip">
+                Tips: lägg till appen på hemskärmen innan du börjar (dela-knappen → Lägg till på hemskärmen). Appen där har egen lagring.
+              </p>
+            )}
           </div>
         )}
 

@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { registerSW } from 'virtual:pwa-register'
 import { App } from './App'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import './styles/tokens.css'
 import './styles/global.css'
 
@@ -24,7 +25,8 @@ const updateSW = registerSW({
   onRegisteredSW(_url, registration) {
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        if (updateReady) updateSW(true)
+        // Inte medan ett ark (t.ex. ett halvifyllt formulär) är öppet – då väntar vi till nästa gång.
+        if (updateReady && !document.body.dataset.sheetOpen) updateSW(true)
       } else {
         shownAt = Date.now()
         registration?.update().catch(() => {})
@@ -35,6 +37,8 @@ const updateSW = registerSW({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </StrictMode>,
 )

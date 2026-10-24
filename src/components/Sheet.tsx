@@ -51,10 +51,12 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
     if (!open) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    document.body.dataset.sheetOpen = '1'
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
+      delete document.body.dataset.sheetOpen
       window.removeEventListener('keydown', onKey)
     }
   }, [open, onClose])

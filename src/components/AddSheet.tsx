@@ -3,7 +3,7 @@ import { CATEGORIES, type CategoryId, type Food } from '../data/foods'
 import { budgetFor, dayKcal, formatPoints, toPoints } from '../lib/calc'
 import { dayTitle, todayKey, type DateKey } from '../lib/dates'
 import { searchFoods } from '../lib/search'
-import { haptic, useUI } from '../store/ui'
+import { useUI } from '../store/ui'
 import { allFoods, recentFoods, useStore } from '../store/useStore'
 import { CustomFoodForm } from './CustomFoodForm'
 import { FoodIcon } from './FoodIcon'
@@ -42,8 +42,11 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const qtyOf = (id: string) => dayEntries.find((e) => e.foodId === id)?.qty ?? 0
 
   useEffect(() => {
-    if (!open) return
-    startKcal.current = dayKcal(useStore.getState().entries, date)
+    if (open) {
+      startKcal.current = dayKcal(useStore.getState().entries, date)
+      return
+    }
+    // Nollställ när arket stängs, så att sökfältet syns och kan få fokus direkt nästa gång.
     setQuery('')
     setView({ kind: 'home' })
   }, [open, date])
@@ -54,9 +57,15 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
 
   const sessionPoints = toPoints(dayKcal(entries, date) - startKcal.current, budget)
   const results = useMemo(() => searchFoods(foods, query, usage).slice(0, 60), [foods, query, usage])
+  // Ordningen låses när arket öppnas, så att raderna inte byter plats medan man trycker.
   const recent = useMemo(
-    () => recentFoods(foods, usage, 8 + favorites.length).filter((f) => !favorites.includes(f.id)).slice(0, 8),
-    [foods, usage, favorites],
+    () =>
+      open
+        ? recentFoods(foods, useStore.getState().usage, 8 + favorites.length)
+            .filter((f) => !favorites.includes(f.id))
+            .slice(0, 8)
+        : [],
+    [open, foods, favorites],
   )
   const favoriteFoods = useMemo(
     () => favorites.map((id) => foods.find((f) => f.id === id)).filter(Boolean) as Food[],
@@ -133,12 +142,10 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && results[0]) {
+              // Klar fäller bara ner tangentbordet – den ska aldrig logga något.
+              if (e.key === 'Enter') {
                 e.preventDefault()
-                haptic()
-                add(results[0])
-                showToast(`${results[0].name} +1`)
-                setQuery('')
+                e.currentTarget.blur()
               }
             }}
             placeholder="Sök mat, t.ex. potatis"

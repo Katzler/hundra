@@ -5,6 +5,7 @@ import {
   dayPoints,
   forecastKgPerWeek,
   formatKg,
+  formatKgPerWeek,
   formatPoints,
   rollingAverage,
   tdee,
@@ -14,7 +15,7 @@ import {
   type Entry,
   type Profile,
 } from './calc'
-import { addDays, lastNDays } from './dates'
+import { addDays, lastNDays, resolveDay } from './dates'
 
 const man: Profile = { sex: 'man', age: 30, heightCm: 180, weightKg: 80, activity: 3 }
 const kvinna: Profile = { sex: 'kvinna', age: 30, heightCm: 165, weightKg: 60, activity: 2 }
@@ -126,6 +127,13 @@ describe('snitt över tid', () => {
     expect(rollingAverage(entries, history, end, 7).avg).toBeCloseTo(50)
   })
 
+  it('räknar inte dagar med 0 kcal som loggade', () => {
+    const entries = [entry(end, 1000), entry(addDays(end, -1), 0)]
+    const r = rollingAverage(entries, history, end, 7)
+    expect(r.loggedDays).toBe(1)
+    expect(r.avg).toBeCloseTo(50)
+  })
+
   it('ger null när inget är loggat', () => {
     expect(rollingAverage([], history, end, 30).avg).toBeNull()
   })
@@ -146,8 +154,28 @@ describe('prognos', () => {
     expect(forecastKgPerWeek(100, 2750)).toBe(0)
   })
 
+  it('säger "mindre än 0,1 kg" i stället för 0,0', () => {
+    expect(formatKgPerWeek(0.02)).toBe('mindre än 0,1 kg i veckan')
+    expect(formatKgPerWeek(-0.26)).toMatch(/^ungefär [−-]0,3 kg i veckan$/)
+  })
+
   it('formaterar med svenskt decimaltecken och tecken', () => {
     expect(formatKg(-0.26)).toMatch(/^[−-]0,3$/)
     expect(formatKg(0.21)).toBe('+0,2')
+  })
+})
+
+describe('vald dag', () => {
+  it('gäller samma dag', () => {
+    expect(resolveDay({ date: '2026-10-22', on: '2026-10-24' }, '2026-10-24')).toBe('2026-10-22')
+  })
+
+  it('nästa morgon börjar appen på idag igen', () => {
+    expect(resolveDay({ date: '2026-10-23', on: '2026-10-24' }, '2026-10-25')).toBe('2026-10-25')
+  })
+
+  it('idag eller framtid betyder idag', () => {
+    expect(resolveDay(null, '2026-10-24')).toBe('2026-10-24')
+    expect(resolveDay({ date: '2026-10-24', on: '2026-10-24' }, '2026-10-24')).toBe('2026-10-24')
   })
 })

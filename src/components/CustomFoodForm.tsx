@@ -22,22 +22,37 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
   const [unit, setUnit] = useState(initial?.unit ?? '1 portion')
   const [emoji, setEmoji] = useState(initial?.emoji ?? '🍽️')
   const [mode, setMode] = useState<'points' | 'kcal'>('points')
-  const startPoints = initial?.kcal !== undefined ? Math.max(1, Math.round(toPoints(initial.kcal, budgetKcal))) : 5
+  const startPoints = initial?.kcal !== undefined ? Math.round(toPoints(initial.kcal, budgetKcal)) : 5
   const [points, setPoints] = useState(String(startPoints))
   const [kcal, setKcal] = useState(initial?.kcal !== undefined ? String(Math.round(initial.kcal)) : '')
+  // Det exakta värdet som sparas. Det ändras bara när man själv ändrar poäng eller kcal,
+  // så att ett namnbyte eller ett byte mellan poäng och kcal aldrig avrundar om värdet.
+  const [exactKcal, setExactKcal] = useState<number | null>(initial?.kcal ?? toKcal(startPoints, budgetKcal))
 
-  const num = (s: string) => Number(s.replace(',', '.'))
-  const kcalValue = mode === 'points' ? toKcal(num(points), budgetKcal) : num(kcal)
-  const valid = name.trim().length > 0 && Number.isFinite(kcalValue) && kcalValue >= 0 && (mode === 'points' ? points !== '' : kcal !== '')
+  const num = (s: string) => (s.trim() === '' ? NaN : Number(s.replace(',', '.')))
+  const valid = name.trim().length > 0 && exactKcal !== null && Number.isFinite(exactKcal) && exactKcal >= 0
 
-  const bump = (d: number) => setPoints(String(Math.max(0, Math.round(num(points) || 0) + d)))
+  const changePoints = (value: string) => {
+    setPoints(value)
+    setExactKcal(Number.isFinite(num(value)) ? toKcal(num(value), budgetKcal) : null)
+  }
+  const changeKcal = (value: string) => {
+    setKcal(value)
+    setExactKcal(Number.isFinite(num(value)) ? num(value) : null)
+  }
+  const bump = (d: number) => changePoints(String(Math.max(0, Math.round(num(points) || 0) + d)))
+  const switchMode = () => {
+    if (mode === 'points') setKcal(exactKcal === null ? '' : String(Math.round(exactKcal)))
+    else setPoints(exactKcal === null ? '' : String(Math.round(toPoints(exactKcal, budgetKcal))))
+    setMode(mode === 'points' ? 'kcal' : 'points')
+  }
 
   return (
     <form
       className="form"
       onSubmit={(e) => {
         e.preventDefault()
-        if (valid) onSubmit({ name: name.trim(), emoji, unit: unit.trim() || '1 portion', kcal: Math.round(kcalValue) })
+        if (valid) onSubmit({ name: name.trim(), emoji, unit: unit.trim() || '1 portion', kcal: Math.round(exactKcal) })
       }}
     >
       <div className="group">
@@ -76,7 +91,7 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
             <input
               className="points-input"
               value={points}
-              onChange={(e) => setPoints(e.target.value.replace(/[^0-9,.]/g, ''))}
+              onChange={(e) => changePoints(e.target.value.replace(/[^0-9,.]/g, ''))}
               inputMode="decimal"
               aria-label="Poäng"
             />
@@ -96,13 +111,13 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
         <div className="group">
           <label className="field">
             <span className="field-label">Kcal per portion</span>
-            <input value={kcal} onChange={(e) => setKcal(e.target.value.replace(/[^0-9]/g, ''))} inputMode="numeric" placeholder="t.ex. 450" />
+            <input value={kcal} onChange={(e) => changeKcal(e.target.value.replace(/[^0-9]/g, ''))} inputMode="numeric" placeholder="t.ex. 450" />
           </label>
           {kcal !== '' && <div className="field-hint">≈ {formatPoints(toPoints(num(kcal), budgetKcal))} poäng för dig</div>}
         </div>
       )}
 
-      <button type="button" className="link-btn" onClick={() => setMode(mode === 'points' ? 'kcal' : 'points')}>
+      <button type="button" className="link-btn" onClick={switchMode}>
         {mode === 'points' ? 'Jag vet antal kcal' : 'Ange poäng i stället'}
       </button>
 

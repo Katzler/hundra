@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { BarChart } from '../components/BarChart'
 import { ArrowDown, ArrowUp, EqualIcon } from '../components/icons'
 import { Segmented } from '../components/Segmented'
-import { budgetFor, forecastKgPerWeek, formatKg, rollingAverage } from '../lib/calc'
+import { budgetFor, forecastKgPerWeek, formatKgPerWeek, MIN_FORECAST_DAYS, rollingAverage } from '../lib/calc'
 import { addDays } from '../lib/dates'
 import { useAnimatedNumber, useToday } from '../lib/hooks'
 import { useStore } from '../store/useStore'
@@ -56,16 +56,14 @@ export function Trend() {
           </span>
           <div>
             <div className="insight-title">
-              {steady
-                ? 'Du ligger på din nivå'
-                : diff < 0
-                  ? `${Math.abs(diff)} % under din nivå`
-                  : `${diff} % över din nivå`}
+              {steady ? 'Du ligger runt 100' : diff < 0 ? `${Math.abs(diff)} under 100 i snitt` : `${diff} över 100 i snitt`}
             </div>
             <div className="insight-text">
-              {steady
-                ? 'Vikten bör hålla sig ungefär stabil.'
-                : `Ungefär ${formatKg(kg)} kg i veckan om du fortsätter så här.`}
+              {stats.loggedDays < MIN_FORECAST_DAYS
+                ? `Prognosen visas när du loggat minst ${MIN_FORECAST_DAYS} hela dagar (${MIN_FORECAST_DAYS - stats.loggedDays} kvar).`
+                : steady
+                  ? 'Vikten bör hålla sig ungefär stabil.'
+                  : `${formatKgPerWeek(kg).replace(/^./, (c) => c.toUpperCase())} om du fortsätter så här.`}
             </div>
           </div>
         </section>

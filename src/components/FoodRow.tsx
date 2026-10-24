@@ -25,29 +25,33 @@ export function FoodRow({ food, points, qty, favorite, onAdd, onQty, onLongPress
   const cancel = () => clearTimeout(timer.current)
 
   return (
-    <div
-      className={`row food-row ${qty > 0 ? 'is-added' : ''}`}
-      onPointerDown={(e) => {
-        longPressed.current = false
-        startPos.current = { x: e.clientX, y: e.clientY }
-        timer.current = setTimeout(() => {
-          longPressed.current = true
-          haptic(15)
-          onLongPress()
-        }, 500)
-      }}
-      onPointerMove={(e) => {
-        if (Math.hypot(e.clientX - startPos.current.x, e.clientY - startPos.current.y) > 8) cancel()
-      }}
-      onPointerUp={cancel}
-      onPointerCancel={cancel}
-      onContextMenu={(e) => e.preventDefault()}
-    >
+    <div className={`row food-row ${qty > 0 ? 'is-added' : ''}`}>
+      {/* Långtryck (favorit) gäller bara namnraden, aldrig (+) eller stegaren. */}
       <button
         type="button"
         className="row-main"
+        onPointerDown={(e) => {
+          longPressed.current = false
+          startPos.current = { x: e.clientX, y: e.clientY }
+          timer.current = setTimeout(() => {
+            longPressed.current = true
+            haptic(15)
+            onLongPress()
+          }, 500)
+        }}
+        onPointerMove={(e) => {
+          if (Math.hypot(e.clientX - startPos.current.x, e.clientY - startPos.current.y) > 8) cancel()
+        }}
+        onPointerUp={cancel}
+        onPointerCancel={cancel}
+        onPointerLeave={cancel}
+        onContextMenu={(e) => e.preventDefault()}
         onClick={() => {
-          if (longPressed.current) return
+          // Klicket som kommer efter ett långtryck ska inte också lägga till varan.
+          if (longPressed.current) {
+            longPressed.current = false
+            return
+          }
           haptic()
           onAdd()
         }}

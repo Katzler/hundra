@@ -1689,3 +1689,39 @@ strong {
   display: block;
   margin: 18px auto 0;
 }
+
+/* ───────── Backup och felskärm ───────── */
+
+.secondary-btn {
+  width: 100%;
+  height: 50px;
+  border-radius: var(--radius);
+  background: var(--fill);
+  color: var(--tint);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.secondary-btn:active {
+  background: var(--fill-strong);
+}
+
+.tip-steps {
+  margin: 8px 0 14px;
+  padding-left: 20px;
+  color: var(--label-2);
+  line-height: 1.5;
+}
+
+.welcome-tip {
+  max-width: 320px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.crash {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: calc(var(--safe-top) + 15vh);
+}

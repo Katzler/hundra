@@ -9,7 +9,7 @@ import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
 import type { Food } from '../data/foods'
 import { budgetFor, entryKcal, formatPoints, toPoints } from '../lib/calc'
-import { addDays, dayLong, dayTitle, type DateKey } from '../lib/dates'
+import { addDays, dayLong, dayTitle, resolveDay, type DateKey, type PickedDay } from '../lib/dates'
 import { useToday } from '../lib/hooks'
 import { haptic, useUI } from '../store/ui'
 import { allFoods, quickFoods, useStore } from '../store/useStore'
@@ -17,8 +17,9 @@ import { allFoods, quickFoods, useStore } from '../store/useStore'
 
 export function Today() {
   const today = useToday()
-  const [picked, setPicked] = useState<DateKey | null>(null)
-  const date = picked && picked < today ? picked : today
+  const [picked, setPicked] = useState<PickedDay | null>(null)
+  const date = resolveDay(picked, today)
+  const goTo = (d: DateKey) => setPicked(d < today ? { date: d, on: today } : null)
   const [adding, setAdding] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
 
@@ -56,7 +57,7 @@ export function Today() {
   const quickAdd = (food: Food) => {
     haptic()
     addFood(food, date)
-    showToast(`${food.name} +1`, {
+    showToast(`${food.name} +1${dayNote}`, {
       label: 'Ångra',
       run: () => {
         const e = useStore.getState().entries.find((x) => x.date === date && x.foodId === food.id)
@@ -65,12 +66,15 @@ export function Today() {
     })
   }
 
+  const isToday = date === today
+  // Loggar man på en annan dag än idag ska bekräftelsen säga det.
+  const dayNote = isToday ? '' : ` · ${dayTitle(date, today)}`
+
   const remove = (id: string) => {
     const removed = removeEntry(id)
     if (removed) showToast(`${removed.name} borttagen`, { label: 'Ångra', run: () => restoreEntry(removed) })
   }
 
-  const isToday = date === today
 
   return (
     <main className="screen today">
@@ -80,13 +84,13 @@ export function Today() {
           <span className="large-title">{dayTitle(date, today)}</span>
         </button>
         <div className="day-nav">
-          <button type="button" className="icon-btn" onClick={() => setPicked(addDays(date, -1))} aria-label="Föregående dag">
+          <button type="button" className="icon-btn" onClick={() => goTo(addDays(date, -1))} aria-label="Föregående dag">
             <ChevronLeft />
           </button>
           <button
             type="button"
             className="icon-btn"
-            onClick={() => setPicked(addDays(date, 1))}
+            onClick={() => goTo(addDays(date, 1))}
             disabled={isToday}
             aria-label="Nästa dag"
           >

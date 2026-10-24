@@ -120,12 +120,16 @@ export function rollingAverage(
   }
   const days = keys.map((date) => {
     const kcal = kcalByDay.get(date)
-    return { date, points: kcal === undefined ? null : toPoints(kcal, budgetFor(date, history)) }
+    // En dag med bara vatten eller kaffe svart räknas inte som en loggad dag.
+    return { date, points: !kcal || kcal <= 0 ? null : toPoints(kcal, budgetFor(date, history)) }
   })
   const logged = days.filter((d) => d.points !== null) as { date: DateKey; points: number }[]
   const avg = logged.length ? logged.reduce((s, d) => s + d.points, 0) / logged.length : null
   return { avg, loggedDays: logged.length, totalDays: n, days }
 }
+
+/** Så många hela loggade dagar behövs innan appen vågar visa en prognos i kg. */
+export const MIN_FORECAST_DAYS = 4
 
 /** Ungefärlig viktförändring per vecka om snittet håller i sig. Negativt = ner i vikt. */
 export function forecastKgPerWeek(avgPoints: number, budgetKcal: number): number {
@@ -146,6 +150,12 @@ const kgFormat = new Intl.NumberFormat('sv-SE', {
 
 export function formatKg(kg: number): string {
   return kgFormat.format(Math.round(kg * 10) / 10)
+}
+
+/** "−0,3 kg i veckan", eller "mindre än 0,1 kg i veckan" när förändringen avrundas bort. */
+export function formatKgPerWeek(kg: number): string {
+  if (Math.abs(kg) < 0.05) return 'mindre än 0,1 kg i veckan'
+  return `ungefär ${formatKg(kg)} kg i veckan`
 }
 
 export const formatInt = (n: number) => new Intl.NumberFormat('sv-SE').format(Math.round(n))

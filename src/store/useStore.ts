@@ -1,8 +1,9 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
 import { FOODS, type Food } from '../data/foods'
 import { tdee, withBudget, type BudgetPeriod, type Entry, type Profile } from '../lib/calc'
 import { todayKey, type DateKey } from '../lib/dates'
+import { useUI } from './ui'
 
 type Usage = Record<string, { count: number; last: number }>
 
@@ -40,6 +41,22 @@ const empty: Data = {
   favorites: [],
   usage: {},
   quickPicks: null,
+}
+
+// Om telefonens lagring är full sparas inget – då ska användaren få veta det, inte tro att allt är sparat.
+let warnedFull = false
+const safeStorage: StateStorage = {
+  getItem: (key) => localStorage.getItem(key),
+  setItem: (key, value) => {
+    try {
+      localStorage.setItem(key, value)
+      warnedFull = false
+    } catch {
+      if (!warnedFull) useUI.getState().showToast('Kunde inte spara – lagringen är full. Exportera en backup.')
+      warnedFull = true
+    }
+  },
+  removeItem: (key) => localStorage.removeItem(key),
 }
 
 // crypto.randomUUID kräver https, men appen ska gå att testa via LAN-IP också.
@@ -108,8 +125,25 @@ export const useStore = create<Data & Actions>()(
         return food
       },
 
+      // Dagens rader följer med ändringen; tidigare dagar behåller sin kopia så att historiken ligger fast.
       updateCustomFood: (id, patch) =>
-        set((s) => ({ customFoods: s.customFoods.map((f) => (f.id === id ? { ...f, ...patch } : f)) })),
+        set((s) => {
+          const today = todayKey()
+          return {
+            customFoods: s.customFoods.map((f) => (f.id === id ? { ...f, ...patch } : f)),
+            entries: s.entries.map((e) =>
+              e.foodId === id && e.date === today
+                ? {
+                    ...e,
+                    name: patch.name ?? e.name,
+                    emoji: patch.emoji ?? e.emoji,
+                    unit: patch.unit ?? e.unit,
+                    kcalPerUnit: patch.kcal ?? e.kcalPerUnit,
+                  }
+                : e,
+            ),
+          }
+        }),
 
       deleteCustomFood: (id) =>
         set((s) => ({
@@ -132,8 +166,14 @@ export const useStore = create<Data & Actions>()(
       resetAll: () => set(empty),
     }),
     {
+      // Nyckeln får aldrig bytas: all historik ligger under den. Höj i stället `version`
+      // och skriv en migrering i `migrate` om datamodellen ändras.
       name: 'hundra-v1',
       version: 1,
+      storage: createJSONStorage(() => safeStorage),
+      migrate: (persisted) => persisted as Data,
+      // Trasig eller gammal data i lagringen tvättas i stället för att krascha appen.
+      merge: (persisted, current) => ({ ...current, ...sanitizeData(persisted).data }),
       partialize: ({ profile, budgetHistory, entries, customFoods, favorites, usage, quickPicks }) => ({
         profile,
         budgetHistory,
@@ -200,29 +240,106 @@ export function exportData(s: Data): string {
   )
 }
 
+const isDate = (v: unknown): v is DateKey => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
+const isNum = (v: unknown, min = -Infinity): v is number => typeof v === 'number' && Number.isFinite(v) && v >= min
+const isStr = (v: unknown): v is string => typeof v === 'string'
+const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
+
+function cleanProfile(p: unknown): Profile | null {
+  if (!isObj(p)) return null
+  const ok =
+    (p.sex === 'man' || p.sex === 'kvinna') &&
+    isNum(p.age, 1) &&
+    isNum(p.heightCm, 50) &&
+    isNum(p.weightKg, 20) &&
+    [1, 2, 3, 4, 5].includes(p.activity as number)
+  return ok ? (p as unknown as Profile) : null
+}
+
+const cleanEntry = (e: unknown): Entry | null =>
+  isObj(e) &&
+  isStr(e.id) &&
+  isDate(e.date) &&
+  isStr(e.foodId) &&
+  isStr(e.name) &&
+  isNum(e.kcalPerUnit, 0) &&
+  isNum(e.qty, 0) &&
+  (e.qty as number) > 0
+    ? {
+        id: e.id,
+        date: e.date,
+        foodId: e.foodId,
+        name: e.name,
+        emoji: isStr(e.emoji) ? e.emoji : '🍽️',
+        unit: isStr(e.unit) ? e.unit : '',
+        kcalPerUnit: e.kcalPerUnit,
+        qty: e.qty,
+        at: isNum(e.at) ? e.at : 0,
+      }
+    : null
+
+const cleanFood = (f: unknown): Food | null =>
+  isObj(f) && isStr(f.id) && isStr(f.name) && isNum(f.kcal, 0)
+    ? {
+        id: f.id,
+        name: f.name,
+        emoji: isStr(f.emoji) ? f.emoji : '🍽️',
+        unit: isStr(f.unit) ? f.unit : '1 portion',
+        kcal: f.kcal,
+        category: 'egna',
+        custom: true,
+      }
+    : null
+
+/**
+ * Tvättar data från en importfil eller från lagringen: det som är trasigt tas bort i stället för
+ * att krascha appen. `dropped` räknar hur många rader som inte gick att läsa.
+ */
+export function sanitizeData(raw: unknown): { data: Data; dropped: number } {
+  const d = isObj(raw) ? raw : {}
+  let dropped = 0
+  const list = <T>(v: unknown, clean: (x: unknown) => T | null): T[] => {
+    if (!Array.isArray(v)) return []
+    const out = v.map(clean).filter((x): x is T => x !== null)
+    dropped += v.length - out.length
+    return out
+  }
+  const usage: Usage = {}
+  if (isObj(d.usage))
+    for (const [id, u] of Object.entries(d.usage))
+      if (isObj(u) && isNum(u.count) && isNum(u.last)) usage[id] = { count: u.count, last: u.last }
+  const strings = (v: unknown) => (Array.isArray(v) ? v.filter(isStr) : [])
+  return {
+    data: {
+      profile: cleanProfile(d.profile),
+      budgetHistory: list(d.budgetHistory, (b) =>
+        isObj(b) && isDate(b.from) && isNum(b.kcal, 500) ? { from: b.from, kcal: b.kcal } : null,
+      ).sort((a, b) => a.from.localeCompare(b.from)),
+      entries: list(d.entries, cleanEntry),
+      customFoods: list(d.customFoods, cleanFood),
+      favorites: strings(d.favorites),
+      usage,
+      quickPicks: Array.isArray(d.quickPicks) ? strings(d.quickPicks) : null,
+    },
+    dropped,
+  }
+}
+
 /** Kastar ett fel med en begriplig text om filen inte ser ut som en export från appen. */
-export function parseImport(text: string): Data {
+export function parseImport(text: string): Data & { dropped: number } {
   let json: unknown
   try {
     json = JSON.parse(text)
   } catch {
     throw new Error('Filen är inte en giltig JSON-fil.')
   }
-  const root = json as { app?: string; data?: Partial<Data> }
-  if (root?.app !== 'hundra' || typeof root.data !== 'object' || !root.data) {
+  const root = json as { app?: string; data?: unknown }
+  if (root?.app !== 'hundra' || !isObj(root.data)) {
     throw new Error('Filen ser inte ut att vara en export från Hundra.')
   }
-  const d = root.data
-  if (!Array.isArray(d.entries) || !Array.isArray(d.budgetHistory)) {
+  if (!Array.isArray(root.data.entries) || !Array.isArray(root.data.budgetHistory)) {
     throw new Error('Filen saknar loggdata.')
   }
-  return {
-    profile: d.profile ?? null,
-    budgetHistory: d.budgetHistory,
-    entries: d.entries,
-    customFoods: Array.isArray(d.customFoods) ? d.customFoods : [],
-    favorites: Array.isArray(d.favorites) ? d.favorites : [],
-    usage: d.usage && typeof d.usage === 'object' ? d.usage : {},
-    quickPicks: Array.isArray(d.quickPicks) ? d.quickPicks : null,
-  }
+  const { data, dropped } = sanitizeData(root.data)
+  return { ...data, dropped }
 }

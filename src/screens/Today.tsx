@@ -67,7 +67,6 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
     () => quickItems(allFoods(custom), useStore.getState().usage, quickPicks, meals),
     [custom, quickPicks, meals],
   )
-  const countOf = (foodId: string) => dayEntries.find((e) => e.foodId === foodId)?.qty ?? 0
 
   const openAdd = () => {
     // Fokus måste sättas direkt i trycket för att iOS ska visa tangentbordet.
@@ -157,14 +156,13 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
             const id = item.kind === 'food' ? item.food.id : item.meal.id
             const name = item.kind === 'food' ? item.food.name : item.meal.name
             const kcal = item.kind === 'food' ? item.food.kcal : mealKcal(item.meal)
-            const count = item.kind === 'food' ? countOf(item.food.id) : 0
             return (
               <button
                 key={id}
                 type="button"
                 className="chip"
                 onClick={() => quickAdd(item)}
-                aria-label={`Lägg till ${name}${count ? `, ${count} tillagda` : ''}`}
+                aria-label={`Lägg till ${name}`}
               >
                 <span className="chip-emoji" aria-hidden>
                   {item.kind === 'food' ? (
@@ -172,7 +170,6 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
                   ) : (
                     <FoodIcon id="maltid-egen" emoji="🍱" size={26} />
                   )}
-                  {count > 0 && <span className="chip-count">{count}</span>}
                 </span>
                 <span className="chip-name">{name}</span>
                 <span className="chip-points">{formatPoints(toPoints(kcal, budget))}</span>

@@ -7,7 +7,7 @@ import { join } from 'node:path'
 
 const CHROME = process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const svg = readFileSync('public/icon.svg', 'utf8')
-const BG = '#F08668' // bakgrunden i ikonen, fyller marginalen på den maskerbara varianten
+const BG = '#3D78D8' // bakgrunden i ikonen, fyller marginalen på den maskerbara varianten
 
 // scale < 1 = maskerbar ikon: motivet krymps till säkra zonen (80 %) så att Android kan beskära fritt.
 const OUTPUTS = [

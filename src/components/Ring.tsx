@@ -2,7 +2,7 @@ import { useAnimatedNumber } from '../lib/hooks'
 
 type Props = { value: number; size?: number; stroke?: number; caption?: string; goal?: number }
 
-/** Aktivitetsring: ett varv är 100 poäng. Över 100 fortsätter ett andra varv i mörkare grönt. */
+/** Aktivitetsring: ett varv är 100 poäng. Över 100 fortsätter ett andra varv i --accent-deep. */
 export function Ring({ value, size = 220, stroke = 24, caption = 'av 100', goal = 100 }: Props) {
   const animated = useAnimatedNumber(value)
   const r = (size - stroke) / 2

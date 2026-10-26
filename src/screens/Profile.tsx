@@ -44,6 +44,7 @@ export function Profile() {
   // Den som redan har lågt BMI erbjuds inte att gå ner i vikt.
   const bmi = profile.weightKg / (profile.heightCm / 100) ** 2
   const goals = bmi < 20 ? GOALS.filter((g) => g.value === 100) : GOALS
+  const startup = startupText()
 
   return (
     <main className="screen profile">
@@ -236,7 +237,7 @@ export function Profile() {
       <p className="footer-text">
         Hundra · version {__APP_VERSION__} · {__BUILD_DATE__}
       </p>
-      <p className="footer-text startup-text">{startupText()}</p>
+      {startup && <p className="footer-text startup-text">{startup}</p>}
 
       <Sheet
         open={editing}

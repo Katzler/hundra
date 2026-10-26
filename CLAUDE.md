@@ -55,4 +55,4 @@ Service workern använder `registerType: 'prompt'`. I `src/main.tsx` byts appen 
 
 - **Startbilden:** `index.html` har en inbäddad appikon i `#root` som syns tills React ritar appen. Dess bakgrund ska stämma med `--bg` i `tokens.css`.
 - **Mätningen:** raden under versionen i Profil visar var tiden gick vid senaste starten (`src/lib/startup.ts`). Den hålls bara i minnet. Små värden trots lång väntan betyder att tiden gick i iOS innan sidan började laddas.
-- **Offline-cachen:** alla filer och matikoner ligger i precachen, ungefär 700 poster. Den läses vid varje kallstart, så lägg inte till stora filer i onödan.
+- **Offline-cachen:** alla filer utom de stora appikonerna (icon-512 och den maskerbara) ligger i precachen, ungefär 700 poster med matikonerna. Cachen öppnas vid varje kallstart, så håll nere antalet poster. Stora filer gör varje uppdatering långsammare.

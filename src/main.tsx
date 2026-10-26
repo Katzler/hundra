@@ -13,9 +13,9 @@ markLoaded()
 navigator.storage?.persist?.().catch(() => {})
 
 // Nya versioner tas i bruk först när man lämnar appen, aldrig när den startar, medan den används
-// eller medan ett ark är öppet. Förut laddades appen om om den nyss hade öppnats, men på iPhone
-// gav det två starter i rad och lång svart skärm morgonen efter en publicering. En app på
-// hemskärmen i iOS letar sällan efter uppdateringar själv, så vi frågar varje gång den öppnas igen.
+// eller medan ett ark är öppet. Tidigare laddades appen om direkt om den nyss hade öppnats, men på
+// iPhone gav det två starter i rad och lång svart skärm morgonen efter en publicering. När appen
+// hämtas fram ur bakgrunden letar iOS sällan efter uppdateringar själv, så då frågar vi.
 let updateReady = false
 let reloadReady = false
 let registration: ServiceWorkerRegistration | undefined
@@ -30,9 +30,14 @@ const updateSW = registerSW({
     if (hiddenAndIdle()) updateSW()
   },
   // Den nya versionen har tagit över. Syns appen just nu väntar omladdningen tills man lämnar den.
+  // När iOS väcker en frusen app kan meddelandet komma innan sidan hunnit bli synlig, så vi
+  // kontrollerar igen en stund senare. Har sidan varit frusen under tiden väntar vi till nästa gång.
   onNeedReload() {
     reloadReady = true
-    if (hiddenAndIdle()) window.location.reload()
+    const at = Date.now()
+    setTimeout(() => {
+      if (Date.now() - at < 5000 && hiddenAndIdle()) window.location.reload()
+    }, 300)
   },
   onRegisteredSW(_url, reg) {
     registration = reg

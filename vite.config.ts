@@ -25,11 +25,12 @@ export default defineConfig({
     VitePWA({
       // Vi bestämmer själva när en ny version tas i bruk (se main.tsx).
       registerType: 'prompt',
-      includeAssets: ['icon.svg', 'apple-touch-icon.png'],
-      // Matikonerna (ca 2 MB WebP) följer med i offline-cachen så att de syns utan nät.
-      // Appikonerna i full storlek behövs inte offline – bara vid installation.
+      // Matikonerna (ca 3 MB WebP) följer med i offline-cachen så att de syns utan nät.
+      // Appikonerna i full storlek behövs inte offline – bara vid installation. Utan
+      // includeManifestIcons: false kommer de ändå med, via ikonerna i manifestet.
+      includeManifestIcons: false,
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,webp,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webp}'],
         globIgnores: ['icon-512.png', 'icon-maskable-512.png'],
       },
       manifest: {

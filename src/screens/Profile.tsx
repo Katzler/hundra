@@ -12,6 +12,7 @@ import { todayKey } from '../lib/dates'
 import { demoEntries } from '../lib/demo'
 import { exportBackup, importBackup } from '../lib/backup'
 import { isStandalone } from '../lib/hooks'
+import { startupText } from '../lib/startup'
 import { useUI } from '../store/ui'
 import { GOALS, mealKcal, useStore, type Meal } from '../store/useStore'
 
@@ -235,6 +236,7 @@ export function Profile() {
       <p className="footer-text">
         Hundra · version {__APP_VERSION__} · {__BUILD_DATE__}
       </p>
+      <p className="footer-text startup-text">{startupText()}</p>
 
       <Sheet
         open={editing}

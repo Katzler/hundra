@@ -189,6 +189,10 @@ strong {
   margin: 32px 0 0;
 }
 
+.footer-text.startup-text {
+  margin-top: 4px;
+}
+
 .card {
   background: var(--card);
   border-radius: var(--radius-lg);

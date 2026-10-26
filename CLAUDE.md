@@ -49,4 +49,10 @@ All användardata finns bara i localStorage på telefonen, under nyckeln `hundra
 
 ## Uppdateringar på telefonen
 
-Service workern använder `registerType: 'prompt'`. I `src/main.tsx` byts appen till en ny version direkt om den nyss öppnades, annars när man lämnar den, och aldrig medan ett ark är öppet. Efter en publicering behöver telefonen ofta öppnas en eller två gånger innan ändringen syns. Versionen syns längst ner i Profil och i introt.
+Service workern använder `registerType: 'prompt'`. I `src/main.tsx` byts appen till en ny version först när man lämnar den, aldrig när den startar, medan den används eller medan ett ark är öppet. Ladda inte om appen vid start: på iPhone gav det två starter i rad och lång svart skärm morgonen efter en publicering. Efter en publicering öppnar man appen (den hittar uppdateringen), lämnar den och öppnar den igen. Har iOS stängt appen under tiden används den nya versionen direkt vid nästa start. Versionen syns längst ner i Profil och i introt.
+
+## Starten
+
+- **Startbilden:** `index.html` har en inbäddad appikon i `#root` som syns tills React ritar appen. Dess bakgrund ska stämma med `--bg` i `tokens.css`.
+- **Mätningen:** raden under versionen i Profil visar var tiden gick vid senaste starten (`src/lib/startup.ts`). Den hålls bara i minnet. Små värden trots lång väntan betyder att tiden gick i iOS innan sidan började laddas.
+- **Offline-cachen:** alla filer och matikoner ligger i precachen, ungefär 700 poster. Den läses vid varje kallstart, så lägg inte till stora filer i onödan.

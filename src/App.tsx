@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TabBar, type Tab } from './components/TabBar'
 import { Toast } from './components/Toast'
+import { markFirstFrame } from './lib/startup'
 import { Onboarding } from './screens/Onboarding'
 import { Profile } from './screens/Profile'
 import { Today } from './screens/Today'
@@ -10,6 +11,10 @@ import { useStore } from './store/useStore'
 export function App() {
   const hasProfile = useStore((s) => s.profile !== null)
   const [tab, setTab] = useState<Tab>('idag')
+
+  useEffect(() => {
+    requestAnimationFrame(markFirstFrame)
+  }, [])
 
   if (!hasProfile) return <Onboarding />
 

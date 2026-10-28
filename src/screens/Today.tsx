@@ -11,11 +11,14 @@ import { QuickPicksSheet } from '../components/QuickPicksSheet'
 import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
 import { WeekStrip } from '../components/WeekStrip'
-import { budgetFor, entryKcal, formatPoints, rollingAverage, toPoints } from '../lib/calc'
+import { preferred } from '../data/choices'
+import { budgetFor, entryKcal, formatPoints, formatQty, rollingAverage, toPoints } from '../lib/calc'
 import { addDays, dayLong, dayTitle, resolveDay, type DateKey, type PickedDay } from '../lib/dates'
 import { useToday } from '../lib/hooks'
 import { haptic, useUI } from '../store/ui'
-import { allFoods, mealKcal, quickItems, useStore, type MealItem, type QuickItem } from '../store/useStore'
+import { allFoods, itemOf, mealKcal, quickItems, sameItem, useStore, type MealItem, type QuickItem } from '../store/useStore'
+
+const preferredKcal = (p: { food: { kcal: number }; qty: number }) => p.food.kcal * p.qty
 
 /** Under så här många poäng kan en passerad dag vara ofullständig. */
 const SHORT_DAY = 35
@@ -36,6 +39,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
   const custom = useStore((s) => s.customFoods)
   const quickPicks = useStore((s) => s.quickPicks)
   const meals = useStore((s) => s.meals)
+  const lastChoices = useStore((s) => s.lastChoices)
   const excludedDays = useStore((s) => s.excludedDays)
   const goal = useStore((s) => s.goal)
   const showBackup = useStore((s) => backupDue(s))
@@ -82,13 +86,14 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
       showToast(`${item.meal.name} tillagd${dayNote}`, { label: 'Ångra', run: () => setDayEntries(date, before) })
       return
     }
-    const food = item.food
-    addFood(food, date)
-    showToast(`${food.name} +1${dayNote}`, {
+    // Snabbvalen lägger till samma som sist, t.ex. stor stekt kycklingfilé.
+    const { food, qty } = preferred(item.food, lastChoices[item.food.id])
+    addFood(food, date, qty)
+    showToast(`${food.name} +${formatQty(qty)}${dayNote}`, {
       label: 'Ångra',
       run: () => {
-        const e = useStore.getState().entries.find((x) => x.date === date && x.foodId === food.id)
-        if (e) setQty(e.id, e.qty - 1)
+        const e = useStore.getState().entries.find((x) => x.date === date && sameItem(x, itemOf(food, qty)))
+        if (e) setQty(e.id, e.qty - qty)
       },
     })
   }
@@ -155,7 +160,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
           {quick.map((item) => {
             const id = item.kind === 'food' ? item.food.id : item.meal.id
             const name = item.kind === 'food' ? item.food.name : item.meal.name
-            const kcal = item.kind === 'food' ? item.food.kcal : mealKcal(item.meal)
+            const kcal = item.kind === 'food' ? preferredKcal(preferred(item.food, lastChoices[item.food.id])) : mealKcal(item.meal)
             return (
               <button
                 key={id}

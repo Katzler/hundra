@@ -13,10 +13,15 @@ type Props = {
   /** Monteras även när arket är stängt, så att sökfältet kan få fokus direkt vid tryck (krävs i iOS). */
   keepMounted?: boolean
   label?: string
+  /** Bara så högt som innehållet, nerifrån, t.ex. för snabbval ovanpå ett annat ark. */
+  compact?: boolean
 }
 
+// Ark kan ligga ovanpå varandra. Flaggan på body ska finnas kvar tills det sista stängs.
+let openSheets = 0
+
 /** Bottenark i iOS-stil. Dra ner i handtaget eller rubriken för att stänga. */
-export function Sheet({ open, onClose, title, left, right, children, footer, keepMounted, label }: Props) {
+export function Sheet({ open, onClose, title, left, right, children, footer, keepMounted, label, compact }: Props) {
   const vv = useVisualViewport()
   const [dragY, setDragY] = useState(0)
   const [dragging, setDragging] = useState(false)
@@ -52,6 +57,7 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
     if (!open) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    openSheets++
     document.body.dataset.sheetOpen = '1'
     // Fokus flyttas in i arket (om inget där redan har det) och tillbaka när det stängs – för VoiceOver och tangentbord.
     const returnTo = document.activeElement as HTMLElement | null
@@ -79,7 +85,7 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
     return () => {
       cancelAnimationFrame(raf)
       document.body.style.overflow = prev
-      delete document.body.dataset.sheetOpen
+      if (--openSheets === 0) delete document.body.dataset.sheetOpen
       window.removeEventListener('keydown', onKey)
       if (returnTo?.isConnected) returnTo.focus({ preventScroll: true })
     }
@@ -122,8 +128,7 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
         aria-modal="true"
         aria-label={label}
         style={{
-          top,
-          height,
+          ...(compact ? { bottom: 0, maxHeight: height } : { top, height }),
           transform: shown ? `translate3d(0, ${dragY}px, 0)` : 'translate3d(0, 110%, 0)',
           transition: dragging ? 'none' : undefined,
         }}

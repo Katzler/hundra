@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react'
+import { choiceSummary, preferred, questionsFor } from '../data/choices'
 import { CATEGORIES, type CategoryId, type Food } from '../data/foods'
 import { budgetFor, dayKcal, formatPoints, formatQty, toPoints } from '../lib/calc'
 import { dayTitle, todayKey, type DateKey } from '../lib/dates'
 import { parseQuantity, searchFoods } from '../lib/search'
 import { useUI } from '../store/ui'
-import { allFoods, MEAL_PREFIX, mealKcal, recentFoods, useStore, type Meal } from '../store/useStore'
+import { allFoods, itemOf, MEAL_PREFIX, mealKcal, recentFoods, sameItem, useStore, type Meal } from '../store/useStore'
+import { ChoiceSheet } from './ChoiceSheet'
 import { CustomFoodForm } from './CustomFoodForm'
 import { FoodIcon } from './FoodIcon'
 import { FoodRow } from './FoodRow'
@@ -27,6 +29,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const usage = useStore((s) => s.usage)
   const quickPicks = useStore((s) => s.quickPicks)
   const meals = useStore((s) => s.meals)
+  const lastChoices = useStore((s) => s.lastChoices)
   const entries = useStore((s) => s.entries)
   const history = useStore((s) => s.budgetHistory)
   const addFood = useStore((s) => s.addFood)
@@ -38,11 +41,11 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const showToast = useUI((s) => s.showToast)
   const bodyRef = useRef<HTMLDivElement>(null)
   const startKcal = useRef(0)
+  const [choosing, setChoosing] = useState<Food | null>(null)
 
   const foods = useMemo(() => allFoods(custom), [custom])
   const budget = budgetFor(date, history)
   const dayEntries = useMemo(() => entries.filter((e) => e.date === date), [entries, date])
-  const qtyOf = (id: string) => dayEntries.find((e) => e.foodId === id)?.qty ?? 0
   const isPicked = (id: string) => quickPicks?.includes(id) ?? false
   const dayNote = date === todayKey() ? '' : ` · ${dayTitle(date)}`
 
@@ -54,6 +57,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
     // Nollställ när arket stängs, så att sökfältet syns och kan få fokus direkt nästa gång.
     setQuery('')
     setView({ kind: 'home' })
+    setChoosing(null)
   }, [open, date])
 
   useEffect(() => {
@@ -84,24 +88,32 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
     showToast(`${meal.name} tillagd${dayNote}`, { label: 'Ångra', run: () => setDayEntries(date, before) })
   }
 
-  const row = (food: Food) => (
+  const row = (food: Food) => {
+    // Raden visar och lägger till senaste valet, t.ex. stor stekt kycklingfilé.
+    const hasChoices = questionsFor(food).length > 0
+    const pref = preferred(food, lastChoices[food.id])
+    const item = itemOf(pref.food, pref.qty)
+    const entry = dayEntries.find((e) => sameItem(e, item))
+    return (
     <FoodRow
       key={food.id}
       food={food}
-      points={toPoints(food.kcal, budget)}
-      qty={qtyOf(food.id)}
+      points={toPoints(pref.food.kcal * pref.qty, budget)}
+      sub={hasChoices ? choiceSummary(food, pref.picks, pref.qty) : undefined}
+      qty={entry?.qty ?? 0}
       picked={isPicked(food.id)}
-      onAdd={() => add(food)}
+      onAdd={() => add(pref.food, qty !== 1 ? qty : pref.qty)}
+      onOpen={hasChoices ? () => setChoosing(food) : undefined}
       onQty={(q) => {
-        const e = dayEntries.find((x) => x.foodId === food.id)
-        if (e) setQty(e.id, q)
+        if (entry) setQty(entry.id, q)
       }}
       onLongPress={() => {
         const on = toggleQuickPick(food.id)
         showToast(on ? `${food.name} ligger nu bland favoriterna` : `${food.name} borttagen från favoriterna`)
       }}
     />
-  )
+    )
+  }
 
   const mealRow = (meal: Meal) => (
     <div key={meal.id} className="row food-row">
@@ -290,10 +302,14 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
                 </button>
               ))}
             </div>
-            <p className="hint-text">Tips: håll inne på en vara för att lägga den bland favoriterna. Skriv ”2 potatis” för att lägga till flera.</p>
+            <p className="hint-text">
+              Tips: tryck på en vara för att välja storlek och mängd, eller på + för att lägga till samma som sist. Håll inne för att lägga den
+              bland favoriterna.
+            </p>
           </>
         )}
       </div>
+      <ChoiceSheet food={choosing} qty={qty} date={date} onClose={() => setChoosing(null)} />
     </Sheet>
   )
 }

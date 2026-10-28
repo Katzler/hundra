@@ -70,7 +70,7 @@ describe('store', () => {
   it('export och import ger tillbaka exakt samma data – alla fält', () => {
     const s = useStore.getState()
     s.setProfile({ sex: 'kvinna', age: 40, heightCm: 170, weightKg: 70, activity: 2 })
-    s.addFood(potatis, day, 2)
+    s.addFood(potatis, day, 2, { storlek: 'stor' })
     s.toggleQuickPick('potatis')
     s.saveMeal({ name: 'Frukost', items: [{ foodId: 'banan', name: 'Banan', emoji: '🍌', unit: '1 st', kcalPerUnit: 100, qty: 1 }] })
     s.logWeight(day, 70.4)
@@ -104,6 +104,36 @@ describe('store', () => {
     expect(d.quickPicks).toEqual(['potatis', 'banan'])
     expect(d.usage.potatis.slots).toEqual([0, 2, 0, 0])
     expect('favorites' in d).toBe(false)
+  })
+
+  it('version 2 migreras: grekisk yoghurt i fetthalter blir en vara, senaste fetthalten blir förval', () => {
+    const v2 = {
+      budgetHistory: [],
+      entries: [{ id: 'a', date: '2026-10-01', foodId: 'grekisk-yoghurt-2', name: 'Grekisk yoghurt 2 %', emoji: '', unit: '', kcalPerUnit: 140, qty: 1, at: 5 }],
+      usage: {
+        'grekisk-yoghurt': { count: 1, last: 2, slots: [1, 0, 0, 0] },
+        'grekisk-yoghurt-2': { count: 3, last: 9, slots: [3, 0, 0, 0] },
+        'grekisk-yoghurt-0': { count: 1, last: 4 },
+      },
+      quickPicks: ['grekisk-yoghurt-2', 'grekisk-yoghurt', 'banan'],
+    }
+    const d = migrateData(v2, 2)
+    expect(d.usage['grekisk-yoghurt']).toEqual({ count: 5, last: 9, slots: [4, 0, 0, 0] })
+    expect(d.usage['grekisk-yoghurt-2']).toBeUndefined()
+    expect(d.quickPicks).toEqual(['grekisk-yoghurt', 'banan'])
+    expect(d.lastChoices['grekisk-yoghurt'].picks).toEqual({ fetthalt: '2 %' })
+    // Loggen rörs inte.
+    expect(sanitizeData(d).data.entries[0].foodId).toBe('grekisk-yoghurt-2')
+  })
+
+  it('samma vara med olika val blir olika rader, samma val slås ihop', () => {
+    const s = useStore.getState()
+    s.addFood(potatis, day)
+    s.addFood({ ...potatis, name: 'Potatis, stor', kcal: 101 }, day, 1, { storlek: 'stor' })
+    s.addFood({ ...potatis, name: 'Potatis, stor', kcal: 101 }, day, 1, { storlek: 'stor' })
+    const rows = useStore.getState().entries
+    expect(rows.map((e) => [e.name, e.qty])).toEqual([['Potatis', 1], ['Potatis, stor', 2]])
+    expect(useStore.getState().lastChoices.potatis).toEqual({ picks: { storlek: 'stor' }, qty: 1 })
   })
 
   it('ändrat antal följer med i användningen, så att + följt av − inte flyttar upp varan', () => {

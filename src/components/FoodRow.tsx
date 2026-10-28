@@ -12,12 +12,19 @@ type FoodRowProps = {
   qty: number
   picked: boolean
   onAdd: () => void
+  /** Tryck på raden öppnar snabbvalen i stället för att lägga till direkt. */
+  onOpen?: () => void
+  /** Ersätter enheten under namnet, t.ex. "Stor · Stekt · 1 st". */
+  sub?: string
   onQty: (qty: number) => void
   onLongPress: () => void
 }
 
-/** En vara i Lägg till-listan: (+) blir en stegare när den ligger i dagens lista. */
-export function FoodRow({ food, points, qty, picked, onAdd, onQty, onLongPress }: FoodRowProps) {
+/**
+ * En vara i Lägg till-listan: (+) blir en stegare när den ligger i dagens lista.
+ * Har varan snabbval öppnar ett tryck på raden dem, medan (+) lägger till senaste valet direkt.
+ */
+export function FoodRow({ food, points, qty, picked, onAdd, onOpen, sub, onQty, onLongPress }: FoodRowProps) {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const longPressed = useRef(false)
   const startPos = useRef({ x: 0, y: 0 })
@@ -53,7 +60,7 @@ export function FoodRow({ food, points, qty, picked, onAdd, onQty, onLongPress }
             return
           }
           haptic()
-          onAdd()
+          ;(onOpen ?? onAdd)()
         }}
       >
         <span className="emoji" aria-hidden>
@@ -64,7 +71,7 @@ export function FoodRow({ food, points, qty, picked, onAdd, onQty, onLongPress }
             <span className="row-name">{food.name}</span>
             {picked && <StarIcon size={12} filled className="row-star" />}
           </span>
-          <span className="row-sub">{food.unit}</span>
+          <span className="row-sub">{sub ?? food.unit}</span>
         </span>
         <span className="row-points">{formatPoints(points)} p</span>
       </button>

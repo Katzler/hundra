@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
+import type { LastChoice, Picks } from '../data/choices'
 import { FOODS, type Food } from '../data/foods'
 import { daySlot, tdee, withBudget, type BudgetPeriod, type Entry, type Profile, type Weight } from '../lib/calc'
 import { todayKey, type DateKey } from '../lib/dates'
@@ -34,6 +35,8 @@ export type Data = {
   /** Egna snabbval i vald ordning. null = automatiskt efter det man äter mest. */
   quickPicks: string[] | null
   meals: Meal[]
+  /** Senaste valet (storlek, tillagning, mängd …) per vara, så att (+) lägger till samma sak igen. */
+  lastChoices: Record<string, LastChoice>
   weights: Weight[]
   /** Dagar som inte ska räknas i snittet, t.ex. när man glömt logga det mesta. */
   excludedDays: DateKey[]
@@ -50,7 +53,8 @@ export type Data = {
 
 type Actions = {
   setProfile: (p: Profile, opts?: { fromStart?: boolean }) => void
-  addFood: (food: Food, date: DateKey, qty?: number) => void
+  /** `picks` är valen i snabbvalsarket. De sparas som förval för varan. */
+  addFood: (food: Food, date: DateKey, qty?: number, picks?: Picks) => void
   setQty: (entryId: string, qty: number) => void
   removeEntry: (entryId: string) => Entry | undefined
   restoreEntry: (entry: Entry) => void
@@ -84,6 +88,7 @@ export const emptyData: Data = {
   usage: {},
   quickPicks: null,
   meals: [],
+  lastChoices: {},
   weights: [],
   excludedDays: [],
   goal: 100,
@@ -136,9 +141,13 @@ function bumpUsage(usage: Usage, foodId: string, delta: number, at = Date.now())
   }
 }
 
+/** Samma vara med samma val (namn, enhet och kcal). Stor stekt kycklingfilé är inte samma rad som liten. */
+export const sameItem = (a: Omit<MealItem, 'qty'>, b: Omit<MealItem, 'qty'>) =>
+  a.foodId === b.foodId && a.name === b.name && a.unit === b.unit && a.kcalPerUnit === b.kcalPerUnit
+
 /** Lägger till antal av en vara på en dag – samma vara samma dag slås ihop, som i en kundvagn. */
 function addToDay(entries: Entry[], date: DateKey, item: MealItem): Entry[] {
-  const existing = entries.find((e) => e.date === date && e.foodId === item.foodId)
+  const existing = entries.find((e) => e.date === date && sameItem(e, item))
   if (existing) {
     const qty = existing.qty + item.qty
     return qty <= 0 ? entries.filter((e) => e !== existing) : entries.map((e) => (e === existing ? { ...e, qty } : e))
@@ -147,7 +156,7 @@ function addToDay(entries: Entry[], date: DateKey, item: MealItem): Entry[] {
   return [...entries, { id: uid(), date, at: Date.now(), ...item }]
 }
 
-const itemOf = (food: Food, qty: number): MealItem => ({
+export const itemOf = (food: Food, qty: number): MealItem => ({
   foodId: food.id,
   name: food.name,
   emoji: food.emoji,
@@ -180,6 +189,27 @@ export function migrateData(persisted: unknown, version: number): Data {
     }
     d.usage = usage
     delete d.favorites
+  }
+  // Version 2 → 3: grekisk yoghurt blir en vara där man väljer fetthalt. Användning och snabbval
+  // flyttas till den, och den fetthalt man åt senast blir förval. Gamla rader i loggen behåller sitt id.
+  if (version < 3) {
+    const { data } = sanitizeData(d)
+    const old: Record<string, string> = { 'grekisk-yoghurt-5': '5 %', 'grekisk-yoghurt-2': '2 %', 'grekisk-yoghurt-0': '0 %' }
+    const id = 'grekisk-yoghurt'
+    const usage = { ...data.usage }
+    let latest = { fat: '10 %', last: usage[id]?.last ?? -1 }
+    for (const [oldId, fat] of Object.entries(old)) {
+      const u = usage[oldId]
+      if (!u) continue
+      const cur = usage[id]
+      const slots = cur?.slots || u.slots ? [0, 1, 2, 3].map((i) => (cur?.slots?.[i] ?? 0) + (u.slots?.[i] ?? 0)) : undefined
+      usage[id] = { count: (cur?.count ?? 0) + u.count, last: Math.max(cur?.last ?? 0, u.last), ...(slots ? { slots } : {}) }
+      delete usage[oldId]
+      if (u.last > latest.last) latest = { fat, last: u.last }
+    }
+    d.usage = usage
+    if (data.quickPicks) d.quickPicks = [...new Set(data.quickPicks.map((x) => (x in old ? id : x)))]
+    if (latest.fat !== '10 %') d.lastChoices = { ...data.lastChoices, [id]: { picks: { fetthalt: latest.fat }, qty: 1 } }
   }
   return d as unknown as Data
 }
@@ -251,7 +281,7 @@ export function mealKcal(meal: Meal): number {
 }
 
 export function exportData(s: Data): string {
-  return JSON.stringify({ app: 'hundra', version: 2, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
+  return JSON.stringify({ app: 'hundra', version: 3, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
 }
 
 const isDate = (v: unknown): v is DateKey => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
@@ -329,6 +359,11 @@ export function sanitizeData(raw: unknown): { data: Data; dropped: number } {
           last: u.last,
           ...(Array.isArray(u.slots) && u.slots.length === 4 && u.slots.every((x) => isNum(x, 0)) ? { slots: u.slots as number[] } : {}),
         }
+  const lastChoices: Record<string, LastChoice> = {}
+  if (isObj(d.lastChoices))
+    for (const [id, c] of Object.entries(d.lastChoices))
+      if (isObj(c) && isObj(c.picks) && isNum(c.qty, 0) && c.qty > 0)
+        lastChoices[id] = { picks: Object.fromEntries(Object.entries(c.picks).filter(([, v]) => isStr(v))) as Picks, qty: c.qty }
   const strings = (v: unknown) => (Array.isArray(v) ? v.filter(isStr) : [])
   const numOr = (v: unknown, fallback: number, min: number, max: number) => (isNum(v, min) && v <= max ? v : fallback)
   const timeOrNull = (v: unknown) => (isNum(v, 0) ? v : null)
@@ -343,6 +378,7 @@ export function sanitizeData(raw: unknown): { data: Data; dropped: number } {
       usage,
       quickPicks: Array.isArray(d.quickPicks) ? strings(d.quickPicks) : null,
       meals: list(d.meals, cleanMeal),
+      lastChoices,
       weights: list(d.weights, (w) => (isObj(w) && isDate(w.date) && isNum(w.kg, 20) && w.kg < 400 ? { date: w.date, kg: w.kg } : null)),
       excludedDays: strings(d.excludedDays).filter(isDate),
       goal: numOr(d.goal, 100, 80, 100),
@@ -395,10 +431,11 @@ export const useStore = create<Data & Actions>()(
           }
         }),
 
-      addFood: (food, date, qty = 1) =>
+      addFood: (food, date, qty = 1, picks) =>
         set((s) => ({
           usage: bumpUsage(s.usage, food.id, qty),
           entries: addToDay(s.entries, date, itemOf(food, qty)),
+          ...(picks ? { lastChoices: { ...s.lastChoices, [food.id]: { picks, qty } } } : {}),
         })),
 
       // Ändrat antal följer med i användningen, så att + följt av − inte flyttar upp varan.
@@ -539,7 +576,7 @@ export const useStore = create<Data & Actions>()(
       // Nyckeln får aldrig bytas: all historik ligger under den. Höj i stället `version`
       // och skriv en migrering i `migrate` om datamodellen ändras.
       name: STORAGE_KEY,
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => safeStorage),
       migrate: (persisted, version) => migrateData(persisted, version),
       // Trasig eller gammal data i lagringen tvättas i stället för att krascha appen.

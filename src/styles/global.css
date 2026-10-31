@@ -1157,10 +1157,12 @@ strong {
   background: var(--fill-strong);
 }
 
+/* Bredden följer textstorleken (2,3em = 110px i normalstorlek) så att siffran
+   inte klipps med större text i iOS. vw-taket håller raden inom skärmen. */
 .points-input {
-  width: 110px;
+  width: 2.3em;
   text-align: center;
-  font-size: 2.8235rem !important;
+  font-size: min(2.8235rem, 17vw) !important;
   font-weight: 700;
   line-height: 1;
 }

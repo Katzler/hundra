@@ -27,6 +27,8 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
   const date = resolveDay(picked, today)
   const goTo = (d: DateKey) => setPicked(d < today ? { date: d, on: today } : null)
   const [adding, setAdding] = useState(false)
+  // Det man hinner skriva i fältet på Idag innan fokus har flyttats till arket.
+  const [typed, setTyped] = useState('')
   const [editGroup, setEditGroup] = useState<FavoriteGroup | null>(null)
   const [calendarOpen, setCalendarOpen] = useState(false)
   const [mealSource, setMealSource] = useState<{ items: MealItem[] } | null>(null)
@@ -61,10 +63,25 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
     [entries, history, today, excludedDays],
   )
 
+  // Flyttar fokus till arkets sökfält med markören sist. Tangentbordet är redan uppe, så iOS släpper igenom det.
+  const focusSearch = () => {
+    const el = searchRef.current
+    if (!el || document.activeElement === el) return
+    el.focus({ preventScroll: true })
+    el.setSelectionRange(el.value.length, el.value.length)
+  }
+
   const openAdd = () => {
-    // Fokus måste sättas direkt i trycket för att iOS ska visa tangentbordet.
     flushSync(() => setAdding(true))
-    searchRef.current?.focus({ preventScroll: true })
+    focusSearch()
+    // iOS vägrar ibland medan fokushändelsen pågår, så försök igen när arket har ritats.
+    requestAnimationFrame(focusSearch)
+    setTimeout(focusSearch, 100)
+  }
+
+  const closeAdd = () => {
+    setAdding(false)
+    setTyped('')
   }
 
   const quickAdd = (item: QuickItem) => {
@@ -129,9 +146,11 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
         <SearchIcon size={17} />
         <input
           type="search"
-          value=""
-          readOnly={adding}
-          onChange={() => {}}
+          value={typed}
+          onChange={(e) => {
+            setTyped(e.target.value)
+            focusSearch()
+          }}
           onFocus={openAdd}
           placeholder="Sök mat"
           aria-label="Sök mat"
@@ -219,7 +238,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
       />
       <MealSheet source={mealSource} budgetKcal={budget} onClose={() => setMealSource(null)} />
       <FavoritesSheet group={editGroup} onClose={() => setEditGroup(null)} budgetKcal={budget} />
-      <AddSheet open={adding} date={date} onClose={() => setAdding(false)} inputRef={searchRef} />
+      <AddSheet open={adding} date={date} typed={typed} onClose={closeAdd} inputRef={searchRef} />
     </main>
   )
 }

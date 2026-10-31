@@ -62,7 +62,9 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
     // Fokus flyttas in i arket (om inget där redan har det) och tillbaka när det stängs – för VoiceOver och tangentbord.
     const returnTo = document.activeElement as HTMLElement | null
     const raf = requestAnimationFrame(() => {
-      if (!dialogRef.current?.contains(document.activeElement)) dialogRef.current?.focus({ preventScroll: true })
+      // Ett textfält som har fokus får behålla det, annars fälls tangentbordet ner innan arkets sökfält hunnit ta över.
+      const active = document.activeElement
+      if (!dialogRef.current?.contains(active) && !(active instanceof HTMLInputElement)) dialogRef.current?.focus({ preventScroll: true })
     })
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()

@@ -19,11 +19,13 @@ type View = { kind: 'home' } | { kind: 'create' }
 type Props = {
   open: boolean
   date: DateKey
+  /** Text som skrevs i fältet på Idag innan arkets sökfält fick fokus. */
+  typed: string
   onClose: () => void
   inputRef: RefObject<HTMLInputElement | null>
 }
 
-export function AddSheet({ open, date, onClose, inputRef }: Props) {
+export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
   const [query, setQuery] = useState('')
   const [view, setView] = useState<View>({ kind: 'home' })
   const custom = useStore((s) => s.customFoods)
@@ -49,6 +51,10 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const dayEntries = useMemo(() => entries.filter((e) => e.date === date), [entries, date])
   const isPicked = (id: string) => isFavorite(favoriteGroups, id)
   const dayNote = date === todayKey() ? '' : ` · ${dayTitle(date)}`
+
+  useEffect(() => {
+    if (typed) setQuery(typed)
+  }, [typed])
 
   useEffect(() => {
     if (open) {

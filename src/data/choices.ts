@@ -430,12 +430,15 @@ export function usualQty(food: Food, picks: Picks): number {
   return chosenOptions(questionsFor(food), picks).reduce((q, o) => o.qty ?? q, 1)
 }
 
-/** Varan och mängden som ett tryck på (+) lägger till: senaste valet, annars förvalen. */
+/**
+ * Varan och mängden som ett tryck på (+) eller en favorit lägger till. Varianten är senaste valet,
+ * men mängden är alltid den vanliga: annars blev en favorit 2 potatisar för att man en gång tog två.
+ */
 export function preferred(food: Food, last?: LastChoice): { food: Food; qty: number; picks: Picks } {
   const questions = questionsFor(food)
   if (!questions.length) return { food, qty: 1, picks: {} }
   const picks = fillPicks(questions, last?.picks)
-  return { food: applyPicks(food, picks), qty: last?.qty ?? usualQty(food, picks), picks }
+  return { food: applyPicks(food, picks), qty: usualQty(food, picks), picks }
 }
 
 /** "2 msk", "1½ dl", "2 st", annars "2 × 2 skivor". */

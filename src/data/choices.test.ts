@@ -42,11 +42,11 @@ describe('snabbval', () => {
     expect(questionsFor(food('vatten'))).toEqual([])
   })
 
-  it('senaste valet blir förval, och val som inte finns längre faller tillbaka', () => {
+  it('senaste valet blir förval men mängden är den vanliga, och val som inte finns längre faller tillbaka', () => {
     const f = food('kycklingfile')
     const p = preferred(f, { picks: { storlek: 'stor', tillagning: 'finns-inte' }, qty: 2 })
     expect(p.picks).toEqual({ storlek: 'stor', tillagning: 'ugn' })
-    expect(p.qty).toBe(2)
+    expect(p.qty).toBe(1)
     expect(p.food.name).toBe('Kycklingfilé, stor')
   })
 

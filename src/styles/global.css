@@ -698,6 +698,10 @@ strong {
   appearance: none;
 }
 
+.search-field.is-behind input {
+  caret-color: transparent;
+}
+
 .search-field input::placeholder {
   color: var(--label-2);
 }

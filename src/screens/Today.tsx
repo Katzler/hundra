@@ -142,7 +142,8 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
       </section>
 
       {/* Ett riktigt fält, så att iOS visar tangentbordet vid trycket. Fokus flyttas sedan till arkets sökfält. */}
-      <label className="search-field">
+      {/* Medan arket är öppet kan fältet ha kvar fokus, och iOS ritar då markören ovanpå arket. */}
+      <label className={`search-field ${adding ? 'is-behind' : ''}`}>
         <SearchIcon size={17} />
         <input
           type="search"

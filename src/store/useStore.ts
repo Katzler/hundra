@@ -21,7 +21,7 @@ export const MEAL_PREFIX = 'måltid:'
 /** Favoriternas fyra kategorier på Idag. Samma vara får ligga i flera. */
 export const FAVORITE_GROUPS = [
   { id: 'frukost', name: 'Frukost', icon: 'grot', emoji: '🥣' },
-  { id: 'lunch', name: 'Lunch', icon: 'kottbullar-mos', emoji: '🍝' },
+  { id: 'lunch', name: 'Lunch', icon: 'sallad', emoji: '🥗' },
   { id: 'middag', name: 'Middag', icon: 'lax-potatis', emoji: '🍽️' },
   { id: 'skrap', name: 'Skräp', icon: 'chips-pase', emoji: '🍟' },
 ] as const

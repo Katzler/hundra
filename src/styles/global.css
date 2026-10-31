@@ -2596,3 +2596,46 @@ a.row {
     background: #5c544a;
   }
 }
+
+/* Ikonen som kastas från hjulet ner till dagens lista (src/lib/fly.ts). */
+.fly-icon {
+  position: fixed;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.fly-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.entry-row.is-incoming .emoji {
+  visibility: hidden;
+}
+
+.entry-row.is-landed {
+  animation: row-flash 0.7s var(--ease);
+}
+
+.entry-row.is-landed .emoji {
+  animation: land 0.45s var(--spring);
+}
+
+@keyframes land {
+  0% {
+    transform: scale(0.6, 0.75);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes row-flash {
+  0% {
+    background-color: var(--accent-soft);
+  }
+}

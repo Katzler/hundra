@@ -99,7 +99,7 @@ type EntryRowProps = { entry: Entry; points: number; onQty: (qty: number) => voi
 /** En rad i dagens lista: 🥔 Potatis · 3 × 1 st medel · 10 p   [ − 3 + ] */
 export function EntryRow({ entry, points, onQty }: EntryRowProps) {
   return (
-    <div className="row entry-row">
+    <div className="row entry-row" data-entry-id={entry.id}>
       <span className="emoji" aria-hidden>
         <FoodIcon id={entry.foodId} emoji={entry.emoji} />
       </span>

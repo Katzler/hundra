@@ -12,8 +12,9 @@ import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
 import { WeekStrip } from '../components/WeekStrip'
 import { preferred } from '../data/choices'
-import { budgetFor, entryKcal, formatPoints, formatQty, rollingAverage, toPoints } from '../lib/calc'
+import { budgetFor, entryKcal, formatPoints, formatQty, rollingAverage, toPoints, type Entry } from '../lib/calc'
 import { addDays, dayLong, dayTitle, resolveDay, type DateKey, type PickedDay } from '../lib/dates'
+import { flyToEntries, type FlyOrigin } from '../lib/fly'
 import { useToday } from '../lib/hooks'
 import { haptic, useUI } from '../store/ui'
 import { itemOf, sameItem, useStore, type FavoriteGroup, type MealItem, type QuickItem } from '../store/useStore'
@@ -84,17 +85,28 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
     setTyped('')
   }
 
-  const quickAdd = (item: QuickItem) => {
+  // Raderna som ett tillägg skapade eller ändrade, så att ikonen kan flyga dit.
+  const changedSince = (before: Entry[]) => {
+    const qty = new Map(before.map((e) => [e.id, e.qty]))
+    return useStore
+      .getState()
+      .entries.filter((e) => e.date === date && qty.get(e.id) !== e.qty)
+      .map((e) => e.id)
+  }
+
+  const quickAdd = (item: QuickItem, from?: FlyOrigin) => {
     haptic()
+    const before = useStore.getState().entries.filter((e) => e.date === date)
     if (item.kind === 'meal') {
-      const before = useStore.getState().entries.filter((e) => e.date === date)
       logMeal(item.meal.id, date)
+      flyToEntries(from, changedSince(before))
       showToast(`${item.meal.name} tillagd${dayNote}`, { label: 'Ångra', run: () => setDayEntries(date, before) })
       return
     }
     // Snabbvalen lägger till samma som sist, t.ex. stor stekt kycklingfilé.
     const { food, qty } = preferred(item.food, lastChoices[item.food.id])
     addFood(food, date, qty)
+    flyToEntries(from, changedSince(before))
     showToast(`${food.name} +${formatQty(qty)}${dayNote}`, {
       label: 'Ångra',
       run: () => {

@@ -5,10 +5,12 @@ import { formatPoints, toPoints } from '../lib/calc'
 import { haptic } from '../store/ui'
 import { allFoods, FAVORITE_GROUPS, itemsOf, mealKcal, useStore, type FavoriteGroup, type QuickItem } from '../store/useStore'
 import { FoodIcon } from './FoodIcon'
+import type { FlyOrigin } from '../lib/fly'
 
 type Props = {
   budgetKcal: number
-  onAdd: (item: QuickItem) => void
+  /** `from` är bubblan man tryckte på, så att ikonen kan flyga därifrån. */
+  onAdd: (item: QuickItem, from?: FlyOrigin) => void
   onEdit: (group: FavoriteGroup) => void
 }
 
@@ -67,9 +69,10 @@ export function FavoriteWheel({ budgetKcal, onAdd, onEdit }: Props) {
     setHover(null)
   }
 
-  const pick = (item: QuickItem) => {
+  const pick = (item: QuickItem, i: number) => {
+    const from = document.querySelector<HTMLElement>(`[data-wheel-index="${i}"] .wheel-bubble`) ?? undefined
+    onAdd(item, from)
     close()
-    onAdd(item)
   }
 
   const show = (g: FavoriteGroup) => setOpen(g)
@@ -123,7 +126,7 @@ export function FavoriteWheel({ budgetKcal, onAdd, onEdit }: Props) {
       // Släpper man utanför en favorit ligger hjulet kvar öppet, som efter ett vanligt tryck.
       const i = live.current.hover
       const item = i !== null ? live.current.items[i] : undefined
-      if (item) live.current.pick(item)
+      if (item && i !== null) live.current.pick(item, i)
       else setHover(null)
     }
     const cancel = () => {
@@ -216,7 +219,7 @@ export function FavoriteWheel({ budgetKcal, onAdd, onEdit }: Props) {
                     data-wheel-index={i}
                     className={`wheel-item ${hover === i ? 'is-hover' : ''}`}
                     style={{ left: x, top: y, ['--x' as string]: `${x}px`, ['--y' as string]: `${y}px`, ['--i' as string]: i }}
-                    onClick={() => pick(item)}
+                    onClick={() => pick(item, i)}
                     aria-label={`Lägg till ${name}`}
                   >
                     <span className="wheel-bubble">

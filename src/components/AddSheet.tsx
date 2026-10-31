@@ -73,10 +73,6 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
     () => (open ? recentFoods(foods, useStore.getState().usage, 8) : []),
     [open, foods],
   )
-  const pickedFoods = useMemo(
-    () => (quickPicks ?? []).map((id) => foods.find((f) => f.id === id)).filter((f): f is Food => !!f),
-    [quickPicks, foods],
-  )
   const month = new Date().getMonth() + 1
   const seasonal = useMemo(() => foods.filter((f) => f.months?.includes(month)), [foods, month])
 
@@ -271,12 +267,6 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
               <>
                 <h3 className="section-title">Mina måltider</h3>
                 <div className="group">{meals.map(mealRow)}</div>
-              </>
-            )}
-            {pickedFoods.length > 0 && (
-              <>
-                <h3 className="section-title">Favoriter</h3>
-                <div className="group">{pickedFoods.map(row)}</div>
               </>
             )}
             {recent.length > 0 && (

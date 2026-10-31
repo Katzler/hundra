@@ -784,7 +784,8 @@ strong {
   z-index: 200;
   left: 0;
   right: 0;
-  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 78px);
+  /* Överst, så att den aldrig täcker listan eller plusknapparna där tummen jobbar. */
+  top: calc(var(--safe-top) + 8px);
   display: flex;
   justify-content: center;
   padding: 0 16px;
@@ -826,7 +827,7 @@ strong {
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.96);
+    transform: translateY(-12px) scale(0.96);
   }
 }
 

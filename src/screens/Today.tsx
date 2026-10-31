@@ -181,9 +181,6 @@ export function Today() {
       <section aria-labelledby="quick-title">
         <h2 className="section-title" id="quick-title">
           Favoriter
-          <button type="button" className="section-action" onClick={() => setEditGroup('frukost')}>
-            Ändra
-          </button>
         </h2>
         <FavoriteWheel budgetKcal={budget} onAdd={quickAdd} onEdit={setEditGroup} />
       </section>

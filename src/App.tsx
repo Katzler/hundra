@@ -20,7 +20,7 @@ export function App() {
 
   return (
     <div className="app">
-      {tab === 'idag' && <Today onOpenTrend={() => setTab('trend')} />}
+      {tab === 'idag' && <Today />}
       {tab === 'trend' && <Trend />}
       {tab === 'profil' && <Profile />}
       <TabBar

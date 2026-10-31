@@ -10,9 +10,8 @@ import { CalendarIcon, ChevronLeft, ChevronRight, SearchIcon } from '../componen
 import { MealSheet } from '../components/MealSheet'
 import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
-import { WeekStrip } from '../components/WeekStrip'
 import { preferred } from '../data/choices'
-import { budgetFor, entryKcal, formatPoints, formatQty, rollingAverage, toPoints, type Entry } from '../lib/calc'
+import { budgetFor, entryKcal, formatPoints, formatQty, toPoints, type Entry } from '../lib/calc'
 import { addDays, dayLong, dayTitle, resolveDay, type DateKey, type PickedDay } from '../lib/dates'
 import { flyToEntries, type FlyOrigin } from '../lib/fly'
 import { useToday } from '../lib/hooks'
@@ -22,7 +21,7 @@ import { itemOf, sameItem, useStore, type FavoriteGroup, type MealItem, type Qui
 /** Under så här många poäng kan en passerad dag vara ofullständig. */
 const SHORT_DAY = 35
 
-export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
+export function Today() {
   const today = useToday()
   const [picked, setPicked] = useState<PickedDay | null>(null)
   const date = resolveDay(picked, today)
@@ -58,11 +57,6 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
   const excluded = excludedDays.includes(date)
   // Loggar man på en annan dag än idag ska bekräftelsen säga det.
   const dayNote = isToday ? '' : ` · ${dayTitle(date, today)}`
-
-  const week = useMemo(
-    () => rollingAverage(entries, history, addDays(today, -1), 7, excludedDays),
-    [entries, history, today, excludedDays],
-  )
 
   // Flyttar fokus till arkets sökfält med markören sist. Tangentbordet är redan uppe, så iOS släpper igenom det.
   const focusSearch = () => {
@@ -183,8 +177,6 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
           </label>
         </section>
       )}
-
-      {week.loggedDays >= 3 && <WeekStrip week={week} goal={goal} onOpen={onOpenTrend} />}
 
       <section aria-labelledby="quick-title">
         <h2 className="section-title" id="quick-title">

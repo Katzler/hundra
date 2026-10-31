@@ -127,10 +127,9 @@ export function Trend() {
           <span className="stat-value">{avg === null ? '–' : Math.round(animated)}</span>
           <span className="stat-of">av 100{goal < 100 ? ` · mål ${goal}` : ''}</span>
         </div>
-        <div className="stat-sub">
-          Loggat {stats.loggedDays} av {stats.totalDays} dagar
-          {excludedInRange > 0 && ` · ${excludedInRange} ${excludedInRange === 1 ? 'dag räknas' : 'dagar räknas'} inte`}
-        </div>
+        {excludedInRange > 0 && (
+          <div className="stat-sub">{excludedInRange} {excludedInRange === 1 ? 'dag räknas' : 'dagar räknas'} inte</div>
+        )}
         <BarChart days={stats.days} avg={avg} goal={goal} />
       </section>
 

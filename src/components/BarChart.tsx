@@ -42,9 +42,7 @@ export function BarChart({ days, avg, goal = 100 }: Props) {
               {sel.excluded ? ' · räknas inte' : ''}
             </span>
           </>
-        ) : (
-          <span className="chart-readout-date">Tryck på en stapel för att se dagen</span>
-        )}
+        ) : null}
       </div>
       <svg
         viewBox={`0 0 ${W} ${H}`}

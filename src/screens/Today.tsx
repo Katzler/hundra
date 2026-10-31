@@ -3,11 +3,11 @@ import { flushSync } from 'react-dom'
 import { AddSheet } from '../components/AddSheet'
 import { BackupCard, backupDue } from '../components/BackupCard'
 import { CalendarSheet } from '../components/CalendarSheet'
-import { FoodIcon } from '../components/FoodIcon'
+import { FavoritesSheet } from '../components/FavoritesSheet'
+import { FavoriteWheel } from '../components/FavoriteWheel'
 import { EntryRow } from '../components/FoodRow'
 import { CalendarIcon, ChevronLeft, ChevronRight, PlusIcon } from '../components/icons'
 import { MealSheet } from '../components/MealSheet'
-import { QuickPicksSheet } from '../components/QuickPicksSheet'
 import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
 import { WeekStrip } from '../components/WeekStrip'
@@ -16,9 +16,7 @@ import { budgetFor, entryKcal, formatPoints, formatQty, rollingAverage, toPoints
 import { addDays, dayLong, dayTitle, resolveDay, type DateKey, type PickedDay } from '../lib/dates'
 import { useToday } from '../lib/hooks'
 import { haptic, useUI } from '../store/ui'
-import { allFoods, itemOf, mealKcal, quickItems, sameItem, useStore, type MealItem, type QuickItem } from '../store/useStore'
-
-const preferredKcal = (p: { food: { kcal: number }; qty: number }) => p.food.kcal * p.qty
+import { itemOf, sameItem, useStore, type FavoriteGroup, type MealItem, type QuickItem } from '../store/useStore'
 
 /** Under så här många poäng kan en passerad dag vara ofullständig. */
 const SHORT_DAY = 35
@@ -29,16 +27,13 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
   const date = resolveDay(picked, today)
   const goTo = (d: DateKey) => setPicked(d < today ? { date: d, on: today } : null)
   const [adding, setAdding] = useState(false)
-  const [editingPicks, setEditingPicks] = useState(false)
+  const [editGroup, setEditGroup] = useState<FavoriteGroup | null>(null)
   const [calendarOpen, setCalendarOpen] = useState(false)
   const [mealSource, setMealSource] = useState<{ items: MealItem[] } | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
 
   const entries = useStore((s) => s.entries)
   const history = useStore((s) => s.budgetHistory)
-  const custom = useStore((s) => s.customFoods)
-  const quickPicks = useStore((s) => s.quickPicks)
-  const meals = useStore((s) => s.meals)
   const lastChoices = useStore((s) => s.lastChoices)
   const excludedDays = useStore((s) => s.excludedDays)
   const goal = useStore((s) => s.goal)
@@ -64,12 +59,6 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
   const week = useMemo(
     () => rollingAverage(entries, history, addDays(today, -1), 7, excludedDays),
     [entries, history, today, excludedDays],
-  )
-
-  // Automatiska snabbval låses när skärmen visas, så att chipsen inte hoppar runt medan man trycker.
-  const quick = useMemo(
-    () => quickItems(allFoods(custom), useStore.getState().usage, quickPicks, meals),
-    [custom, quickPicks, meals],
   )
 
   const openAdd = () => {
@@ -152,42 +141,11 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
       <section aria-labelledby="quick-title">
         <h2 className="section-title" id="quick-title">
           Favoriter
-          <button type="button" className="section-action" onClick={() => setEditingPicks(true)}>
+          <button type="button" className="section-action" onClick={() => setEditGroup('frukost')}>
             Ändra
           </button>
         </h2>
-        <div className="chips">
-          {quick.map((item) => {
-            const id = item.kind === 'food' ? item.food.id : item.meal.id
-            const name = item.kind === 'food' ? item.food.name : item.meal.name
-            const kcal = item.kind === 'food' ? preferredKcal(preferred(item.food, lastChoices[item.food.id])) : mealKcal(item.meal)
-            return (
-              <button
-                key={id}
-                type="button"
-                className="chip"
-                onClick={() => quickAdd(item)}
-                aria-label={`Lägg till ${name}`}
-              >
-                <span className="chip-emoji" aria-hidden>
-                  {item.kind === 'food' ? (
-                    <FoodIcon id={item.food.id} emoji={item.food.emoji} size={26} />
-                  ) : (
-                    <FoodIcon id="maltid-egen" emoji="🍱" size={26} />
-                  )}
-                </span>
-                <span className="chip-name">{name}</span>
-                <span className="chip-points">{formatPoints(toPoints(kcal, budget))}</span>
-              </button>
-            )
-          })}
-          {quick.length === 0 && (
-            <button type="button" className="chip chip-add" onClick={() => setEditingPicks(true)}>
-              <PlusIcon size={16} />
-              Lägg till favoriter
-            </button>
-          )}
-        </div>
+        <FavoriteWheel budgetKcal={budget} onAdd={quickAdd} onEdit={setEditGroup} />
       </section>
 
       <section aria-labelledby="day-title">
@@ -249,7 +207,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
         onPick={goTo}
       />
       <MealSheet source={mealSource} budgetKcal={budget} onClose={() => setMealSource(null)} />
-      <QuickPicksSheet open={editingPicks} onClose={() => setEditingPicks(false)} budgetKcal={budget} />
+      <FavoritesSheet group={editGroup} onClose={() => setEditGroup(null)} budgetKcal={budget} />
       <AddSheet open={adding} date={date} onClose={() => setAdding(false)} inputRef={searchRef} />
     </main>
   )

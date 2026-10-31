@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { FOODS } from '../data/foods'
 import { todayKey } from '../lib/dates'
-import { DATA_KEYS, emptyData, exportData, migrateData, parseImport, pickData, quickFoods, sanitizeData, useStore } from './useStore'
+import { DATA_KEYS, emptyData, exportData, FAVORITE_LIMIT, migrateData, parseImport, pickData, quickFoods, sanitizeData, useStore } from './useStore'
 
 const potatis = FOODS.find((f) => f.id === 'potatis')!
 const banan = FOODS.find((f) => f.id === 'banan')!
@@ -71,7 +71,7 @@ describe('store', () => {
     const s = useStore.getState()
     s.setProfile({ sex: 'kvinna', age: 40, heightCm: 170, weightKg: 70, activity: 2 })
     s.addFood(potatis, day, 2, { storlek: 'stor' })
-    s.toggleQuickPick('potatis')
+    s.toggleFavorite('lunch', 'potatis')
     s.saveMeal({ name: 'Frukost', items: [{ foodId: 'banan', name: 'Banan', emoji: '🍌', unit: '1 st', kcalPerUnit: 100, qty: 1 }] })
     s.logWeight(day, 70.4)
     s.toggleExcludedDay('2026-10-20')
@@ -101,7 +101,7 @@ describe('store', () => {
       quickPicks: ['potatis'],
     }
     const d = migrateData(v1, 1)
-    expect(d.quickPicks).toEqual(['potatis', 'banan'])
+    expect(d.favoriteGroups.frukost).toEqual(['potatis', 'banan'])
     expect(d.usage.potatis.slots).toEqual([0, 2, 0, 0])
     expect('favorites' in d).toBe(false)
   })
@@ -120,7 +120,7 @@ describe('store', () => {
     const d = migrateData(v2, 2)
     expect(d.usage['grekisk-yoghurt']).toEqual({ count: 5, last: 9, slots: [4, 0, 0, 0] })
     expect(d.usage['grekisk-yoghurt-2']).toBeUndefined()
-    expect(d.quickPicks).toEqual(['grekisk-yoghurt', 'banan'])
+    expect(d.favoriteGroups.skrap).toEqual(['grekisk-yoghurt', 'banan'])
     expect(d.lastChoices['grekisk-yoghurt'].picks).toEqual({ fetthalt: '2 %' })
     // Loggen rörs inte.
     expect(sanitizeData(d).data.entries[0].foodId).toBe('grekisk-yoghurt-2')
@@ -167,15 +167,51 @@ describe('store', () => {
     expect(useStore.getState().budgetHistory).toEqual([{ from: '2026-01-01', kcal: 2759 }])
   })
 
-  it('egna snabbval följer med i export och försvinner när en egen vara tas bort', () => {
+  it('favoriter följer med i export och försvinner när en egen vara tas bort', () => {
     const s = useStore.getState()
     const egen = s.addCustomFood({ name: 'Mammas lasagne', emoji: '🍝', unit: '1 bit', kcal: 600 })
-    s.setQuickPicks(['potatis', egen.id])
+    s.setFavorites('middag', ['potatis', egen.id])
+    s.setFavorites('skrap', [egen.id])
     const text = exportData(useStore.getState())
     s.deleteCustomFood(egen.id)
-    expect(useStore.getState().quickPicks).toEqual(['potatis'])
+    expect(useStore.getState().favoriteGroups).toMatchObject({ middag: ['potatis'], skrap: [] })
     s.importData(parseImport(text))
-    expect(useStore.getState().quickPicks).toEqual(['potatis', egen.id])
+    expect(useStore.getState().favoriteGroups).toMatchObject({ middag: ['potatis', egen.id], skrap: [egen.id] })
+  })
+
+  it('samma vara kan ligga i flera kategorier, och en full kategori tar inte emot fler', () => {
+    const s = useStore.getState()
+    expect(s.toggleFavorite('frukost', 'banan')).toBe(true)
+    expect(s.toggleFavorite('skrap', 'banan')).toBe(true)
+    expect(useStore.getState().favoriteGroups).toMatchObject({ frukost: ['banan'], lunch: [], middag: [], skrap: ['banan'] })
+    expect(s.toggleFavorite('frukost', 'banan')).toBe(false)
+    expect(useStore.getState().favoriteGroups.frukost).toEqual([])
+    s.setFavorites('lunch', Array.from({ length: FAVORITE_LIMIT }, (_, i) => `vara-${i}`))
+    expect(s.toggleFavorite('lunch', 'banan')).toBe(false)
+    expect(useStore.getState().favoriteGroups.lunch).toHaveLength(FAVORITE_LIMIT)
+  })
+
+  it('version 3 migreras: de tidigare favoriterna hamnar i alla fyra kategorierna', () => {
+    const egna = migrateData({ budgetHistory: [], entries: [], quickPicks: ['banan', 'måltid:x'] }, 3)
+    expect(egna.favoriteGroups).toEqual({ frukost: ['banan', 'måltid:x'], lunch: ['banan', 'måltid:x'], middag: ['banan', 'måltid:x'], skrap: ['banan', 'måltid:x'] })
+    expect('quickPicks' in egna).toBe(false)
+    // Automatiska favoriter (null) blir de som visades, så att inget försvinner.
+    const auto = migrateData({ budgetHistory: [], entries: [], usage: { potatis: { count: 9, last: Date.now() } }, quickPicks: null }, 3)
+    expect(auto.favoriteGroups.middag[0]).toBe('potatis')
+    expect(auto.favoriteGroups.middag).toHaveLength(8)
+    // Redan migrerad data rörs inte.
+    const v4 = { favoriteGroups: { frukost: ['agg'], lunch: [], middag: [], skrap: [] } }
+    expect(migrateData(v4, 4).favoriteGroups).toEqual(v4.favoriteGroups)
+  })
+
+  it('trasiga favoriter tvättas', () => {
+    expect(sanitizeData({ favoriteGroups: { frukost: ['a', 42, 'a'], lunch: 'x', annat: ['b'] } }).data.favoriteGroups).toEqual({
+      frukost: ['a'],
+      lunch: [],
+      middag: [],
+      skrap: [],
+    })
+    expect(sanitizeData({}).data.favoriteGroups).toEqual(emptyData.favoriteGroups)
   })
 
   it('snabbval är automatiska tills man valt egna', () => {
@@ -201,7 +237,7 @@ describe('store', () => {
     const data = parseImport(file)
     expect(data.entries.map((e) => e.id)).toEqual(['a'])
     expect(data.budgetHistory).toEqual([{ from: '2026-01-01', kcal: 2500 }])
-    expect(data.quickPicks).toEqual(['potatis'])
+    expect(data.favoriteGroups.lunch).toEqual(['potatis'])
     expect(data.dropped).toBe(3)
   })
 

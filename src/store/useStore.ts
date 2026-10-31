@@ -18,6 +18,22 @@ export const STORAGE_KEY = 'hundra-v1'
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
 
+/** Favoriternas fyra kategorier på Idag. Samma vara får ligga i flera. */
+export const FAVORITE_GROUPS = [
+  { id: 'frukost', name: 'Frukost', icon: 'grot', emoji: '🥣' },
+  { id: 'lunch', name: 'Lunch', icon: 'kottbullar-mos', emoji: '🍝' },
+  { id: 'middag', name: 'Middag', icon: 'lax-potatis', emoji: '🍽️' },
+  { id: 'skrap', name: 'Skräp', icon: 'chips-pase', emoji: '🍟' },
+] as const
+
+export type FavoriteGroup = (typeof FAVORITE_GROUPS)[number]['id']
+export type FavoriteGroups = Record<FavoriteGroup, string[]>
+
+/** Så många ryms i hjulet. */
+export const FAVORITE_LIMIT = 12
+
+const emptyGroups = (): FavoriteGroups => ({ frukost: [], lunch: [], middag: [], skrap: [] })
+
 /** Alla mål är snitt per dag. 100 = hålla vikten. */
 export const GOALS = [
   { value: 100, title: 'Hålla vikten' },
@@ -32,8 +48,8 @@ export type Data = {
   entries: Entry[]
   customFoods: Food[]
   usage: Usage
-  /** Egna snabbval i vald ordning. null = automatiskt efter det man äter mest. */
-  quickPicks: string[] | null
+  /** Favoriterna per kategori, i vald ordning. Varor och måltider ("måltid:<id>"). */
+  favoriteGroups: FavoriteGroups
   meals: Meal[]
   /** Senaste valet (storlek, tillagning, mängd …) per vara, så att (+) lägger till samma sak igen. */
   lastChoices: Record<string, LastChoice>
@@ -62,8 +78,9 @@ type Actions = {
   addCustomFood: (f: Omit<Food, 'id' | 'category' | 'custom'>) => Food
   updateCustomFood: (id: string, patch: Partial<Omit<Food, 'id'>>) => void
   deleteCustomFood: (id: string) => void
-  setQuickPicks: (ids: string[] | null) => void
-  toggleQuickPick: (id: string) => boolean
+  setFavorites: (group: FavoriteGroup, ids: string[]) => void
+  /** Returnerar true om id:t nu ligger i kategorin. */
+  toggleFavorite: (group: FavoriteGroup, id: string) => boolean
   saveMeal: (meal: Omit<Meal, 'id'> & { id?: string }) => Meal
   deleteMeal: (id: string) => void
   logMeal: (id: string, date: DateKey) => void
@@ -86,7 +103,7 @@ export const emptyData: Data = {
   entries: [],
   customFoods: [],
   usage: {},
-  quickPicks: null,
+  favoriteGroups: emptyGroups(),
   meals: [],
   lastChoices: {},
   weights: [],
@@ -176,7 +193,7 @@ export function migrateData(persisted: unknown, version: number): Data {
     const favorites = Array.isArray(d.favorites) ? (d.favorites as unknown[]).filter(isStr) : []
     const { data } = sanitizeData(d)
     if (favorites.length) {
-      const base = data.quickPicks ?? quickIds(allFoods(data.customFoods), data.usage, null, data.meals)
+      const base = oldPicks(d) ?? quickIds(allFoods(data.customFoods), data.usage, null, data.meals)
       d.quickPicks = [...base, ...favorites.filter((id) => !base.includes(id))]
     }
     const usage = { ...data.usage }
@@ -208,11 +225,23 @@ export function migrateData(persisted: unknown, version: number): Data {
       if (u.last > latest.last) latest = { fat, last: u.last }
     }
     d.usage = usage
-    if (data.quickPicks) d.quickPicks = [...new Set(data.quickPicks.map((x) => (x in old ? id : x)))]
+    const picks = oldPicks(d)
+    if (picks) d.quickPicks = [...new Set(picks.map((x) => (x in old ? id : x)))]
     if (latest.fat !== '10 %') d.lastChoices = { ...data.lastChoices, [id]: { picks: { fetthalt: latest.fat }, qty: 1 } }
+  }
+  // Version 3 → 4: favoriterna delas upp i Frukost, Lunch, Middag och Skräp. Inget ska försvinna,
+  // så de tidigare favoriterna (egna eller automatiska) hamnar i alla fyra, och sedan rensar man själv.
+  if (version < 4) {
+    const { data } = sanitizeData(d)
+    const ids = quickIds(allFoods(data.customFoods), data.usage, oldPicks(d), data.meals)
+    d.favoriteGroups = Object.fromEntries(FAVORITE_GROUPS.map((g) => [g.id, [...ids]]))
+    delete d.quickPicks
   }
   return d as unknown as Data
 }
+
+/** Snabbvalen före version 4: en lista, eller null för automatiska. */
+const oldPicks = (d: Record<string, unknown>): string[] | null => (Array.isArray(d.quickPicks) ? d.quickPicks.filter(isStr) : null)
 
 export function allFoods(custom: Food[]): Food[] {
   return [...custom, ...FOODS]
@@ -249,8 +278,13 @@ export type QuickItem = { kind: 'food'; food: Food } | { kind: 'meal'; meal: Mea
 
 /** Snabbvalen som varor och måltider. Id:n som inte längre finns hoppas över. */
 export function quickItems(foods: Food[], usage: Usage, picks: string[] | null, meals: Meal[], limit = 8): QuickItem[] {
+  return itemsOf(foods, quickIds(foods, usage, picks, meals, limit), meals)
+}
+
+/** Id:n som varor och måltider, i samma ordning. Id:n som inte längre finns hoppas över. */
+export function itemsOf(foods: Food[], ids: string[], meals: Meal[]): QuickItem[] {
   const byId = new Map(foods.map((f) => [f.id, f]))
-  return quickIds(foods, usage, picks, meals, limit)
+  return ids
     .map((id): QuickItem | null => {
       if (id.startsWith(MEAL_PREFIX)) {
         const meal = meals.find((m) => MEAL_PREFIX + m.id === id)
@@ -261,6 +295,9 @@ export function quickItems(foods: Food[], usage: Usage, picks: string[] | null, 
     })
     .filter((x): x is QuickItem => x !== null)
 }
+
+/** Ligger id:t i någon av favoritkategorierna? */
+export const isFavorite = (groups: FavoriteGroups, id: string) => FAVORITE_GROUPS.some((g) => groups[g.id].includes(id))
 
 /** Bakåtkompatibel hjälpare: bara varorna bland snabbvalen. */
 export function quickFoods(foods: Food[], usage: Usage, picks: string[] | null, limit = 8): Food[] {
@@ -281,7 +318,7 @@ export function mealKcal(meal: Meal): number {
 }
 
 export function exportData(s: Data): string {
-  return JSON.stringify({ app: 'hundra', version: 3, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
+  return JSON.stringify({ app: 'hundra', version: 4, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
 }
 
 const isDate = (v: unknown): v is DateKey => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
@@ -376,7 +413,9 @@ export function sanitizeData(raw: unknown): { data: Data; dropped: number } {
       entries: list(d.entries, cleanEntry),
       customFoods: list(d.customFoods, cleanFood),
       usage,
-      quickPicks: Array.isArray(d.quickPicks) ? strings(d.quickPicks) : null,
+      favoriteGroups: Object.fromEntries(
+        FAVORITE_GROUPS.map((g) => [g.id, isObj(d.favoriteGroups) ? [...new Set(strings(d.favoriteGroups[g.id]))] : []]),
+      ) as FavoriteGroups,
       meals: list(d.meals, cleanMeal),
       lastChoices,
       weights: list(d.weights, (w) => (isObj(w) && isDate(w.date) && isNum(w.kg, 20) && w.kg < 400 ? { date: w.date, kg: w.kg } : null)),
@@ -412,6 +451,9 @@ export function parseImport(text: string): Data & { dropped: number } {
   const { data, dropped } = sanitizeData(migrated)
   return { ...data, dropped }
 }
+
+const withoutFavorite = (groups: FavoriteGroups, id: string): FavoriteGroups =>
+  Object.fromEntries(FAVORITE_GROUPS.map((g) => [g.id, groups[g.id].filter((x) => x !== id)])) as FavoriteGroups
 
 // Lagringen skapas sist i filen: den läser in sparad data direkt, och då måste alla
 // hjälpfunktioner och konstanter ovanför redan finnas.
@@ -495,17 +537,17 @@ export const useStore = create<Data & Actions>()(
       deleteCustomFood: (id) =>
         set((s) => ({
           customFoods: s.customFoods.filter((f) => f.id !== id),
-          quickPicks: s.quickPicks?.filter((x) => x !== id) ?? null,
+          favoriteGroups: withoutFavorite(s.favoriteGroups, id),
         })),
 
-      setQuickPicks: (quickPicks) => set({ quickPicks }),
+      setFavorites: (group, ids) => set((s) => ({ favoriteGroups: { ...s.favoriteGroups, [group]: ids } })),
 
-      /** Lägger till eller tar bort ett snabbval. Returnerar true om det nu finns bland snabbvalen. */
-      toggleQuickPick: (id) => {
-        const s = get()
-        const picks = s.quickPicks ?? quickIds(allFoods(s.customFoods), s.usage, null, s.meals)
-        const on = !picks.includes(id)
-        set({ quickPicks: on ? [...picks, id] : picks.filter((x) => x !== id) })
+      // En full kategori tar inte emot fler; då blir svaret false.
+      toggleFavorite: (group, id) => {
+        const ids = get().favoriteGroups[group]
+        const on = !ids.includes(id)
+        if (on && ids.length >= FAVORITE_LIMIT) return false
+        get().setFavorites(group, on ? [...ids, id] : ids.filter((x) => x !== id))
         return on
       },
 
@@ -520,7 +562,7 @@ export const useStore = create<Data & Actions>()(
       deleteMeal: (id) =>
         set((s) => ({
           meals: s.meals.filter((m) => m.id !== id),
-          quickPicks: s.quickPicks?.filter((x) => x !== MEAL_PREFIX + id) ?? null,
+          favoriteGroups: withoutFavorite(s.favoriteGroups, MEAL_PREFIX + id),
         })),
 
       logMeal: (id, date) =>
@@ -576,7 +618,7 @@ export const useStore = create<Data & Actions>()(
       // Nyckeln får aldrig bytas: all historik ligger under den. Höj i stället `version`
       // och skriv en migrering i `migrate` om datamodellen ändras.
       name: STORAGE_KEY,
-      version: 3,
+      version: 4,
       storage: createJSONStorage(() => safeStorage),
       migrate: (persisted, version) => migrateData(persisted, version),
       // Trasig eller gammal data i lagringen tvättas i stället för att krascha appen.

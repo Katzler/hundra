@@ -5,9 +5,10 @@ import { budgetFor, dayKcal, formatPoints, formatQty, toPoints } from '../lib/ca
 import { dayTitle, todayKey, type DateKey } from '../lib/dates'
 import { parseQuantity, searchFoods } from '../lib/search'
 import { useUI } from '../store/ui'
-import { allFoods, itemOf, MEAL_PREFIX, mealKcal, recentFoods, sameItem, useStore, type Meal } from '../store/useStore'
+import { allFoods, isFavorite, itemOf, MEAL_PREFIX, mealKcal, recentFoods, sameItem, useStore, type Meal } from '../store/useStore'
 import { ChoiceSheet } from './ChoiceSheet'
 import { CustomFoodForm } from './CustomFoodForm'
+import { FavoritePicker } from './FavoritePicker'
 import { FoodIcon } from './FoodIcon'
 import { FoodRow } from './FoodRow'
 import { ChevronLeft, ChevronRight, PlusIcon, SearchIcon, XIcon } from './icons'
@@ -27,7 +28,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const [view, setView] = useState<View>({ kind: 'home' })
   const custom = useStore((s) => s.customFoods)
   const usage = useStore((s) => s.usage)
-  const quickPicks = useStore((s) => s.quickPicks)
+  const favoriteGroups = useStore((s) => s.favoriteGroups)
   const meals = useStore((s) => s.meals)
   const lastChoices = useStore((s) => s.lastChoices)
   const entries = useStore((s) => s.entries)
@@ -36,17 +37,17 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const logMeal = useStore((s) => s.logMeal)
   const setDayEntries = useStore((s) => s.setDayEntries)
   const setQty = useStore((s) => s.setQty)
-  const toggleQuickPick = useStore((s) => s.toggleQuickPick)
   const addCustomFood = useStore((s) => s.addCustomFood)
   const showToast = useUI((s) => s.showToast)
   const bodyRef = useRef<HTMLDivElement>(null)
   const startKcal = useRef(0)
   const [choosing, setChoosing] = useState<Food | null>(null)
+  const [favoriting, setFavoriting] = useState<Food | null>(null)
 
   const foods = useMemo(() => allFoods(custom), [custom])
   const budget = budgetFor(date, history)
   const dayEntries = useMemo(() => entries.filter((e) => e.date === date), [entries, date])
-  const isPicked = (id: string) => quickPicks?.includes(id) ?? false
+  const isPicked = (id: string) => isFavorite(favoriteGroups, id)
   const dayNote = date === todayKey() ? '' : ` · ${dayTitle(date)}`
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
     setQuery('')
     setView({ kind: 'home' })
     setChoosing(null)
+    setFavoriting(null)
   }, [open, date])
 
   useEffect(() => {
@@ -103,10 +105,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
       onQty={(q) => {
         if (entry) setQty(entry.id, q)
       }}
-      onLongPress={() => {
-        const on = toggleQuickPick(food.id)
-        showToast(on ? `${food.name} ligger nu bland favoriterna` : `${food.name} borttagen från favoriterna`)
-      }}
+      onLongPress={() => setFavoriting(food)}
     />
     )
   }
@@ -300,6 +299,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
         )}
       </div>
       <ChoiceSheet food={choosing} qty={qty} date={date} onClose={() => setChoosing(null)} />
+      <FavoritePicker item={favoriting} onClose={() => setFavoriting(null)} />
     </Sheet>
   )
 }

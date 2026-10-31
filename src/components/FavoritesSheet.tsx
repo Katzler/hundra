@@ -1,37 +1,48 @@
 import { useEffect, useMemo, useState } from 'react'
 import { formatPoints, toPoints } from '../lib/calc'
 import { searchFoods } from '../lib/search'
-import { haptic } from '../store/ui'
-import { allFoods, MEAL_PREFIX, mealKcal, quickFoods, quickItems, useStore } from '../store/useStore'
+import { haptic, useUI } from '../store/ui'
+import {
+  allFoods,
+  FAVORITE_GROUPS,
+  FAVORITE_LIMIT,
+  itemsOf,
+  MEAL_PREFIX,
+  mealKcal,
+  quickFoods,
+  useStore,
+  type FavoriteGroup,
+} from '../store/useStore'
 import { FoodIcon } from './FoodIcon'
 import { CheckIcon, SearchIcon, XIcon } from './icons'
+import { Segmented } from './Segmented'
 import { Sheet } from './Sheet'
 
-type Props = { open: boolean; onClose: () => void; budgetKcal: number }
+type Props = { group: FavoriteGroup | null; onClose: () => void; budgetKcal: number }
 
-/** Välj själv vilka varor som ligger bland snabbvalen på Idag. */
-export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
+/** Välj själv vilka varor och måltider som ligger i varje favoritkategori på Idag. */
+export function FavoritesSheet({ group, onClose, budgetKcal }: Props) {
   const [query, setQuery] = useState('')
+  const [tab, setTab] = useState<FavoriteGroup>('frukost')
   const custom = useStore((s) => s.customFoods)
   const usage = useStore((s) => s.usage)
-  const quickPicks = useStore((s) => s.quickPicks)
+  const groups = useStore((s) => s.favoriteGroups)
   const meals = useStore((s) => s.meals)
-  const setQuickPicks = useStore((s) => s.setQuickPicks)
+  const toggleFavorite = useStore((s) => s.toggleFavorite)
+  const showToast = useUI((s) => s.showToast)
   const foods = useMemo(() => allFoods(custom), [custom])
+  const open = group !== null
 
   useEffect(() => {
-    if (open) setQuery('')
-  }, [open])
+    if (!group) return
+    setQuery('')
+    setTab(group)
+  }, [group])
 
-  // Så länge man inte valt något eget utgår vi från de automatiska snabbvalen, låsta när arket öppnas.
-  const autoIds = useMemo(
-    () => (open ? quickFoods(allFoods(useStore.getState().customFoods), useStore.getState().usage, null).map((f) => f.id) : []),
-    [open],
-  )
-
-  const picks = quickPicks ?? autoIds
-  // Både varor och sparade måltider kan ligga bland snabbvalen.
-  const picked = quickItems(foods, usage, picks, meals, 100).map((q) =>
+  const picks = groups[tab]
+  const tabName = FAVORITE_GROUPS.find((g) => g.id === tab)!.name
+  // Både varor och sparade måltider kan ligga bland favoriterna.
+  const picked = itemsOf(foods, picks, meals).map((q) =>
     q.kind === 'food'
       ? { id: q.food.id, name: q.food.name, icon: q.food.id, emoji: q.food.emoji }
       : { id: MEAL_PREFIX + q.meal.id, name: q.meal.name, icon: 'maltid-egen', emoji: '🍱' },
@@ -42,8 +53,12 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
   const list = query.trim() ? results : suggestions
 
   const toggle = (id: string) => {
+    if (!picks.includes(id) && picks.length >= FAVORITE_LIMIT) {
+      showToast(`${tabName} är full. Ta bort en favorit först.`)
+      return
+    }
     haptic()
-    setQuickPicks(picks.includes(id) ? picks.filter((x) => x !== id) : [...picks, id])
+    toggleFavorite(tab, id)
   }
 
   return (
@@ -58,6 +73,8 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
         </button>
       }
     >
+      <Segmented label="Kategori" options={FAVORITE_GROUPS.map((g) => ({ value: g.id, label: g.name }))} value={tab} onChange={setTab} />
+
       <div className="picks-preview">
         {picked.length > 0 ? (
           <div className="chips chips-wrap">
@@ -74,10 +91,10 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
             ))}
           </div>
         ) : (
-          <p className="empty-text">Inga favoriter än. Välj några nedan.</p>
+          <p className="empty-text">Inga favoriter i {tabName.toLowerCase()} än. Välj några nedan.</p>
         )}
         <p className="hint-text">
-          {quickPicks ? 'Tryck på en favorit för att ta bort den.' : 'Just nu väljs favoriterna automatiskt efter det du äter mest.'}
+          Tryck på en favorit för att ta bort den. Samma vara kan ligga i flera kategorier. {picks.length} av {FAVORITE_LIMIT}.
         </p>
       </div>
 
@@ -156,12 +173,6 @@ export function QuickPicksSheet({ open, onClose, budgetKcal }: Props) {
         </div>
       ) : (
         <p className="empty-text">Hittade inget som heter ”{query.trim()}”.</p>
-      )}
-
-      {quickPicks && (
-        <button type="button" className="link-btn reset-picks" onClick={() => setQuickPicks(null)}>
-          Återställ till automatiskt
-        </button>
       )}
     </Sheet>
   )

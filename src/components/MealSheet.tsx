@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { formatPoints, toPoints } from '../lib/calc'
 import { haptic, useUI } from '../store/ui'
-import { MEAL_PREFIX, useStore, type Meal, type MealItem } from '../store/useStore'
+import { FAVORITE_GROUPS, FAVORITE_LIMIT, MEAL_PREFIX, useStore, type FavoriteGroup, type Meal, type MealItem } from '../store/useStore'
+import { FavoriteGroupChecks } from './FavoritePicker'
 import { FoodIcon } from './FoodIcon'
 import { Sheet } from './Sheet'
 import { Stepper } from './Stepper'
@@ -17,19 +18,23 @@ type Props = {
 export function MealSheet({ source, budgetKcal, onClose }: Props) {
   const saveMeal = useStore((s) => s.saveMeal)
   const deleteMeal = useStore((s) => s.deleteMeal)
-  const toggleQuickPick = useStore((s) => s.toggleQuickPick)
-  const quickPicks = useStore((s) => s.quickPicks)
+  const setFavorites = useStore((s) => s.setFavorites)
   const showToast = useUI((s) => s.showToast)
   const existing = source && 'meal' in source ? source.meal : null
   const [name, setName] = useState('')
   const [items, setItems] = useState<MealItem[]>([])
-  const [asQuickPick, setAsQuickPick] = useState(true)
+  const [groups, setGroups] = useState<FavoriteGroup[]>([])
 
   useEffect(() => {
     if (!source) return
     setName(existing?.name ?? defaultName())
     setItems('meal' in source ? source.meal.items : source.items)
-    setAsQuickPick(existing ? (quickPicks?.includes(MEAL_PREFIX + existing.id) ?? false) : true)
+    const all = useStore.getState().favoriteGroups
+    setGroups(
+      existing
+        ? FAVORITE_GROUPS.filter((g) => all[g.id].includes(MEAL_PREFIX + existing.id)).map((g) => g.id)
+        : defaultGroups(),
+    )
   }, [source])
 
   const total = items.reduce((s, i) => s + i.kcalPerUnit * i.qty, 0)
@@ -38,10 +43,23 @@ export function MealSheet({ source, budgetKcal, onClose }: Props) {
   const save = () => {
     const meal = saveMeal({ id: existing?.id, name, items })
     const id = MEAL_PREFIX + meal.id
-    const isPicked = useStore.getState().quickPicks?.includes(id) ?? false
-    if (asQuickPick !== isPicked) toggleQuickPick(id)
+    // En full kategori tar inte emot fler; måltiden sparas ändå.
+    let full = ''
+    for (const g of FAVORITE_GROUPS) {
+      const ids = useStore.getState().favoriteGroups[g.id]
+      const want = groups.includes(g.id)
+      if (want === ids.includes(id)) continue
+      if (want && ids.length >= FAVORITE_LIMIT) full = g.name
+      else setFavorites(g.id, want ? [...ids, id] : ids.filter((x) => x !== id))
+    }
     haptic()
-    showToast(existing ? 'Måltiden sparad' : `${meal.name} sparad${asQuickPick ? ' bland favoriterna' : ''}`)
+    showToast(
+      full
+        ? `${meal.name} sparad, men ${full.toLowerCase()} är full`
+        : existing
+          ? 'Måltiden sparad'
+          : `${meal.name} sparad${groups.length ? ' bland favoriterna' : ''}`,
+    )
     onClose()
   }
 
@@ -96,10 +114,11 @@ export function MealSheet({ source, budgetKcal, onClose }: Props) {
         </div>
         <p className="hint-text">Totalt {formatPoints(toPoints(total, budgetKcal))} p. Poängen räknas om om du ändrar dina uppgifter.</p>
 
-        <label className="toggle-row group">
-          <span className="row-title">Visa bland favoriterna</span>
-          <input type="checkbox" className="switch" checked={asQuickPick} onChange={(e) => setAsQuickPick(e.target.checked)} />
-        </label>
+        <h3 className="section-title">Visa bland favoriterna i</h3>
+        <FavoriteGroupChecks
+          selected={groups}
+          onToggle={(g) => setGroups(groups.includes(g) ? groups.filter((x) => x !== g) : [...groups, g])}
+        />
 
         {existing && (
           <button
@@ -117,6 +136,15 @@ export function MealSheet({ source, budgetKcal, onClose }: Props) {
       </div>
     </Sheet>
   )
+}
+
+/** En ny måltid föreslås i den kategori som passar tiden på dygnet. */
+function defaultGroups(): FavoriteGroup[] {
+  const h = new Date().getHours()
+  if (h < 10) return ['frukost']
+  if (h < 14) return ['lunch']
+  if (h < 17) return []
+  return ['middag']
 }
 
 function defaultName(): string {

@@ -190,7 +190,6 @@ export function FavoriteWheel({ budgetKcal, onAdd, onEdit }: Props) {
                 <FoodIcon id={g.icon} emoji={g.emoji} size={40} />
               </span>
               <span className="fav-group-name">{g.name}</span>
-              <span className="fav-group-count">{n || 'Lägg till'}</span>
             </button>
           )
         })}

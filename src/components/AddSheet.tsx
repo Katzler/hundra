@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react'
-import { choiceSummary, preferred, questionsFor } from '../data/choices'
+import { choiceSummary, hasChoices as choicesFor, preferred } from '../data/choices'
 import type { Food } from '../data/foods'
 import { budgetFor, dayKcal, formatPoints, formatQty, toPoints } from '../lib/calc'
 import { dayTitle, todayKey, type DateKey } from '../lib/dates'
@@ -94,7 +94,7 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
 
   const row = (food: Food) => {
     // Raden visar och lägger till senaste valet, t.ex. stor stekt kycklingfilé.
-    const hasChoices = questionsFor(food).length > 0
+    const hasChoices = choicesFor(food)
     const pref = preferred(food, lastChoices[food.id])
     const item = itemOf(pref.food, pref.qty)
     const entry = dayEntries.find((e) => sameItem(e, item))

@@ -75,6 +75,26 @@ describe('snabbval', () => {
     expect(applyPicks(food('tacos'), { typ: 'hard' }).kcal).toBe(180)
   })
 
+  it('flera skivor eller styck räknas ett i taget, med den vanliga mängden som förval', () => {
+    const p = preferred(food('salami'))
+    expect(p).toMatchObject({ qty: 3, food: { unit: '1 skiva', kcal: 30 } })
+    expect(amountText(p.qty, p.food.unit)).toBe('3 skivor')
+    expect(preferred(food('sushi')).qty).toBe(10)
+    expect(applyPicks(food('omelett'), {}).unit).toBe('1 ägg')
+    expect(preferred({ ...food('salami'), custom: true }).qty).toBe(1)
+  })
+
+  it('brödskiva och smörgåsar har sort och bröd', () => {
+    expect(applyPicks(food('brodskiva'), { sort: 'grovt' })).toMatchObject({ name: 'Brödskiva, grovt', kcal: 100 })
+    expect(applyPicks(food('macka-ost'), { brod: 'knacke', smor: 'utan' })).toMatchObject({ name: 'Smörgås med ost på knäcke, utan smör', kcal: 105 })
+  })
+
+  it('pluralen stämmer', () => {
+    expect(amountText(2, '1 portion (2½ dl kokt)')).toBe('2 portioner (2½ dl kokt)')
+    expect(amountText(0.5, '1 skiva')).toBe('½ skiva')
+    expect(amountText(2, '1 glas')).toBe('2 glas')
+  })
+
   it('större förpackning byter enheten', () => {
     expect(applyPicks(food('lask'), { storlek: 'flaska' }).unit).toBe('1 flaska (50 cl)')
     expect(applyPicks(food('ol'), { storlek: 'halv' }).unit).toBe('50 cl')

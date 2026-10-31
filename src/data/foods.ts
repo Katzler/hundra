@@ -88,7 +88,7 @@ const DATA: Record<Exclude<CategoryId, 'egna'>, Row[]> = {
   kolhydrat: [
     ['potatis', '🥔', 'Potatis', '1 st medel', 75, ['pärer', 'kokt potatis']],
     ['potatismos', '🥔', 'Potatismos', '1 portion (2 dl)', 180, ['mos']],
-    ['pommes', '🍟', 'Pommes frites', '1 portion (mellan)', 350, ['pommes', 'fries']],
+    ['pommes', '🍟', 'Pommes frites', '1 portion', 350, ['pommes', 'fries']],
     ['klyftpotatis', '🥔', 'Klyftpotatis', '1 portion (200 g)', 220, ['ugnspotatis']],
     ['bakad-potatis', '🥔', 'Bakad potatis', '1 st', 220],
     ['pasta', '🍝', 'Pasta', '1 portion (3 dl kokt)', 300, ['spaghetti', 'makaroner', 'penne']],

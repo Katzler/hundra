@@ -196,6 +196,12 @@ const milk: Question = {
 
 const MEAT = [size(), cook()]
 
+/** Smörgåsar: brödet och smöret avgör mest, pålägget står i namnet. */
+const SANDWICH: Question[] = [
+  { id: 'brod', title: 'Bröd', default: 'skiva', options: [{ id: 'skiva', label: 'Brödskiva' }, { id: 'knacke', label: 'Knäcke', add: -40, tag: ' på knäcke' }, { id: 'fralla', label: 'Fralla', add: 90, tag: ' på fralla' }] },
+  { id: 'smor', title: 'Smör', default: 'med', options: [{ id: 'med', label: 'Med smör' }, { id: 'utan', label: 'Utan', add: -35, tag: ', utan smör' }] },
+]
+
 /** Frågor per vara. En tom lista betyder att varan läggs till direkt, utan frågor. */
 const BY_FOOD: Record<string, Question[]> = {
   // Frukost
@@ -210,7 +216,13 @@ const BY_FOOD: Record<string, Question[]> = {
   'amerikanska-pannkakor': [],
   'smoothie': [glass()],
 
-  // Bröd: man räknar skivor och styck, det sköter antalet.
+  // Bröd
+  'brodskiva': [{ id: 'sort', title: 'Sort', default: 'limpa', options: [{ id: 'limpa', label: 'Limpa', note: 'mjukt bröd' }, { id: 'formbrod', label: 'Formbröd', note: 'rostbröd', kcal: 70, tag: ', formbröd' }, { id: 'grovt', label: 'Grovt', note: 'fullkorn, frön', kcal: 100, tag: ', grovt' }, { id: 'surdeg', label: 'Surdeg', kcal: 120, tag: ', surdeg' }] }],
+  'macka-ost': SANDWICH,
+  'macka-skinka': SANDWICH,
+  'macka-agg': SANDWICH,
+  'macka-avokado': SANDWICH,
+  'macka-jordnot': SANDWICH,
 
   // Potatis, pasta & ris
   'potatis': [size('Storlek', ['ca 50 g', 'ca 90 g', 'ca 130 g'], ['Liten', 'Medel', 'Stor'])],
@@ -226,6 +238,7 @@ const BY_FOOD: Record<string, Question[]> = {
   'quinoa': [cooked(2, GRYN(310))],
   'matvete': [cooked(2.5, GRYN(270))],
   'rosti': [],
+  'pommes': [size('Storlek', ['ca 80 g', 'ca 115 g', 'ca 150 g'], ['Liten', 'Mellan', 'Stor'], [0.7, 1.35])],
 
   // Kött, fisk & protein
   'kycklingfile': [size('Storlek', ['ca 110 g', 'ca 150 g', 'ca 200 g'], ['Liten', 'Medium', 'Stor']), cook()],
@@ -306,6 +319,7 @@ const BY_FOOD: Record<string, Question[]> = {
   'dumplings': [],
   'kaldolmar': [],
   'kroppkakor': [],
+  'blodpudding': [],
   'kraftor': [],
   'pannkakor': [],
   'nuggets': [],
@@ -400,6 +414,30 @@ const BY_CATEGORY: Partial<Record<Food['category'], Question[]>> = {
   alkohol: [cupSize],
 }
 
+const SINGULAR: Record<string, string> = { st: 'st', skivor: 'skiva', bitar: 'bit', kulor: 'kula', ägg: 'ägg' }
+
+/**
+ * Varor som "3 skivor" eller "5 st" räknas styckvis: enheten blir 1 skiva och mängden börjar på 3.
+ * Då blir en till skiva en till, inte 3 till. Egna varor behåller sin enhet.
+ */
+function counted(food: Food): { unit: string; kcal: number; n: number } | null {
+  const m = /^(\d+) (st|skivor|bitar|kulor|ägg)$/.exec(food.unit)
+  if (food.custom || !m || Number(m[1]) < 2) return null
+  const n = Number(m[1])
+  return { unit: `1 ${SINGULAR[m[2]]}`, kcal: Math.round((food.kcal / n) * 10) / 10, n }
+}
+
+/** Snabbval runt den vanliga mängden, t.ex. 1–5 för 3 och 5–15 för 10. */
+function countAmounts(n: number): number[] {
+  const a = n <= 6 ? [n - 2, n - 1, n, n + 1, n + 2] : [n / 2, n * 0.75, n, n * 1.25, n * 1.5].map(Math.round)
+  return a.filter((x) => x >= 1)
+}
+
+/** Om trycket på varan öppnar valen: frågor eller styckräkning. */
+export function hasChoices(food: Food): boolean {
+  return questionsFor(food).length > 0 || !!counted(food)
+}
+
 /** "1 msk", "2 msk", "1 tsk", "½ dl" och "1 dl" blir sked och deciliter. */
 function spoonsFromUnit(unit: string): Question | null {
   const m = /^(½|\d+)\s*(tsk|msk|dl)( riven)?$/.exec(unit)
@@ -433,28 +471,31 @@ export function chosenOptions(questions: Question[], picks: Picks): Option[] {
 
 /** Varan som den blir med valen: samma id, men eget namn, egen enhet och egna kcal per enhet. */
 export function applyPicks(food: Food, picks: Picks): Food {
+  const c = counted(food)
+  const one = c ? { ...food, unit: c.unit, kcal: c.kcal } : food
   const options = chosenOptions(questionsFor(food), picks)
-  if (!options.length) return food
-  const base = options.reduce((k, o) => o.kcal ?? k, food.kcal)
+  if (!options.length) return one
+  const base = options.reduce((k, o) => o.kcal ?? k, one.kcal)
   const add = options.reduce((s, o) => s + (o.add ?? 0), 0)
   const factor = options.reduce((f, o) => f * (o.factor ?? 1), 1)
   const kcal = Math.max(0, Math.round((base + add) * factor * 10) / 10)
   return {
     ...food,
     name: food.name + options.map((o) => o.tag ?? '').join(''),
-    unit: options.reduce((u, o) => o.unit ?? u, food.unit),
+    unit: options.reduce((u, o) => o.unit ?? u, one.unit),
     kcal,
   }
 }
 
 /** Snabbvalen för mängden med de här valen. */
 export function amountsFor(food: Food, picks: Picks): number[] {
-  return chosenOptions(questionsFor(food), picks).reduce<number[] | undefined>((a, o) => o.amounts ?? a, undefined) ?? DEFAULT_AMOUNTS
+  const c = counted(food)
+  return chosenOptions(questionsFor(food), picks).reduce<number[] | undefined>((a, o) => o.amounts ?? a, undefined) ?? (c ? countAmounts(c.n) : DEFAULT_AMOUNTS)
 }
 
 /** Mängden man oftast tar med de här valen, t.ex. 2 msk hummus. */
 export function usualQty(food: Food, picks: Picks): number {
-  return chosenOptions(questionsFor(food), picks).reduce((q, o) => o.qty ?? q, 1)
+  return chosenOptions(questionsFor(food), picks).reduce((q, o) => o.qty ?? q, counted(food)?.n ?? 1)
 }
 
 /**
@@ -463,15 +504,20 @@ export function usualQty(food: Food, picks: Picks): number {
  */
 export function preferred(food: Food, last?: LastChoice): { food: Food; qty: number; picks: Picks } {
   const questions = questionsFor(food)
-  if (!questions.length) return { food, qty: 1, picks: {} }
+  if (!hasChoices(food)) return { food, qty: 1, picks: {} }
   const picks = fillPicks(questions, last?.picks)
   return { food: applyPicks(food, picks), qty: usualQty(food, picks), picks }
 }
 
-/** "2 msk", "1½ dl", "2 st", annars "2 × 2 skivor". */
+const PLURAL: Record<string, string> = {
+  skiva: 'skivor', bit: 'bitar', kula: 'kulor', burk: 'burkar', tallrik: 'tallrikar', skål: 'skålar', kopp: 'koppar',
+  flaska: 'flaskor', portion: 'portioner', näve: 'nävar', klick: 'klickar', påse: 'påsar', låda: 'lådor', strut: 'strutar', hel: 'hela',
+}
+
+/** "2 msk", "1½ dl", "3 skivor", annars "2 × 2 skivor". */
 export function amountText(qty: number, unit: string): string {
-  const m = /^1 (.+)$/.exec(unit)
-  if (m) return `${formatQty(qty)} ${m[1]}`
+  const m = /^1 (\S+)(.*)$/.exec(unit)
+  if (m) return `${formatQty(qty)} ${qty > 1 ? (PLURAL[m[1]] ?? m[1]) : m[1]}${m[2]}`
   return qty === 1 ? unit : `${formatQty(qty)} × ${unit}`
 }
 

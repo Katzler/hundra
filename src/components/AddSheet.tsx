@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { choiceSummary, preferred, questionsFor } from '../data/choices'
-import { CATEGORIES, type CategoryId, type Food } from '../data/foods'
+import type { Food } from '../data/foods'
 import { budgetFor, dayKcal, formatPoints, formatQty, toPoints } from '../lib/calc'
 import { dayTitle, todayKey, type DateKey } from '../lib/dates'
 import { parseQuantity, searchFoods } from '../lib/search'
@@ -14,7 +14,7 @@ import { FoodRow } from './FoodRow'
 import { ChevronLeft, ChevronRight, PlusIcon, SearchIcon, XIcon } from './icons'
 import { Sheet } from './Sheet'
 
-type View = { kind: 'home' } | { kind: 'category'; id: CategoryId } | { kind: 'create' }
+type View = { kind: 'home' } | { kind: 'create' }
 
 type Props = {
   open: boolean
@@ -132,9 +132,7 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   )
 
   const trimmed = rest.trim()
-  const searching = query.trim().length > 0 && (view.kind === 'home' || view.kind === 'category')
-  const category = view.kind === 'category' ? CATEGORIES.find((c) => c.id === view.id) : undefined
-  const categoryFoods = view.kind === 'category' ? foods.filter((f) => f.category === view.id) : []
+  const searching = query.trim().length > 0 && view.kind === 'home'
   const matchingMeals = searching ? meals.filter((m) => m.name.toLowerCase().includes(trimmed.toLowerCase())) : []
 
   const back =
@@ -148,11 +146,9 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
   const title =
     view.kind === 'create'
       ? 'Ny vara'
-      : category
-          ? category.name
-          : date === todayKey()
-            ? 'Lägg till'
-            : `Lägg till · ${dayTitle(date)}`
+      : date === todayKey()
+        ? 'Lägg till'
+        : `Lägg till · ${dayTitle(date)}`
 
   const formView = view.kind === 'create'
 
@@ -254,12 +250,6 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
               </button>
             </div>
           </>
-        ) : view.kind === 'category' ? (
-          categoryFoods.length > 0 ? (
-            <div className="group">{categoryFoods.map(row)}</div>
-          ) : (
-            <p className="empty-text">Inga egna varor än. Sök efter något och välj ”Skapa”.</p>
-          )
         ) : (
           <>
             {meals.length > 0 && (
@@ -280,17 +270,6 @@ export function AddSheet({ open, date, onClose, inputRef }: Props) {
                 <div className="group">{seasonal.map(row)}</div>
               </>
             )}
-            <h3 className="section-title">Kategorier</h3>
-            <div className="category-grid">
-              {CATEGORIES.filter((c) => c.id !== 'egna' || custom.length > 0).map((c) => (
-                <button key={c.id} type="button" className="category" onClick={() => setView({ kind: 'category', id: c.id })}>
-                  <span className="category-emoji" aria-hidden>
-                    <FoodIcon id={c.icon} emoji={c.emoji} size={36} />
-                  </span>
-                  <span className="category-name">{c.name}</span>
-                </button>
-              ))}
-            </div>
             <p className="hint-text">
               Tips: tryck på en vara för att välja storlek och mängd, eller på + för att lägga till samma som sist. Håll inne för att lägga den
               bland favoriterna.

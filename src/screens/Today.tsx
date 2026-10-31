@@ -6,7 +6,7 @@ import { CalendarSheet } from '../components/CalendarSheet'
 import { FavoritesSheet } from '../components/FavoritesSheet'
 import { FavoriteWheel } from '../components/FavoriteWheel'
 import { EntryRow } from '../components/FoodRow'
-import { CalendarIcon, ChevronLeft, ChevronRight, PlusIcon } from '../components/icons'
+import { CalendarIcon, ChevronLeft, ChevronRight, SearchIcon } from '../components/icons'
 import { MealSheet } from '../components/MealSheet'
 import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
@@ -124,6 +124,12 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
         </p>
       </section>
 
+      {/* Ser ut som ett sökfält men öppnar arket, där det riktiga fältet får fokus direkt. */}
+      <button type="button" className="search-field" onClick={openAdd}>
+        <SearchIcon size={17} />
+        Sök mat
+      </button>
+
       {!isToday && dayEntries.length > 0 && (
         <section className={`card exclude-card ${total < SHORT_DAY ? 'is-short' : ''}`}>
           {total < SHORT_DAY && !excluded && (
@@ -164,7 +170,7 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
         ) : (
           <div className="empty-card">
             <p>
-              Tryck på en favorit ovan eller på <strong>Lägg till mat</strong>.
+              Sök efter mat ovan eller tryck på en favorit.
             </p>
           </div>
         )}
@@ -190,11 +196,6 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
       </section>
 
       {showBackup && isToday && <BackupCard />}
-
-      <button type="button" className="fab" onClick={openAdd}>
-        <PlusIcon size={20} />
-        Lägg till mat
-      </button>
 
       <CalendarSheet
         open={calendarOpen}

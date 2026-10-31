@@ -122,7 +122,7 @@ strong {
 }
 
 .screen {
-  padding: calc(var(--safe-top) + 12px) 16px calc(var(--tabbar-h) + var(--safe-bottom) + 96px);
+  padding: calc(var(--safe-top) + 12px) 16px calc(var(--tabbar-h) + var(--safe-bottom) + 32px);
   animation: fade-in 0.25s ease;
 }
 
@@ -673,29 +673,23 @@ strong {
   }
 }
 
-.fab {
-  position: fixed;
-  z-index: 40;
-  left: 50%;
-  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 14px);
-  transform: translateX(-50%);
-  display: inline-flex;
+.search-field {
+  display: flex;
   align-items: center;
   gap: 8px;
-  height: 52px;
-  padding: 0 26px 0 20px;
-  border-radius: 999px;
-  background: var(--button);
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
-  transition: transform 0.2s var(--spring);
+  width: 100%;
+  height: 44px;
+  margin: 4px 0 8px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--fill);
+  color: var(--label-2);
+  font-size: 1.0588rem;
+  text-align: left;
 }
 
-.fab:active {
-  transform: translateX(-50%) scale(0.95);
+.search-field:active {
+  opacity: 0.6;
 }
 
 /* ───────── Svep för att ta bort ───────── */
@@ -1016,39 +1010,6 @@ strong {
 .sheet-body .section-title:first-child,
 .search + .section-title {
   margin-top: 4px;
-}
-
-.category-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.category {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 14px;
-  border-radius: var(--radius);
-  background: var(--card);
-  text-align: left;
-  transition: transform 0.15s;
-}
-
-.category:active {
-  transform: scale(0.97);
-}
-
-.category-emoji {
-  font-size: 1.5294rem;
-  line-height: 1;
-}
-
-.category-name {
-  font-size: 0.8824rem;
-  font-weight: 600;
-  line-height: 1.2;
 }
 
 .sheet-body .hint-text {

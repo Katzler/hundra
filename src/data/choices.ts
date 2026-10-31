@@ -314,7 +314,7 @@ const BY_FOOD: Record<string, Question[]> = {
 
   // Måltider och snabbmat som räknas i styck
   // Fredagstacos räknas styckvis. Mjuka tortillas med köttfärs, ost och sås är vanligast.
-  'tacos': [{ id: 'typ', title: 'Typ', default: 'mjuk', options: [{ id: 'mjuk', label: 'Mjuk tortilla', note: 'med fyllning', amounts: [2, 3, 4, 5], qty: 3 }, { id: 'hard', label: 'Hårt skal', note: 'med fyllning', kcal: 180, tag: ', hårda skal', amounts: [2, 3, 4, 5], qty: 3 }] }],
+  'tacos': [{ id: 'typ', title: 'Typ', default: 'mjuk', options: [{ id: 'mjuk', label: 'Mjuk tortilla', note: 'med fyllning', amounts: [1, 2, 3, 4, 5], qty: 3 }, { id: 'hard', label: 'Hårt skal', note: 'med fyllning', kcal: 180, tag: ', hårda skal', amounts: [1, 2, 3, 4, 5], qty: 3 }] }],
   'sushi': [],
   'dumplings': [],
   'kaldolmar': [],
@@ -427,10 +427,11 @@ function counted(food: Food): { unit: string; kcal: number; n: number } | null {
   return { unit: `1 ${SINGULAR[m[2]]}`, kcal: Math.round((food.kcal / n) * 10) / 10, n }
 }
 
-/** Snabbval runt den vanliga mängden, t.ex. 1–5 för 3 och 5–15 för 10. */
+/** Snabbval runt den vanliga mängden, och 1 för den som bara tar en: 1–5 för 3, 1 och 4–7 för 5, 5–15 för 10. */
 function countAmounts(n: number): number[] {
-  const a = n <= 6 ? [n - 2, n - 1, n, n + 1, n + 2] : [n / 2, n * 0.75, n, n * 1.25, n * 1.5].map(Math.round)
-  return a.filter((x) => x >= 1)
+  if (n > 6) return [n / 2, n * 0.75, n, n * 1.25, n * 1.5].map(Math.round)
+  if (n <= 3) return [1, 2, 3, 4, 5].slice(0, n + 2)
+  return [1, n - 1, n, n + 1, n + 2]
 }
 
 /** Om trycket på varan öppnar valen: frågor eller styckräkning. */

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { amountText, applyPicks, choiceSummary, fillPicks, preferred, questionsFor, usualQty } from './choices'
+import { amountText, amountsFor, applyPicks, choiceSummary, fillPicks, preferred, questionsFor, usualQty } from './choices'
 import { FOODS } from './foods'
 
 const food = (id: string) => FOODS.find((f) => f.id === id)!
@@ -80,6 +80,8 @@ describe('snabbval', () => {
     expect(p).toMatchObject({ qty: 3, food: { unit: '1 skiva', kcal: 30 } })
     expect(amountText(p.qty, p.food.unit)).toBe('3 skivor')
     expect(preferred(food('sushi')).qty).toBe(10)
+    expect(amountsFor(food('tacos'), {})[0]).toBe(1)
+    expect(amountsFor(food('kottbullar'), {})).toEqual([1, 4, 5, 6, 7])
     expect(applyPicks(food('omelett'), {}).unit).toBe('1 ägg')
     expect(preferred({ ...food('salami'), custom: true }).qty).toBe(1)
   })

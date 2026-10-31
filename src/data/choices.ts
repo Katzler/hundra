@@ -300,7 +300,8 @@ const BY_FOOD: Record<string, Question[]> = {
   'chevre': [],
 
   // Måltider och snabbmat som räknas i styck
-  'tacos': [],
+  // Fredagstacos räknas styckvis. Mjuka tortillas med köttfärs, ost och sås är vanligast.
+  'tacos': [{ id: 'typ', title: 'Typ', default: 'mjuk', options: [{ id: 'mjuk', label: 'Mjuk tortilla', note: 'med fyllning', amounts: [2, 3, 4, 5], qty: 3 }, { id: 'hard', label: 'Hårt skal', note: 'med fyllning', kcal: 180, tag: ', hårda skal', amounts: [2, 3, 4, 5], qty: 3 }] }],
   'sushi': [],
   'dumplings': [],
   'kaldolmar': [],

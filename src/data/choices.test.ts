@@ -69,6 +69,12 @@ describe('snabbval', () => {
     expect(applyPicks(food('pasta'), { enhet: 'okokt' }).unit).toBe('100 g okokt')
   })
 
+  it('tacos räknas styckvis, tre mjuka som förval', () => {
+    const p = preferred(food('tacos'))
+    expect(p).toMatchObject({ qty: 3, food: { unit: '1 st', kcal: 280 } })
+    expect(applyPicks(food('tacos'), { typ: 'hard' }).kcal).toBe(180)
+  })
+
   it('större förpackning byter enheten', () => {
     expect(applyPicks(food('lask'), { storlek: 'flaska' }).unit).toBe('1 flaska (50 cl)')
     expect(applyPicks(food('ol'), { storlek: 'halv' }).unit).toBe('50 cl')

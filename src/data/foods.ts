@@ -218,7 +218,7 @@ const DATA: Record<Exclude<CategoryId, 'egna'>, Row[]> = {
     ['lasagne', '🍝', 'Lasagne', '1 bit', 550],
     ['kottbullar-mos', '🧆', 'Köttbullar med potatis & sås', '1 tallrik', 700, ['köttbullar']],
     ['korv-mos', '🌭', 'Korv med mos', '1 tallrik', 600, ['korv']],
-    ['tacos', '🌮', 'Tacos', '3 st', 600, ['fredagstacos']],
+    ['tacos', '🌮', 'Tacos', '1 st', 280, ['fredagstacos', 'taco']],
     ['kyckling-ris', '🍛', 'Kyckling med ris', '1 tallrik', 550, ['kyckling']],
     ['kycklinggryta', '🍛', 'Kycklinggryta med ris', '1 tallrik', 650, ['curry', 'gryta']],
     ['lax-potatis', '🐟', 'Lax med potatis', '1 tallrik', 600, ['lax']],

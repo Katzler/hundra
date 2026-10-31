@@ -15,7 +15,7 @@ const MEALS = [
   ['matlada', 'apple'],
   ['lax-potatis'],
   ['kottbullar-mos', 'lask'],
-  ['tacos', 'ol'],
+  ['tacos', 'tacos', 'tacos', 'ol'],
   ['pizza'],
   ['soppa', 'brodskiva', 'brodskiva'],
   ['kanelbulle', 'latte'],

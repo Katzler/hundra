@@ -117,9 +117,9 @@ const can = (big = 1.5): Question => ({
   title: 'Storlek',
   default: 'burk',
   options: [
-    { id: 'glas', label: 'Glas', note: '2 dl', factor: 0.6, tag: ', glas' },
+    { id: 'glas', label: 'Glas', note: '2 dl', factor: 0.6, tag: ', glas', unit: '1 glas' },
     { id: 'burk', label: 'Burk', note: '33 cl' },
-    { id: 'flaska', label: 'Flaska', note: '50 cl', factor: big, tag: ', 50 cl' },
+    { id: 'flaska', label: 'Flaska', note: '50 cl', factor: big, tag: ', 50 cl', unit: '1 flaska (50 cl)' },
   ],
 })
 
@@ -154,6 +154,25 @@ const cup = (portion = '1 portion (2 dl)', portionDl = 2): Question => ({
   ],
 })
 
+/**
+ * Ris, pasta och gryn: portionen räknas kokt, men många mäter upp okokt. `dl` är portionens
+ * kokta mängd. `raw` är den okokta enheten med sina kcal och hur mycket kokt den blir.
+ */
+const cooked = (dl: number, raw: { unit: '1 dl' | '100 g'; kcal: number; note: string }, extra: Option[] = []): Question => ({
+  id: 'enhet',
+  title: 'Mått',
+  default: 'portion',
+  options: [
+    { id: 'portion', label: 'Portion', note: `${formatQty(dl)} dl kokt`, amounts: [0.5, 1, 1.5, 2] },
+    { id: 'kokt', label: 'dl kokt', factor: 1 / dl, unit: '1 dl kokt', amounts: [1, 2, 2.5, 3, 4], qty: dl },
+    { id: 'okokt', label: `${raw.unit.replace('1 ', '')} okokt`, note: raw.note, kcal: raw.kcal, unit: `${raw.unit} okokt`, amounts: [0.5, 1, 1.5, 2], qty: 1 },
+    ...extra,
+  ],
+})
+
+const GRYN = (kcal: number) => ({ unit: '1 dl' as const, kcal, note: '≈ 3 dl kokt' })
+const PASTA = (kcal: number) => ({ unit: '100 g' as const, kcal, note: '≈ 3½ dl kokt' })
+
 const fat = (options: [string, number][], def: string, title = 'Fetthalt'): Question => ({
   id: 'fetthalt',
   title,
@@ -183,6 +202,7 @@ const BY_FOOD: Record<string, Question[]> = {
   'grekisk-yoghurt': [fat([['10 %', 220], ['5 %', 180], ['2 %', 140], ['0 %', 110]], '10 %'), cup()],
   'yoghurt': [fat([['3 %', 130], ['0,5 %', 85]], '3 %'), cup()],
   'kvarg': [fat([['0,2 %', 130], ['3 %', 180], ['Vanilj', 190]], '0,2 %', 'Sort'), cup()],
+  'grot': [{ id: 'vatska', title: 'Kokt på', default: 'vatten', options: [{ id: 'vatten', label: 'Vatten' }, { id: 'mjolk', label: 'Mjölk', note: '2 dl per dl gryn', add: 90, tag: ', på mjölk' }, { id: 'havre', label: 'Havredryck', note: '2 dl per dl gryn', add: 90, tag: ', på havredryck' }] }],
   'filmjolk-musli': [portion()],
   'bacon': [],
   'aggrora': [],
@@ -196,10 +216,15 @@ const BY_FOOD: Record<string, Question[]> = {
   'potatis': [size('Storlek', ['ca 50 g', 'ca 90 g', 'ca 130 g'], ['Liten', 'Medel', 'Stor'])],
   'bakad-potatis': [size()],
   'sotpotatis': [size()],
-  'pasta': [portion(['2 dl', '3 dl', '4 dl'])],
-  'fullkornspasta': [portion(['2 dl', '3 dl', '4 dl'])],
-  'nudlar': [portion(['2 dl', '3 dl', '4 dl'])],
-  'ris': [portion(['1½ dl', '2½ dl', '3½ dl'])],
+  // Kokt mängd är förval. Okokt finns för den som mäter upp innan, 1 dl okokt ris blir ca 3 dl kokt.
+  'pasta': [cooked(3, PASTA(360))],
+  'fullkornspasta': [cooked(3, PASTA(340))],
+  'nudlar': [cooked(3, PASTA(360), [{ id: 'snabb', label: 'Snabbnudlar', note: '1 paket', kcal: 380, unit: '1 paket', tag: ', snabbnudlar', amounts: [1, 2], qty: 1 }])],
+  'ris': [cooked(2.5, GRYN(300))],
+  'bulgur': [cooked(2.5, GRYN(290))],
+  'couscous': [cooked(2.5, GRYN(270))],
+  'quinoa': [cooked(2, GRYN(310))],
+  'matvete': [cooked(2.5, GRYN(270))],
   'rosti': [],
 
   // Kött, fisk & protein
@@ -226,7 +251,8 @@ const BY_FOOD: Record<string, Question[]> = {
   'kycklingvingar': [],
   'falafel-bollar': [],
   'surimi': [],
-  'tonfisk': [],
+  'tonfisk': [fat([['i vatten', 150], ['i olja', 280]], 'i vatten', 'Sort')],
+  'bonor': [{ id: 'enhet', title: 'Mått', default: 'portion', options: [{ id: 'portion', label: 'Portion', note: '1½ dl kokta' }, { id: 'paket', label: 'Burk / paket', note: 'ca 250 g avrunnet', kcal: 260, unit: '1 burk' }, { id: 'torra', label: 'dl torra', note: '≈ 2½ dl kokta', kcal: 290, unit: '1 dl torra', amounts: [0.5, 1, 1.5, 2] }] }],
   'sardiner': [],
   'makrill': [],
   'skinka': [],
@@ -321,7 +347,7 @@ const BY_FOOD: Record<string, Question[]> = {
   'saft': [glass()],
   'julmust': [glass()],
   'lask': [can()],
-  'energidryck': [{ id: 'storlek', title: 'Storlek', default: 'liten', options: [{ id: 'liten', label: 'Burk', note: '25 cl' }, { id: 'stor', label: 'Stor burk', note: '50 cl', factor: 2, tag: ', 50 cl' }] }],
+  'energidryck': [{ id: 'storlek', title: 'Storlek', default: 'liten', options: [{ id: 'liten', label: 'Burk', note: '25 cl' }, { id: 'stor', label: 'Stor burk', note: '50 cl', factor: 2, tag: ', 50 cl', unit: '1 burk (50 cl)' }] }],
   'proteinshake': [],
   'kombucha': [],
   'iste': [],
@@ -329,7 +355,7 @@ const BY_FOOD: Record<string, Question[]> = {
 
   // Alkohol
   'ol': [
-    { id: 'storlek', title: 'Storlek', default: 'burk', options: [{ id: 'burk', label: 'Burk', note: '33 cl' }, { id: 'stor', label: 'Stor', note: '40 cl', factor: 1.2, tag: ', 40 cl' }, { id: 'halv', label: 'Halvliter', note: '50 cl', factor: 1.5, tag: ', 50 cl' }] },
+    { id: 'storlek', title: 'Storlek', default: 'burk', options: [{ id: 'burk', label: 'Burk', note: '33 cl' }, { id: 'stor', label: 'Stor', note: '40 cl', factor: 1.2, tag: ', 40 cl', unit: '40 cl' }, { id: 'halv', label: 'Halvliter', note: '50 cl', factor: 1.5, tag: ', 50 cl', unit: '50 cl' }] },
     { id: 'typ', title: 'Typ', default: 'lager', options: [{ id: 'lager', label: 'Lager', note: '5 %' }, { id: 'folkol', label: 'Folköl', note: '3,5 %', factor: 0.8, tag: ', folköl' }, { id: 'ipa', label: 'IPA', note: '6–7 %', factor: 1.35, tag: ', IPA' }] },
   ],
   'ol-stor': [],

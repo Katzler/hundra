@@ -59,6 +59,21 @@ describe('snabbval', () => {
       }
   })
 
+  it('ris och pasta räknas kokt, men kan mätas okokt', () => {
+    const ris = food('ris')
+    expect(ris.unit).toContain('kokt')
+    expect(applyPicks(ris, { enhet: 'kokt' })).toMatchObject({ unit: '1 dl kokt', kcal: 104 })
+    const okokt = applyPicks(ris, { enhet: 'okokt' })
+    expect(okokt).toMatchObject({ unit: '1 dl okokt', kcal: 300 })
+    expect(amountText(1, okokt.unit)).toBe('1 dl okokt')
+    expect(applyPicks(food('pasta'), { enhet: 'okokt' }).unit).toBe('100 g okokt')
+  })
+
+  it('större förpackning byter enheten', () => {
+    expect(applyPicks(food('lask'), { storlek: 'flaska' }).unit).toBe('1 flaska (50 cl)')
+    expect(applyPicks(food('ol'), { storlek: 'halv' }).unit).toBe('50 cl')
+  })
+
   it('mängden skrivs naturligt', () => {
     expect(amountText(2, '1 msk')).toBe('2 msk')
     expect(amountText(1.5, '1 dl')).toBe('1½ dl')

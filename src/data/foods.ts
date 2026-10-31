@@ -373,7 +373,7 @@ const DATA: Record<Exclude<CategoryId, 'egna'>, Row[]> = {
     ['lattol', '🍺', 'Lättöl', '1 burk', 70],
     ['vin', '🍷', 'Vin', '1 glas', 120, ['rödvin', 'vitt vin', 'rosé']],
     ['vin-flaska', '🍷', 'Vinflaska', '1 flaska', 600, ['vin', 'rödvin', 'vitt vin']],
-    ['bubbel', '🥂', 'Bubbel', '1 glas', 100, ['champagne', 'cava', 'prosecco']],
+    ['bubbel', '🥂', 'Bubbel', '1 glas', 100, ['champagne', 'cava', 'prosecco', 'mousserande vin', 'skumpa', 'crémant']],
     ['cider', '🍏', 'Cider', '1 burk', 180],
     ['drink', '🍸', 'Drink', '1 st', 200, ['gin tonic', 'grogg']],
     ['cocktail', '🍹', 'Söt cocktail', '1 st', 280, ['mojito', 'margarita']],

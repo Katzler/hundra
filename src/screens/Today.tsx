@@ -124,11 +124,21 @@ export function Today({ onOpenTrend }: { onOpenTrend: () => void }) {
         </p>
       </section>
 
-      {/* Ser ut som ett sökfält men öppnar arket, där det riktiga fältet får fokus direkt. */}
-      <button type="button" className="search-field" onClick={openAdd}>
+      {/* Ett riktigt fält, så att iOS visar tangentbordet vid trycket. Fokus flyttas sedan till arkets sökfält. */}
+      <label className="search-field">
         <SearchIcon size={17} />
-        Sök mat
-      </button>
+        <input
+          type="search"
+          value=""
+          readOnly={adding}
+          onChange={() => {}}
+          onFocus={openAdd}
+          placeholder="Sök mat"
+          aria-label="Sök mat"
+          autoComplete="off"
+          tabIndex={adding ? -1 : 0}
+        />
+      </label>
 
       {!isToday && dayEntries.length > 0 && (
         <section className={`card exclude-card ${total < SHORT_DAY ? 'is-short' : ''}`}>

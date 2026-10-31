@@ -87,7 +87,8 @@ export function Sheet({ open, onClose, title, left, right, children, footer, kee
       document.body.style.overflow = prev
       if (--openSheets === 0) delete document.body.dataset.sheetOpen
       window.removeEventListener('keydown', onKey)
-      if (returnTo?.isConnected) returnTo.focus({ preventScroll: true })
+      // Inte tillbaka till ett textfält: det skulle öppna tangentbordet igen.
+      if (returnTo?.isConnected && !(returnTo instanceof HTMLInputElement)) returnTo.focus({ preventScroll: true })
     }
   }, [open, onClose])
 

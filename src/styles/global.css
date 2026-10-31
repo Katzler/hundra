@@ -688,8 +688,18 @@ strong {
   text-align: left;
 }
 
-.search-field:active {
-  opacity: 0.6;
+.search-field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: none;
+  color: var(--label);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-field input::placeholder {
+  color: var(--label-2);
 }
 
 /* ───────── Svep för att ta bort ───────── */

@@ -922,7 +922,8 @@ const DATA: Record<Exclude<CategoryId, 'egna'>, Row[]> = {
   ],
   tillbehor: [
     ['smor', '🧈', 'Smör', '1 klick', 70, ['bregott', 'margarin']],
-    ['olja', '🫒', 'Olivolja', '1 msk', 120, ['olja', 'rapsolja']],
+    ['olja', '🫒', 'Olivolja', '1 msk', 120, ['olja']],
+    ['matolja', '🫗', 'Matolja', '1 msk', 120, ['olja', 'rapsolja', 'solrosolja', 'stekolja', 'flytande margarin']],
     ['sas', '🥣', 'Sås', '1 portion (½ dl)', 120, ['gräddsås', 'brunsås']],
     ['bearnaise', '🥣', 'Bearnaisesås', '1 portion (½ dl)', 230, ['bea']],
     ['ketchup', '🍅', 'Ketchup', '1 msk', 20],
@@ -1108,6 +1109,7 @@ export const ICON_FALLBACK: Record<string, string> = {
   'kokosmjolk': 'gradde',
   'frokarnor': 'notter',
   'dipsas': 'majonnas',
+  'matolja': 'olja',
   'sotpotatispommes': 'pommes',
   'blomkalsris': 'broccoli',
   'linspasta': 'pasta',

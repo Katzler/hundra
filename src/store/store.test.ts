@@ -97,6 +97,7 @@ describe('store', () => {
     s.markBackup()
     s.setTrendRange(30)
     s.setShowMacros(true)
+    s.setTrackedMacro(2, false)
     s.addCustomFood({ name: 'Lasagne', emoji: '🍝', unit: '1 bit', kcal: 600, macros: [30, 25, 60] })
     s.addCustomFood(choklad)
     const before = pickData(useStore.getState())
@@ -335,7 +336,7 @@ describe('store', () => {
 
   it('exporten har den nya versionen', () => {
     expect(JSON.parse(exportData(pickData(useStore.getState()))).version).toBe(STORE_VERSION)
-    expect(STORE_VERSION).toBe(6)
+    expect(STORE_VERSION).toBe(7)
   })
 
   it('skannade varor behåller streckkod och näringsvärde i lagringen', async () => {
@@ -379,7 +380,7 @@ describe('store', () => {
     expect(data.entries).toHaveLength(1)
     expect(data.customFoods).toEqual(v5.customFoods)
     expect(data.favoriteGroups.frukost).toEqual(['egen-1'])
-    expect(JSON.parse(exportData(data)).version).toBe(6)
+    expect(JSON.parse(exportData(data)).version).toBe(STORE_VERSION)
   })
 
   it('ändrad skannad vara: dagens rader behåller sitt mått, tidigare dagar ligger fast', () => {
@@ -394,6 +395,23 @@ describe('store', () => {
     expect(rows.find((e) => e.date === today && e.unit === '100 g')).toMatchObject({ name: 'Mjölkchoklad', kcalPerUnit: 500 })
     expect(rows.find((e) => e.date === today && e.unit === '1 portion (25 g)')?.kcalPerUnit).toBe(125)
     expect(rows.find((e) => e.date === '2026-01-01')).toMatchObject({ name: 'Marabou Mjölkchoklad', kcalPerUnit: 135 })
+  })
+
+  it('man kan följa bara protein, men aldrig ingenting', () => {
+    const s = useStore.getState()
+    expect(useStore.getState().trackedMacros).toEqual([true, true, true])
+    s.setTrackedMacro(1, false)
+    s.setTrackedMacro(2, false)
+    expect(useStore.getState().trackedMacros).toEqual([true, false, false])
+    s.setTrackedMacro(0, false)
+    expect(useStore.getState().trackedMacros).toEqual([true, false, false])
+  })
+
+  it('version 6 läses in med alla tre ringarna, och trasiga val tvättas', () => {
+    expect(sanitizeData(migrateData({ showMacros: true }, 6)).data.trackedMacros).toEqual([true, true, true])
+    expect(sanitizeData({ trackedMacros: [false, false, false] }).data.trackedMacros).toEqual([true, true, true])
+    expect(sanitizeData({ trackedMacros: [true, 'nej', false] }).data.trackedMacros).toEqual([true, true, true])
+    expect(sanitizeData({ trackedMacros: [true, false, false] }).data.trackedMacros).toEqual([true, false, false])
   })
 
   it('import avvisar fel filer', () => {

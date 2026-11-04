@@ -637,12 +637,16 @@ strong {
   --c-soft: var(--carbs-soft);
 }
 
-/* Mindre siffra så att den ryms innanför näringsringarna. */
-.ring.has-macros .ring-value {
+/* Mindre siffra så att den ryms innanför näringsringarna. En ensam ring lämnar plats nog. */
+.ring.has-macros.macros-2 .ring-value {
+  font-size: 3.0588rem;
+}
+
+.ring.has-macros.macros-3 .ring-value {
   font-size: 2.6471rem;
 }
 
-.ring.has-macros .ring-caption {
+.ring.has-macros.macros-3 .ring-caption {
   margin-top: 2px;
   font-size: 0.7647rem;
 }
@@ -721,6 +725,19 @@ strong {
 .macro-target-value {
   color: var(--label-2);
   font-variant-numeric: tabular-nums;
+}
+
+.macro-target.is-off .macro-dot {
+  background: var(--label-3);
+}
+
+.macro-target.is-off .row-title,
+.macro-target.is-off .macro-target-value {
+  color: var(--label-3);
+}
+
+.switch:disabled {
+  opacity: 0.5;
 }
 
 .chips {

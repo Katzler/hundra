@@ -29,7 +29,7 @@ export type Meal = { id: string; name: string; items: MealItem[] }
 export const STORAGE_KEY = 'hundra-v1'
 
 /** Datamodellens version, i lagringen och i exporten. Höjs med ett steg i `migrateData` när modellen ändras. */
-export const STORE_VERSION = 6
+export const STORE_VERSION = 7
 
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
@@ -83,7 +83,11 @@ export type Data = {
   trendRange: number
   /** Visa protein, fett och kolhydrater i ringen. Av som standard. */
   showMacros: boolean
+  /** Vilka av protein, fett och kolhydrater som visas, i den ordningen. Minst en är alltid på. */
+  trackedMacros: TrackedMacros
 }
+
+export type TrackedMacros = [protein: boolean, fat: boolean, carbs: boolean]
 
 type Actions = {
   setProfile: (p: Profile, opts?: { fromStart?: boolean }) => void
@@ -112,6 +116,8 @@ type Actions = {
   snoozeBackup: () => void
   setTrendRange: (n: number) => void
   setShowMacros: (on: boolean) => void
+  /** Slår på eller av en av ringarna. Den sista som är på går inte att stänga av. */
+  setTrackedMacro: (index: number, on: boolean) => void
   importData: (data: Data) => void
   resetAll: () => void
 }
@@ -134,6 +140,7 @@ export const emptyData: Data = {
   backupSnoozedUntil: null,
   trendRange: 7,
   showMacros: false,
+  trackedMacros: [true, true, true],
 }
 
 /** Fälten som sparas och exporteras. En enda lista, så att inget nytt fält glöms bort någonstans. */
@@ -274,6 +281,8 @@ export function migrateData(persisted: unknown, version: number): Data {
   // får ingen kopia av näringen i efterhand, den räknas fram från varan när den visas.
   // Version 5 → 6: egna varor kan ha en streckkod (`barcode`) och näringsvärdet från förpackningen
   // (`per100`). Båda är valfria, så inget behöver flyttas. De tvättas i `cleanFood`.
+  // Version 6 → 7: inställningen trackedMacros, om man bara vill följa t.ex. protein. Saknas den
+  // visas alla tre, som förut, så inget behöver skrivas om.
   return d as unknown as Data
 }
 
@@ -489,6 +498,10 @@ export function sanitizeData(raw: unknown): { data: Data; dropped: number } {
       backupSnoozedUntil: timeOrNull(d.backupSnoozedUntil),
       trendRange: [7, 30, 90].includes(d.trendRange as number) ? (d.trendRange as number) : 7,
       showMacros: d.showMacros === true,
+      trackedMacros:
+        Array.isArray(d.trackedMacros) && d.trackedMacros.length === 3 && d.trackedMacros.every((b) => typeof b === 'boolean') && d.trackedMacros.some(Boolean)
+          ? (d.trackedMacros as TrackedMacros)
+          : [true, true, true],
     },
     dropped,
   }
@@ -682,6 +695,12 @@ export const useStore = create<Data & Actions>()(
       setTrendRange: (trendRange) => set({ trendRange }),
 
       setShowMacros: (showMacros) => set({ showMacros }),
+
+      setTrackedMacro: (index, on) =>
+        set((s) => {
+          const next = s.trackedMacros.map((b, i) => (i === index ? on : b)) as TrackedMacros
+          return next.some(Boolean) ? { trackedMacros: next } : s
+        }),
 
       importData: (data) => set({ ...emptyData, ...data }),
 

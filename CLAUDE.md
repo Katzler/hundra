@@ -45,7 +45,7 @@ All användardata finns bara i localStorage på telefonen, under nyckeln `hundra
 
 ## Näring
 
-- **Av som standard:** `showMacros` slås på i Profil. Då visar ringen på Idag tre tunna ringar innanför poängen, för protein, fett och kolhydrater, var och en mot sitt mål i gram. Avstängd ser ringen ut som förut.
+- **Av som standard:** `showMacros` slås på i Profil. Då visar ringen på Idag tre tunna ringar innanför poängen, för protein, fett och kolhydrater, var och en mot sitt mål i gram. Avstängd ser ringen ut som förut. Med `trackedMacros` väljer man vilka av de tre som visas, t.ex. bara protein. Minst en är alltid på.
 - **Ny vara:** lägg också en rad i `macros.ts`. Testet kräver att varje vara har näring och att 4·P + 9·F + 4·K ungefär stämmer med varans kcal.
 - **Valen:** `applyPicks` i `choices.ts` räknar om näringen. `add` räknas som fett om svaret inte har `addMacros`, en annan fetthalt (`fatDiff`) ändrar fettet och en ny `kcal` skalar resten.
 - **Raderna:** loggade rader sparar en kopia i `macrosPerUnit`, precis som `kcalPerUnit`. Rader från före version 5 saknar den och räknas från varan när de visas.

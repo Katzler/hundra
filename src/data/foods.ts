@@ -30,6 +30,8 @@ export type Per100 = {
   measure: 'g' | 'ml'
   serving?: number
   pack?: number
+  /** Varans typ, som ger naturliga mått som klick, skiva eller skål (se kinds.ts). */
+  kind?: string
 }
 
 export const CATEGORIES = [

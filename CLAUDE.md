@@ -40,12 +40,12 @@ All användardata finns bara i localStorage på telefonen, under nyckeln `hundra
 - **Ordningen i filen:** `useStore` skapas sist i filen eftersom sparad data läses in direkt när modulen laddas. Allt som inläsningen använder måste vara definierat ovanför. Ett tidigare fel med en `const` som definierades efter skapandet gjorde att datan inte lästes in.
 - **Skrivskyddet:** lagringen skrivs inte förrän inläsningen har lyckats (flaggan `hydrated`). Ta inte bort det skyddet.
 - **Testet:** `src/store/hydrate.test.ts` startar appen med sparad data, precis som på telefonen. Det måste alltid gå igenom.
-- **Skannade varor:** de sparas som egna varor med `barcode` och `per100` (version 6). Näringen sparas per förvalt mått, som för andra varor (`macrosToUnit` i `packaged.ts`). `cleanFood` släpper bara igenom kända fält, så ett nytt fält på egna varor måste läggas till där.
+- **Skannade varor:** de sparas som egna varor med `barcode` och `per100` (version 6). `per100.kind` (version 8) är varans typ från `src/data/kinds.ts`, som ger naturliga mått som klick, skiva och skål i stället för gram. Näringen sparas per förvalt mått, som för andra varor (`macrosToUnit` i `packaged.ts`). `cleanFood` släpper bara igenom kända fält, så ett nytt fält på egna varor måste läggas till där.
 - **Hemskärmen:** på iPhone har hemskärmsappen egen lagring, och den försvinner om appen tas bort från hemskärmen. Råd aldrig någon att ta bort appen utan att först exportera en backup.
 
 ## Näring
 
-- **Av som standard:** `showMacros` slås på i Profil. Då visar ringen på Idag tre tunna ringar innanför poängen, för protein, fett och kolhydrater, var och en mot sitt mål i gram. Avstängd ser ringen ut som förut.
+- **Av som standard:** `showMacros` slås på i Profil. Då visar ringen på Idag tre tunna ringar innanför poängen, för protein, fett och kolhydrater, var och en mot sitt mål i gram. Avstängd ser ringen ut som förut. Med `trackedMacros` väljer man vilka av de tre som visas, t.ex. bara protein. Minst en är alltid på.
 - **Ny vara:** lägg också en rad i `macros.ts`. Testet kräver att varje vara har näring och att 4·P + 9·F + 4·K ungefär stämmer med varans kcal.
 - **Valen:** `applyPicks` i `choices.ts` räknar om näringen. `add` räknas som fett om svaret inte har `addMacros`, en annan fetthalt (`fatDiff`) ändrar fettet och en ny `kcal` skalar resten.
 - **Raderna:** loggade rader sparar en kopia i `macrosPerUnit`, precis som `kcalPerUnit`. Rader från före version 5 saknar den och räknas från varan när de visas.

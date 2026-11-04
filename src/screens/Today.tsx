@@ -42,6 +42,7 @@ export function Today() {
   const excludedDays = useStore((s) => s.excludedDays)
   const goal = useStore((s) => s.goal)
   const showMacros = useStore((s) => s.showMacros)
+  const trackedMacros = useStore((s) => s.trackedMacros)
   const profile = useStore((s) => s.profile)
   const customFoods = useStore((s) => s.customFoods)
   const showBackup = useStore((s) => backupDue(s))
@@ -62,8 +63,9 @@ export function Today() {
   const macros = useMemo(() => {
     if (!showMacros || !profile) return null
     const { total, unknownKcal } = dayMacros(dayEntries, date, lookup)
-    return { value: total, target: macroTargets(profile, budget, goal), unknownPoints: toPoints(unknownKcal, budget) }
-  }, [showMacros, profile, dayEntries, date, lookup, budget, goal])
+    const tracked = [0, 1, 2].filter((i) => trackedMacros[i])
+    return { value: total, target: macroTargets(profile, budget, goal), tracked, unknownPoints: toPoints(unknownKcal, budget) }
+  }, [showMacros, trackedMacros, profile, dayEntries, date, lookup, budget, goal])
   const isToday = date === today
   const excluded = excludedDays.includes(date)
   // Loggar man på en annan dag än idag ska bekräftelsen säga det.

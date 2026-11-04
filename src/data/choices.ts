@@ -466,7 +466,15 @@ function packaged(food: Food, p: Per100): Question {
     id: 'enhet',
     title: 'Mått',
     default: current.id,
-    options: all.map((m) => ({ id: m.id, label: m.label, note: m.note, kcal: m.kcal, unit: m.unit, ...(m.amounts ? { amounts: m.amounts } : {}) })),
+    options: all.map((m) => ({
+      id: m.id,
+      label: m.label,
+      note: m.note,
+      kcal: m.kcal,
+      unit: m.unit,
+      ...(m.amounts ? { amounts: m.amounts } : {}),
+      ...(m.qty ? { qty: m.qty } : {}),
+    })),
   }
 }
 

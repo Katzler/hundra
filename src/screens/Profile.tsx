@@ -33,6 +33,8 @@ export function Profile() {
   const lastBackupAt = useStore((s) => s.lastBackupAt)
   const showMacros = useStore((s) => s.showMacros)
   const setShowMacros = useStore((s) => s.setShowMacros)
+  const trackedMacros = useStore((s) => s.trackedMacros)
+  const setTrackedMacro = useStore((s) => s.setTrackedMacro)
   const showToast = useUI((s) => s.showToast)
 
   const [editing, setEditing] = useState(false)
@@ -97,17 +99,29 @@ export function Profile() {
           <input type="checkbox" className="switch" checked={showMacros} onChange={(e) => setShowMacros(e.target.checked)} />
         </label>
         {showMacros &&
-          MACRO_NAMES.map((name, i) => (
-            <div key={name} className={`row macro-target ${MACRO_CLASSES[i]}`}>
-              <span className="macro-dot" aria-hidden />
-              <span className="row-title">{name}</span>
-              <span className="macro-target-value">{targets[i]} g om dagen</span>
-            </div>
-          ))}
+          MACRO_NAMES.map((name, i) => {
+            // Den sista som är på går inte att stänga av. Vill man inte följa någon stänger man av allt ovan.
+            const onlyOne = trackedMacros[i] && trackedMacros.filter(Boolean).length === 1
+            return (
+              <label key={name} className={`row macro-target ${MACRO_CLASSES[i]} ${trackedMacros[i] ? '' : 'is-off'}`}>
+                <span className="macro-dot" aria-hidden />
+                <span className="row-title">{name}</span>
+                <span className="macro-target-value">{targets[i]} g om dagen</span>
+                <input
+                  type="checkbox"
+                  className="switch"
+                  checked={trackedMacros[i]}
+                  disabled={onlyOne}
+                  onChange={(e) => setTrackedMacro(i, e.target.checked)}
+                  aria-label={`Följ ${name.toLowerCase()}`}
+                />
+              </label>
+            )
+          })}
       </div>
       <p className="hint-text">
         {showMacros
-          ? `Räknat på ditt mål på ${goal} p: ${perKg} g protein per kilo kroppsvikt${goal < 100 ? ', lite mer än för att hålla vikten så att musklerna blir kvar' : ''}. 30 % av energin från fett och resten kolhydrater.${capped ? ' Proteinet räknas på vikten vid BMI 25.' : ''} Poängen räknas som vanligt.`
+          ? `Följ bara det du bryr dig om, t.ex. protein. Räknat på ditt mål på ${goal} p: ${perKg} g protein per kilo kroppsvikt${goal < 100 ? ', lite mer än för att hålla vikten så att musklerna blir kvar' : ''}. 30 % av energin från fett och resten kolhydrater.${capped ? ' Proteinet räknas på vikten vid BMI 25.' : ''} Poängen räknas som vanligt.`
           : 'Av från början. Poängen räknas likadant oavsett.'}
       </p>
 

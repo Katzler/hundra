@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FOODS, REFERENCE_FOOD_IDS, type Food, type Per100 } from '../data/foods'
+import { kindFor } from '../data/kinds'
 import { formatPoints, MACRO_NAMES, roundMacros, scaleMacros, toKcal, toPoints, type Macros } from '../lib/calc'
 import { defaultMeasure, macrosToPer100, macrosToUnit, packagedBase } from '../lib/packaged'
 import { useStore } from '../store/useStore'
@@ -68,6 +69,8 @@ export function CustomFoodForm({ budgetKcal, initial, per100: known, macros100, 
           measure,
           ...(size(serving) ? { serving: size(serving) } : {}),
           ...(size(pack) ? { pack: size(pack) } : {}),
+          // Typen från Open Food Facts gäller, annars gissas den av namnet: "Knäckebröd" räknas i skivor.
+          ...((start.kind ?? kindFor(name, [], measure)) ? { kind: start.kind ?? kindFor(name, [], measure) } : {}),
         }
       : null
   const valid =

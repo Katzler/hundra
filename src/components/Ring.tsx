@@ -1,8 +1,8 @@
 import { MACRO_NAMES, type Macros } from '../lib/calc'
 import { useAnimatedNumber } from '../lib/hooks'
 
-/** Dagens näring mot målen i gram. */
-export type RingMacros = { value: Macros; target: Macros }
+/** Dagens näring mot målen i gram. `tracked` är de som visas: 0 protein, 1 fett, 2 kolhydrater. */
+export type RingMacros = { value: Macros; target: Macros; tracked: number[] }
 
 type Props = { value: number; size?: number; stroke?: number; caption?: string; goal?: number; macros?: RingMacros | null }
 
@@ -14,7 +14,8 @@ const MACRO_GAP = 3
 
 /**
  * Aktivitetsring: ett varv är 100 poäng. Över 100 fortsätter ett andra varv i --accent-deep.
- * Med näring på ligger tre tunna ringar innanför, protein ytterst, och var och en fylls mot sitt mål.
+ * Med näring på ligger en till tre tunna ringar innanför, i ordningen protein, fett, kolhydrater,
+ * och var och en fylls mot sitt mål. Följer man bara protein blir det en enda ring.
  */
 export function Ring({ value, size = 220, stroke = 24, caption = 'av 100', goal = 100, macros }: Props) {
   const animated = useAnimatedNumber(value)
@@ -58,12 +59,12 @@ export function Ring({ value, size = 220, stroke = 24, caption = 'av 100', goal 
   }
 
   const macroLabel = macros
-    ? ', ' + MACRO_NAMES.map((name, i) => `${name.toLowerCase()} ${Math.round(macros.value[i])} av ${macros.target[i]} gram`).join(', ')
+    ? ', ' + macros.tracked.map((i) => `${MACRO_NAMES[i].toLowerCase()} ${Math.round(macros.value[i])} av ${macros.target[i]} gram`).join(', ')
     : ''
 
   return (
     <div
-      className={`ring ${macros ? 'has-macros' : ''}`}
+      className={`ring ${macros ? `has-macros macros-${macros.tracked.length}` : ''}`}
       style={{ width: size, height: size }}
       role="img"
       aria-label={`${Math.round(value)} av 100 poäng${goal < 100 ? `, mål ${goal}` : ''}${macroLabel}`}
@@ -82,10 +83,10 @@ export function Ring({ value, size = 220, stroke = 24, caption = 'av 100', goal 
             />
           )}
           {macros &&
-            MACRO_CLASSES.map((cls, i) => (
-              <g key={cls} className={cls}>
+            macros.tracked.map((i, place) => (
+              <g key={i} className={MACRO_CLASSES[i]}>
                 {laps(
-                  r - stroke / 2 - MACRO_GAP - MACRO_STROKE / 2 - i * (MACRO_STROKE + MACRO_GAP),
+                  r - stroke / 2 - MACRO_GAP - MACRO_STROKE / 2 - place * (MACRO_STROKE + MACRO_GAP),
                   MACRO_STROKE,
                   animatedMacros[i],
                   ['var(--c)', 'var(--c-deep)', 'var(--c-soft)'],
@@ -107,12 +108,12 @@ export function Ring({ value, size = 220, stroke = 24, caption = 'av 100', goal 
 export function MacroLegend({ macros, unknown }: { macros: RingMacros; unknown?: string }) {
   return (
     <div className="macro-legend">
-      <div className="macro-items">
-        {MACRO_NAMES.map((name, i) => (
-          <div key={name} className={`macro-item ${MACRO_CLASSES[i]}`}>
+      <div className="macro-items" style={{ gridTemplateColumns: `repeat(${macros.tracked.length}, minmax(0, 1fr))` }}>
+        {macros.tracked.map((i) => (
+          <div key={i} className={`macro-item ${MACRO_CLASSES[i]}`}>
             <span className="macro-label">
               <span className="macro-dot" aria-hidden />
-              {name}
+              {MACRO_NAMES[i]}
             </span>
             <span className="macro-value">
               <strong>{Math.round(macros.value[i])}</strong> / {macros.target[i]} g

@@ -97,6 +97,7 @@ describe('store', () => {
     s.markBackup()
     s.setTrendRange(30)
     s.setShowMacros(true)
+    s.setTrackedMacro(2, false)
     s.addCustomFood({ name: 'Lasagne', emoji: '🍝', unit: '1 bit', kcal: 600, macros: [30, 25, 60] })
     s.addCustomFood(choklad)
     const before = pickData(useStore.getState())
@@ -335,7 +336,7 @@ describe('store', () => {
 
   it('exporten har den nya versionen', () => {
     expect(JSON.parse(exportData(pickData(useStore.getState()))).version).toBe(STORE_VERSION)
-    expect(STORE_VERSION).toBe(6)
+    expect(STORE_VERSION).toBe(8)
   })
 
   it('skannade varor behåller streckkod och näringsvärde i lagringen', async () => {
@@ -379,7 +380,7 @@ describe('store', () => {
     expect(data.entries).toHaveLength(1)
     expect(data.customFoods).toEqual(v5.customFoods)
     expect(data.favoriteGroups.frukost).toEqual(['egen-1'])
-    expect(JSON.parse(exportData(data)).version).toBe(6)
+    expect(JSON.parse(exportData(data)).version).toBe(STORE_VERSION)
   })
 
   it('ändrad skannad vara: dagens rader behåller sitt mått, tidigare dagar ligger fast', () => {
@@ -394,6 +395,40 @@ describe('store', () => {
     expect(rows.find((e) => e.date === today && e.unit === '100 g')).toMatchObject({ name: 'Mjölkchoklad', kcalPerUnit: 500 })
     expect(rows.find((e) => e.date === today && e.unit === '1 portion (25 g)')?.kcalPerUnit).toBe(125)
     expect(rows.find((e) => e.date === '2026-01-01')).toMatchObject({ name: 'Marabou Mjölkchoklad', kcalPerUnit: 135 })
+  })
+
+  it('man kan följa bara protein, men aldrig ingenting', () => {
+    const s = useStore.getState()
+    expect(useStore.getState().trackedMacros).toEqual([true, true, true])
+    s.setTrackedMacro(1, false)
+    s.setTrackedMacro(2, false)
+    expect(useStore.getState().trackedMacros).toEqual([true, false, false])
+    s.setTrackedMacro(0, false)
+    expect(useStore.getState().trackedMacros).toEqual([true, false, false])
+  })
+
+  it('version 6 läses in med alla tre ringarna, och trasiga val tvättas', () => {
+    expect(sanitizeData(migrateData({ showMacros: true }, 6)).data.trackedMacros).toEqual([true, true, true])
+    expect(sanitizeData({ trackedMacros: [false, false, false] }).data.trackedMacros).toEqual([true, true, true])
+    expect(sanitizeData({ trackedMacros: [true, 'nej', false] }).data.trackedMacros).toEqual([true, true, true])
+    expect(sanitizeData({ trackedMacros: [true, false, false] }).data.trackedMacros).toEqual([true, false, false])
+  })
+
+  it('version 7 migreras till 8: skannade varor får naturliga mått, loggen ligger fast', () => {
+    const bregott = { id: 'egen-b', name: 'Bregott Normalsaltat', emoji: '🥛', unit: '100 g', kcal: 720, macros: [0.5, 80, 0.5], per100: { kcal: 720, measure: 'g', pack: 600 }, barcode: '7310865071736' }
+    const okand = { id: 'egen-o', name: 'Konstig vara', emoji: '🍽️', unit: '100 g', kcal: 300, per100: { kcal: 300, measure: 'g' } }
+    const entry = { id: 'a', date: day, at: 1, foodId: 'egen-b', name: 'Bregott Normalsaltat', emoji: '🥛', unit: '100 g', kcalPerUnit: 720, qty: 0.5 }
+    const v7 = {
+      customFoods: [bregott, okand],
+      entries: [entry],
+      lastChoices: { 'egen-b': { picks: { enhet: 'hundra' }, qty: 1 }, 'egen-o': { picks: { enhet: 'hundra' }, qty: 1 }, potatis: { picks: { storlek: 'stor' }, qty: 2 } },
+    }
+    const { data } = sanitizeData(migrateData(v7, 7))
+    expect(data.customFoods[0]).toMatchObject({ unit: '1 klick', kcal: 57.6, macros: [0, 6.4, 0], per100: { kind: 'smor', pack: 600 }, barcode: '7310865071736' })
+    expect(data.customFoods[1]).toMatchObject({ unit: '100 g', kcal: 300 })
+    expect(data.customFoods[1].per100?.kind).toBeUndefined()
+    expect(Object.keys(data.lastChoices).sort()).toEqual(['egen-o', 'potatis'])
+    expect(data.entries).toEqual([entry])
   })
 
   it('import avvisar fel filer', () => {

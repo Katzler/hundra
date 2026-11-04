@@ -16,7 +16,8 @@ import {
   type Weight,
 } from '../lib/calc'
 import { todayKey, type DateKey } from '../lib/dates'
-import { rowAfterEdit } from '../lib/packaged'
+import { kindById, kindFor } from '../data/kinds'
+import { rebase, rowAfterEdit } from '../lib/packaged'
 import { useUI } from './ui'
 
 /** Hur ofta en vara loggats. `slots` räknar per del av dygnet (morgon, lunch, eftermiddag, kväll). */
@@ -29,7 +30,7 @@ export type Meal = { id: string; name: string; items: MealItem[] }
 export const STORAGE_KEY = 'hundra-v1'
 
 /** Datamodellens version, i lagringen och i exporten. Höjs med ett steg i `migrateData` när modellen ändras. */
-export const STORE_VERSION = 6
+export const STORE_VERSION = 8
 
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
@@ -83,7 +84,11 @@ export type Data = {
   trendRange: number
   /** Visa protein, fett och kolhydrater i ringen. Av som standard. */
   showMacros: boolean
+  /** Vilka av protein, fett och kolhydrater som visas, i den ordningen. Minst en är alltid på. */
+  trackedMacros: TrackedMacros
 }
+
+export type TrackedMacros = [protein: boolean, fat: boolean, carbs: boolean]
 
 type Actions = {
   setProfile: (p: Profile, opts?: { fromStart?: boolean }) => void
@@ -112,6 +117,8 @@ type Actions = {
   snoozeBackup: () => void
   setTrendRange: (n: number) => void
   setShowMacros: (on: boolean) => void
+  /** Slår på eller av en av ringarna. Den sista som är på går inte att stänga av. */
+  setTrackedMacro: (index: number, on: boolean) => void
   importData: (data: Data) => void
   resetAll: () => void
 }
@@ -134,6 +141,7 @@ export const emptyData: Data = {
   backupSnoozedUntil: null,
   trendRange: 7,
   showMacros: false,
+  trackedMacros: [true, true, true],
 }
 
 /** Fälten som sparas och exporteras. En enda lista, så att inget nytt fält glöms bort någonstans. */
@@ -274,6 +282,23 @@ export function migrateData(persisted: unknown, version: number): Data {
   // får ingen kopia av näringen i efterhand, den räknas fram från varan när den visas.
   // Version 5 → 6: egna varor kan ha en streckkod (`barcode`) och näringsvärdet från förpackningen
   // (`per100`). Båda är valfria, så inget behöver flyttas. De tvättas i `cleanFood`.
+  // Version 6 → 7: inställningen trackedMacros, om man bara vill följa t.ex. protein. Saknas den
+  // visas alla tre, som förut, så inget behöver skrivas om.
+  // Version 7 → 8: skannade varor får en typ (`per100.kind`) som ger naturliga mått, t.ex. en klick
+  // Bregott i stället för 100 g. Typen läses av namnet, och varan får det naturliga måttet som förval.
+  // Senaste valet för varan glöms, annars skulle (+) fortsätta lägga till 100 g. Loggen rörs inte.
+  if (version < 8) {
+    const { data } = sanitizeData(d)
+    const lastChoices = { ...data.lastChoices }
+    d.customFoods = data.customFoods.map((f) => {
+      if (!f.per100 || f.per100.kind) return f
+      const kind = kindFor(f.name, [], f.per100.measure)
+      if (!kind) return f
+      delete lastChoices[f.id]
+      return rebase(f, { ...f.per100, kind })
+    })
+    d.lastChoices = lastChoices
+  }
   return d as unknown as Data
 }
 
@@ -408,7 +433,8 @@ const cleanPer100 = (p: unknown): Per100 | null => {
   const size = (v: unknown) => (isNum(v, 0) && v > 0 && v <= 100_000 ? v : undefined)
   const serving = size(p.serving)
   const pack = size(p.pack)
-  return { kcal: p.kcal, measure: p.measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}) }
+  const kind = isStr(p.kind) && kindById(p.kind) ? p.kind : undefined
+  return { kcal: p.kcal, measure: p.measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}), ...(kind ? { kind } : {}) }
 }
 
 // Bara kända fält följer med. Ett nytt fält på egna varor måste läggas till här, annars försvinner
@@ -489,6 +515,10 @@ export function sanitizeData(raw: unknown): { data: Data; dropped: number } {
       backupSnoozedUntil: timeOrNull(d.backupSnoozedUntil),
       trendRange: [7, 30, 90].includes(d.trendRange as number) ? (d.trendRange as number) : 7,
       showMacros: d.showMacros === true,
+      trackedMacros:
+        Array.isArray(d.trackedMacros) && d.trackedMacros.length === 3 && d.trackedMacros.every((b) => typeof b === 'boolean') && d.trackedMacros.some(Boolean)
+          ? (d.trackedMacros as TrackedMacros)
+          : [true, true, true],
     },
     dropped,
   }
@@ -682,6 +712,12 @@ export const useStore = create<Data & Actions>()(
       setTrendRange: (trendRange) => set({ trendRange }),
 
       setShowMacros: (showMacros) => set({ showMacros }),
+
+      setTrackedMacro: (index, on) =>
+        set((s) => {
+          const next = s.trackedMacros.map((b, i) => (i === index ? on : b)) as TrackedMacros
+          return next.some(Boolean) ? { trackedMacros: next } : s
+        }),
 
       importData: (data) => set({ ...emptyData, ...data }),
 

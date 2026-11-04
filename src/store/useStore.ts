@@ -16,7 +16,8 @@ import {
   type Weight,
 } from '../lib/calc'
 import { todayKey, type DateKey } from '../lib/dates'
-import { rowAfterEdit } from '../lib/packaged'
+import { kindById, kindFor } from '../data/kinds'
+import { rebase, rowAfterEdit } from '../lib/packaged'
 import { useUI } from './ui'
 
 /** Hur ofta en vara loggats. `slots` räknar per del av dygnet (morgon, lunch, eftermiddag, kväll). */
@@ -29,7 +30,7 @@ export type Meal = { id: string; name: string; items: MealItem[] }
 export const STORAGE_KEY = 'hundra-v1'
 
 /** Datamodellens version, i lagringen och i exporten. Höjs med ett steg i `migrateData` när modellen ändras. */
-export const STORE_VERSION = 7
+export const STORE_VERSION = 8
 
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
@@ -283,6 +284,21 @@ export function migrateData(persisted: unknown, version: number): Data {
   // (`per100`). Båda är valfria, så inget behöver flyttas. De tvättas i `cleanFood`.
   // Version 6 → 7: inställningen trackedMacros, om man bara vill följa t.ex. protein. Saknas den
   // visas alla tre, som förut, så inget behöver skrivas om.
+  // Version 7 → 8: skannade varor får en typ (`per100.kind`) som ger naturliga mått, t.ex. en klick
+  // Bregott i stället för 100 g. Typen läses av namnet, och varan får det naturliga måttet som förval.
+  // Senaste valet för varan glöms, annars skulle (+) fortsätta lägga till 100 g. Loggen rörs inte.
+  if (version < 8) {
+    const { data } = sanitizeData(d)
+    const lastChoices = { ...data.lastChoices }
+    d.customFoods = data.customFoods.map((f) => {
+      if (!f.per100 || f.per100.kind) return f
+      const kind = kindFor(f.name, [], f.per100.measure)
+      if (!kind) return f
+      delete lastChoices[f.id]
+      return rebase(f, { ...f.per100, kind })
+    })
+    d.lastChoices = lastChoices
+  }
   return d as unknown as Data
 }
 
@@ -417,7 +433,8 @@ const cleanPer100 = (p: unknown): Per100 | null => {
   const size = (v: unknown) => (isNum(v, 0) && v > 0 && v <= 100_000 ? v : undefined)
   const serving = size(p.serving)
   const pack = size(p.pack)
-  return { kcal: p.kcal, measure: p.measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}) }
+  const kind = isStr(p.kind) && kindById(p.kind) ? p.kind : undefined
+  return { kcal: p.kcal, measure: p.measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}), ...(kind ? { kind } : {}) }
 }
 
 // Bara kända fält följer med. Ett nytt fält på egna varor måste läggas till här, annars försvinner

@@ -336,7 +336,7 @@ describe('store', () => {
 
   it('exporten har den nya versionen', () => {
     expect(JSON.parse(exportData(pickData(useStore.getState()))).version).toBe(STORE_VERSION)
-    expect(STORE_VERSION).toBe(7)
+    expect(STORE_VERSION).toBe(8)
   })
 
   it('skannade varor behåller streckkod och näringsvärde i lagringen', async () => {
@@ -412,6 +412,23 @@ describe('store', () => {
     expect(sanitizeData({ trackedMacros: [false, false, false] }).data.trackedMacros).toEqual([true, true, true])
     expect(sanitizeData({ trackedMacros: [true, 'nej', false] }).data.trackedMacros).toEqual([true, true, true])
     expect(sanitizeData({ trackedMacros: [true, false, false] }).data.trackedMacros).toEqual([true, false, false])
+  })
+
+  it('version 7 migreras till 8: skannade varor får naturliga mått, loggen ligger fast', () => {
+    const bregott = { id: 'egen-b', name: 'Bregott Normalsaltat', emoji: '🥛', unit: '100 g', kcal: 720, macros: [0.5, 80, 0.5], per100: { kcal: 720, measure: 'g', pack: 600 }, barcode: '7310865071736' }
+    const okand = { id: 'egen-o', name: 'Konstig vara', emoji: '🍽️', unit: '100 g', kcal: 300, per100: { kcal: 300, measure: 'g' } }
+    const entry = { id: 'a', date: day, at: 1, foodId: 'egen-b', name: 'Bregott Normalsaltat', emoji: '🥛', unit: '100 g', kcalPerUnit: 720, qty: 0.5 }
+    const v7 = {
+      customFoods: [bregott, okand],
+      entries: [entry],
+      lastChoices: { 'egen-b': { picks: { enhet: 'hundra' }, qty: 1 }, 'egen-o': { picks: { enhet: 'hundra' }, qty: 1 }, potatis: { picks: { storlek: 'stor' }, qty: 2 } },
+    }
+    const { data } = sanitizeData(migrateData(v7, 7))
+    expect(data.customFoods[0]).toMatchObject({ unit: '1 klick', kcal: 57.6, macros: [0, 6.4, 0], per100: { kind: 'smor', pack: 600 }, barcode: '7310865071736' })
+    expect(data.customFoods[1]).toMatchObject({ unit: '100 g', kcal: 300 })
+    expect(data.customFoods[1].per100?.kind).toBeUndefined()
+    expect(Object.keys(data.lastChoices).sort()).toEqual(['egen-o', 'potatis'])
+    expect(data.entries).toEqual([entry])
   })
 
   it('import avvisar fel filer', () => {

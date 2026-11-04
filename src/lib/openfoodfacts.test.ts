@@ -39,7 +39,7 @@ describe('Open Food Facts', () => {
     const r = parseProduct(mjolk)
     expect(r).toEqual({
       kind: 'found',
-      product: { name: 'Arla Mellanmjölk 1,5 %', emoji: '🥛', per100: { kcal: 46, measure: 'ml', pack: 1500 } },
+      product: { name: 'Arla Mellanmjölk 1,5 %', emoji: '🥛', per100: { kcal: 46, measure: 'ml', pack: 1500, kind: 'dryck' } },
     })
   })
 
@@ -49,7 +49,7 @@ describe('Open Food Facts', () => {
     if (r.kind !== 'found') return
     expect(r.product.name).toBe('Marabou Mjölkchoklad')
     expect(r.product.emoji).toBe('🍫')
-    expect(r.product.per100).toEqual({ kcal: 540, measure: 'g', serving: 25, pack: 200 })
+    expect(r.product.per100).toEqual({ kcal: 540, measure: 'g', serving: 25, pack: 200, kind: 'choklad' })
     expect(r.product.macros100).toEqual([7.5, 31, 56.5])
   })
 
@@ -80,7 +80,7 @@ describe('Open Food Facts', () => {
     expect(parseProduct({ status: 1, product: { product_name: 'Sylt', quantity: '400 g' } })).toEqual({
       kind: 'incomplete',
       name: 'Sylt',
-      per100: { measure: 'g', pack: 400 },
+      per100: { measure: 'g', pack: 400, kind: 'sylt' },
     })
     expect(parseProduct({ status: 1, product: { product_name: 'Fel', nutriments: { 'energy-kcal_100g': 2100 } } }).kind).toBe('incomplete')
   })

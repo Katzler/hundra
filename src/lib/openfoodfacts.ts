@@ -2,6 +2,7 @@
 // Bara streckkoden skickas, aldrig något om användaren eller loggen.
 
 import type { Per100 } from '../data/foods'
+import { kindById, kindFor } from '../data/kinds'
 import { roundMacros, type Macros } from './calc'
 import { normalize } from './search'
 
@@ -142,9 +143,8 @@ const CATEGORY_EMOJI: [string, string][] = [
   ['en:snacks', '🍿'],
 ]
 
-function emojiFor(tags: unknown): string {
-  if (!Array.isArray(tags)) return '🍽️'
-  return CATEGORY_EMOJI.find(([tag]) => tags.includes(tag))?.[1] ?? '🍽️'
+function emojiFor(tags: string[], fallback = '🍽️'): string {
+  return CATEGORY_EMOJI.find(([tag]) => tags.includes(tag))?.[1] ?? fallback
 }
 
 /** Gör om svaret från Open Food Facts till en vara, eller säger vad som saknas. */
@@ -176,7 +176,12 @@ export function parseProduct(json: unknown): Lookup {
   const macros100 = grams.every((g) => g !== undefined && g >= 0 && g <= 100) ? roundMacros(grams as Macros) : undefined
   const withMacros = macros100 ? { macros100 } : {}
 
-  const sizes = { measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}) }
+  // Typen ger naturliga mått: en klick Bregott, en skål yoghurt, en skiva ost.
+  const tags = Array.isArray(p.categories_tags) ? p.categories_tags.filter((t): t is string => typeof t === 'string') : []
+  const type = kindFor(name ?? '', tags, measure)
+  const emoji = kindById(type)?.emoji ?? emojiFor(tags, type === 'dryck' ? '🥛' : '🍽️')
+
+  const sizes = { measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}), ...(type ? { kind: type } : {}) }
   if (!name || kcal === undefined) return { kind: 'incomplete', name, per100: { ...sizes, ...(kcal !== undefined ? { kcal } : {}) }, ...withMacros }
-  return { kind: 'found', product: { name, emoji: emojiFor(p.categories_tags), per100: { kcal, ...sizes }, ...withMacros } }
+  return { kind: 'found', product: { name, emoji, per100: { kcal, ...sizes }, ...withMacros } }
 }

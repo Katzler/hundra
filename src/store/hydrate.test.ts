@@ -64,7 +64,7 @@ it('data från version 4 läses in, och näringen är av', async () => {
   // Det som skrivs tillbaka har den nya versionen och samma rader.
   s.setShowMacros(true)
   const saved = JSON.parse(mem.get('hundra-v1')!)
-  expect(saved.version).toBe(7)
+  expect(saved.version).toBe(8)
   expect(saved.state.entries).toHaveLength(1)
   expect(saved.state.showMacros).toBe(true)
   vi.unstubAllGlobals()
@@ -104,7 +104,7 @@ it('data från version 5 läses in, och skannade varor sparas med streckkod och 
   // Det som sparas efter inläsningen är den nya versionen och har kvar allt.
   s.addCustomFood({ name: 'Choklad', emoji: '🍫', unit: '100 g', kcal: 540, barcode: '7310511210502', per100: { kcal: 540, measure: 'g' } })
   const stored = JSON.parse(mem.get('hundra-v1')!)
-  expect(stored.version).toBe(7)
+  expect(stored.version).toBe(8)
   expect(stored.state.trackedMacros).toEqual([true, true, true])
   expect(stored.state.entries).toHaveLength(1)
   expect(stored.state.customFoods[0].macros).toEqual([30, 25, 60])

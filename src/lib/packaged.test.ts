@@ -55,6 +55,28 @@ describe('varor från en förpackning', () => {
     expect(applyPicks(food, { enhet: 'hundra' }).macros).toEqual([7.6, 31.2, 56.4])
   })
 
+  it('Bregott räknas i klickar, teskedar och matskedar, inte i gram', () => {
+    const p: Per100 = { kcal: 720, measure: 'g', pack: 600, kind: 'smor' }
+    expect(measures(p).map((m) => m.label)).toEqual(['Klick', 'Tesked', 'Matsked', 'Förpackning', '100 g'])
+    expect(defaultMeasure(p)).toMatchObject({ unit: '1 klick', kcal: 57.6 })
+  })
+
+  it('yoghurt i liter äts i skålar, en yoghurtburk hel', () => {
+    expect(defaultMeasure({ kcal: 60, measure: 'g', pack: 1000, kind: 'yoghurt' })).toMatchObject({ unit: '1 skål (2 dl)', kcal: 120 })
+    expect(defaultMeasure({ kcal: 90, measure: 'g', pack: 150, serving: 150, kind: 'yoghurt' })).toMatchObject({ unit: '1 förpackning (150 g)' })
+  })
+
+  it('en skiva bröd väger det som står på förpackningen', () => {
+    const p: Per100 = { kcal: 250, measure: 'g', serving: 40, pack: 800, kind: 'brod' }
+    expect(measures(p).map((m) => m.id)).toEqual(['skiva', 'forpackning', 'hundra'])
+    expect(defaultMeasure(p)).toMatchObject({ unit: '1 skiva', note: 'ca 40 g', kcal: 100 })
+  })
+
+  it('man brukar ta två kex', () => {
+    const food = scanned({ kcal: 480, measure: 'g', pack: 400, kind: 'kex' })
+    expect(preferred(food)).toMatchObject({ qty: 2, food: { unit: '1 st' } })
+  })
+
   it('vanliga egna varor har fortfarande inga frågor', () => {
     const food: Food = { id: 'egen-2', name: 'Lasagne', emoji: '🍝', unit: '1 bit', kcal: 600, category: 'egna', custom: true }
     expect(questionsFor(food)).toEqual([])

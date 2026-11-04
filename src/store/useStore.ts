@@ -1,9 +1,22 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
 import type { LastChoice, Picks } from '../data/choices'
-import { FOODS, type Food } from '../data/foods'
-import { daySlot, tdee, withBudget, type BudgetPeriod, type Entry, type MacroLookup, type Macros, type Profile, type Weight } from '../lib/calc'
+import { FOODS, type Food, type Per100 } from '../data/foods'
+import {
+  daySlot,
+  roundMacros,
+  scaleMacros,
+  tdee,
+  withBudget,
+  type BudgetPeriod,
+  type Entry,
+  type MacroLookup,
+  type Macros,
+  type Profile,
+  type Weight,
+} from '../lib/calc'
 import { todayKey, type DateKey } from '../lib/dates'
+import { rowAfterEdit } from '../lib/packaged'
 import { useUI } from './ui'
 
 /** Hur ofta en vara loggats. `slots` räknar per del av dygnet (morgon, lunch, eftermiddag, kväll). */
@@ -15,8 +28,8 @@ export type Meal = { id: string; name: string; items: MealItem[] }
 /** Nyckeln i localStorage. Får aldrig bytas – all historik ligger under den. */
 export const STORAGE_KEY = 'hundra-v1'
 
-/** Datamodellens version. Höjs med ett steg i `migrateData` när modellen ändras. */
-export const STORE_VERSION = 5
+/** Datamodellens version, i lagringen och i exporten. Höjs med ett steg i `migrateData` när modellen ändras. */
+export const STORE_VERSION = 6
 
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
@@ -259,6 +272,8 @@ export function migrateData(persisted: unknown, version: number): Data {
   // Version 4 → 5: rader, måltider och egna varor kan ha protein, fett och kolhydrater, och
   // inställningen showMacros finns. Allt nytt är valfritt, så inget behöver skrivas om. Gamla rader
   // får ingen kopia av näringen i efterhand, den räknas fram från varan när den visas.
+  // Version 5 → 6: egna varor kan ha en streckkod (`barcode`) och näringsvärdet från förpackningen
+  // (`per100`). Båda är valfria, så inget behöver flyttas. De tvättas i `cleanFood`.
   return d as unknown as Data
 }
 
@@ -327,6 +342,9 @@ export function itemsOf(foods: Food[], ids: string[], meals: Meal[]): QuickItem[
 /** Ligger id:t i någon av favoritkategorierna? */
 export const isFavorite = (groups: FavoriteGroups, id: string) => FAVORITE_GROUPS.some((g) => groups[g.id].includes(id))
 
+/** Den egna varan med den här streckkoden, om man skannat eller skrivit in den förut. */
+export const foodByBarcode = (custom: Food[], code: string): Food | undefined => custom.find((f) => f.barcode === code)
+
 /** Bakåtkompatibel hjälpare: bara varorna bland snabbvalen. */
 export function quickFoods(foods: Food[], usage: Usage, picks: string[] | null, limit = 8): Food[] {
   return quickItems(foods, usage, picks, [], limit).flatMap((q) => (q.kind === 'food' ? [q.food] : []))
@@ -385,19 +403,32 @@ const cleanEntry = (e: unknown): Entry | null => {
   return item ? { id: e.id, date: e.date, at: isNum(e.at) ? e.at : 0, ...item } : null
 }
 
-const cleanFood = (f: unknown): Food | null =>
-  isObj(f) && isStr(f.id) && isStr(f.name) && isNum(f.kcal, 0)
-    ? {
-        id: f.id,
-        name: f.name,
-        emoji: isStr(f.emoji) ? f.emoji : '🍽️',
-        unit: isStr(f.unit) ? f.unit : '1 portion',
-        kcal: f.kcal,
-        ...(isMacros(f.macros) ? { macros: f.macros } : {}),
-        category: 'egna',
-        custom: true,
-      }
-    : null
+const cleanPer100 = (p: unknown): Per100 | null => {
+  if (!isObj(p) || !isNum(p.kcal, 0) || p.kcal > 900 || (p.measure !== 'g' && p.measure !== 'ml')) return null
+  const size = (v: unknown) => (isNum(v, 0) && v > 0 && v <= 100_000 ? v : undefined)
+  const serving = size(p.serving)
+  const pack = size(p.pack)
+  return { kcal: p.kcal, measure: p.measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}) }
+}
+
+// Bara kända fält följer med. Ett nytt fält på egna varor måste läggas till här, annars försvinner
+// det tyst vid nästa start.
+const cleanFood = (f: unknown): Food | null => {
+  if (!isObj(f) || !isStr(f.id) || !isStr(f.name) || !isNum(f.kcal, 0)) return null
+  const per100 = cleanPer100(f.per100)
+  return {
+    id: f.id,
+    name: f.name,
+    emoji: isStr(f.emoji) ? f.emoji : '🍽️',
+    unit: isStr(f.unit) ? f.unit : '1 portion',
+    kcal: f.kcal,
+    ...(isMacros(f.macros) ? { macros: f.macros } : {}),
+    category: 'egna',
+    custom: true,
+    ...(isStr(f.barcode) && /^\d{8,14}$/.test(f.barcode) ? { barcode: f.barcode } : {}),
+    ...(per100 ? { per100 } : {}),
+  }
+}
 
 const cleanMeal = (m: unknown): Meal | null => {
   if (!isObj(m) || !isStr(m.id) || !isStr(m.name) || !Array.isArray(m.items)) return null
@@ -484,12 +515,9 @@ export function parseImport(text: string): Data & { dropped: number } {
   return { ...data, dropped }
 }
 
-/** En egen vara utan näring ska inte ha fältet kvar som undefined. */
-const withoutEmpty = (f: Food): Food => {
-  if (f.macros) return f
-  const { macros: _, ...rest } = f
-  return rest
-}
+/** En egen vara utan näring, streckkod eller förpackning ska inte ha fälten kvar som undefined. */
+const withoutEmpty = (f: Food): Food =>
+  Object.fromEntries(Object.entries(f).filter(([k, v]) => v !== undefined || !['macros', 'barcode', 'per100'].includes(k))) as Food
 
 const withoutFavorite = (groups: FavoriteGroups, id: string): FavoriteGroups =>
   Object.fromEntries(FAVORITE_GROUPS.map((g) => [g.id, groups[g.id].filter((x) => x !== id)])) as FavoriteGroups
@@ -557,21 +585,22 @@ export const useStore = create<Data & Actions>()(
       updateCustomFood: (id, patch) =>
         set((s) => {
           const today = todayKey()
+          const before = s.customFoods.find((f) => f.id === id)
+          if (!before) return s
+          const after = withoutEmpty({ ...before, ...patch })
           return {
-            customFoods: s.customFoods.map((f) => (f.id === id ? withoutEmpty({ ...f, ...patch }) : f)),
+            customFoods: s.customFoods.map((f) => (f.id === id ? after : f)),
             entries: s.entries.map((e) => {
               if (e.foodId !== id || e.date !== today) return e
               const { macrosPerUnit, ...rest } = e
-              // Tar man bort näringen på varan försvinner den från dagens rader också.
-              const macros = 'macros' in patch ? patch.macros : macrosPerUnit
-              return {
-                ...rest,
-                name: patch.name ?? e.name,
-                emoji: patch.emoji ?? e.emoji,
-                unit: patch.unit ?? e.unit,
-                kcalPerUnit: patch.kcal ?? e.kcalPerUnit,
-                ...(macros ? { macrosPerUnit: macros } : {}),
+              const row = rowAfterEdit(before, after, e)
+              // Tar man bort näringen på varan försvinner den från dagens rader också. Rader med ett
+              // annat mått än förvalet, t.ex. 100 g, får näringen omräknad efter sina kcal.
+              let macros = 'macros' in patch ? patch.macros : macrosPerUnit
+              if ('macros' in patch && macros && row.unit !== after.unit && after.kcal > 0) {
+                macros = roundMacros(scaleMacros(macros, row.kcalPerUnit / after.kcal))
               }
+              return { ...rest, ...row, ...(macros ? { macrosPerUnit: macros } : {}) }
             }),
           }
         }),

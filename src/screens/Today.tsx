@@ -6,7 +6,7 @@ import { CalendarSheet } from '../components/CalendarSheet'
 import { FavoritesSheet } from '../components/FavoritesSheet'
 import { FavoriteWheel } from '../components/FavoriteWheel'
 import { EntryRow } from '../components/FoodRow'
-import { CalendarIcon, ChevronLeft, ChevronRight, SearchIcon } from '../components/icons'
+import { BarcodeIcon, CalendarIcon, ChevronLeft, ChevronRight, SearchIcon } from '../components/icons'
 import { MealSheet } from '../components/MealSheet'
 import { MacroLegend, Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
@@ -27,6 +27,8 @@ export function Today() {
   const date = resolveDay(picked, today)
   const goTo = (d: DateKey) => setPicked(d < today ? { date: d, on: today } : null)
   const [adding, setAdding] = useState(false)
+  // Arket öppnades med streckkodsknappen, och kameran ska starta direkt.
+  const [scanOnOpen, setScanOnOpen] = useState(false)
   // Det man hinner skriva i fältet på Idag innan fokus har flyttats till arket.
   const [typed, setTyped] = useState('')
   const [editGroup, setEditGroup] = useState<FavoriteGroup | null>(null)
@@ -83,8 +85,16 @@ export function Today() {
     setTimeout(focusSearch, 100)
   }
 
+  // Utan tangentbord: arket öppnas och kameran startar.
+  const openScan = () => {
+    haptic()
+    setScanOnOpen(true)
+    setAdding(true)
+  }
+
   const closeAdd = () => {
     setAdding(false)
+    setScanOnOpen(false)
     setTyped('')
   }
 
@@ -164,22 +174,28 @@ export function Today() {
 
       {/* Ett riktigt fält, så att iOS visar tangentbordet vid trycket. Fokus flyttas sedan till arkets sökfält. */}
       {/* Medan arket är öppet kan fältet ha kvar fokus, och iOS ritar då markören ovanpå arket. */}
-      <label className={`search-field ${adding ? 'is-behind' : ''}`}>
-        <SearchIcon size={17} />
-        <input
-          type="search"
-          value={typed}
-          onChange={(e) => {
-            setTyped(e.target.value)
-            focusSearch()
-          }}
-          onFocus={openAdd}
-          placeholder="Sök mat"
-          aria-label="Sök mat"
-          autoComplete="off"
-          tabIndex={adding ? -1 : 0}
-        />
-      </label>
+      {/* Streckkodsknappen ligger utanför etiketten: ett tryck i etiketten ger fältet fokus och tar fram tangentbordet. */}
+      <div className={`search-field ${adding ? 'is-behind' : ''}`}>
+        <label className="search-field-label">
+          <SearchIcon size={17} />
+          <input
+            type="search"
+            value={typed}
+            onChange={(e) => {
+              setTyped(e.target.value)
+              focusSearch()
+            }}
+            onFocus={openAdd}
+            placeholder="Sök mat"
+            aria-label="Sök mat"
+            autoComplete="off"
+            tabIndex={adding ? -1 : 0}
+          />
+        </label>
+        <button type="button" className="search-field-scan" onClick={openScan} aria-label="Skanna streckkod" tabIndex={adding ? -1 : 0}>
+          <BarcodeIcon size={21} />
+        </button>
+      </div>
 
       {!isToday && dayEntries.length > 0 && (
         <section className={`card exclude-card ${total < SHORT_DAY ? 'is-short' : ''}`}>
@@ -253,7 +269,7 @@ export function Today() {
       />
       <MealSheet source={mealSource} budgetKcal={budget} onClose={() => setMealSource(null)} />
       <FavoritesSheet group={editGroup} onClose={() => setEditGroup(null)} budgetKcal={budget} />
-      <AddSheet open={adding} date={date} typed={typed} onClose={closeAdd} inputRef={searchRef} />
+      <AddSheet open={adding} date={date} typed={typed} scan={scanOnOpen} onClose={closeAdd} inputRef={searchRef} />
     </main>
   )
 }

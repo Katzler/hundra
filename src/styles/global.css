@@ -804,6 +804,31 @@ strong {
   appearance: none;
 }
 
+/* Fältet är en etikett (tryck ger tangentbord) och streckkodsknappen ligger bredvid den, inte i den. */
+.search-field-label {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.search-field-scan {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-right: -10px;
+  border-radius: 10px;
+  color: var(--label-2);
+}
+
+.search-field-scan:active {
+  background: var(--fill);
+}
+
 .search-field.is-behind input {
   caret-color: transparent;
 }
@@ -1117,6 +1142,17 @@ strong {
   content: '';
   position: absolute;
   inset: -10px;
+}
+
+.search-scan {
+  position: absolute;
+  right: 18px;
+  top: 2px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--label-2);
 }
 
 .sheet-body .section-title {
@@ -2746,4 +2782,214 @@ a.row {
   0% {
     background-color: var(--accent-soft);
   }
+}
+
+/* ───────── Streckkod ───────── */
+
+.scan {
+  display: flex;
+  flex-direction: column;
+  padding-top: 4px;
+}
+
+/* Kameran är alltid svart, även i ljust läge, som i iOS kameravyer. */
+.scan-view {
+  position: relative;
+  height: min(52vh, 460px);
+  min-height: 240px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #000;
+}
+
+.scan-view video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Ramen motsvarar det som läses i src/lib/scanner.ts (cropOf). Utanför den tonas bilden ner. */
+.scan-frame {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 32%;
+  bottom: 32%;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.38);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.scan-view.is-live .scan-frame {
+  opacity: 1;
+}
+
+.scan-status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.9412rem;
+  line-height: 1.4;
+}
+
+.scan-resume {
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+}
+
+.scan-torch {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.scan-torch.is-on {
+  background: #fff;
+  color: #000;
+}
+
+.scan-hint {
+  margin: 12px 12px 14px;
+  text-align: center;
+  font-size: 0.8824rem;
+  color: var(--label-2);
+  line-height: 1.4;
+}
+
+.scan-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.scan-actions .secondary-btn {
+  height: 46px;
+  font-size: 0.9412rem;
+}
+
+.scan-actions .secondary-btn:disabled {
+  opacity: 0.5;
+}
+
+.scan-type {
+  margin-top: 12px;
+}
+
+.scan-type .field {
+  padding-right: 6px;
+}
+
+.scan-type input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.scan-type .bar-btn:disabled {
+  opacity: 0.35;
+}
+
+.scan-message {
+  margin: 12px 12px 0;
+  text-align: center;
+  font-size: 0.8824rem;
+  color: var(--label);
+  line-height: 1.4;
+}
+
+.scan-privacy {
+  text-align: center;
+  margin-top: 18px;
+}
+
+/* Meddelanden i Lägg till efter en skanning: kod som inte går att slå upp, eller formulärets förklaring. */
+.scan-note {
+  margin: 0 0 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: var(--card);
+  font-size: 0.8824rem;
+  color: var(--label-2);
+  line-height: 1.4;
+}
+
+.scan-looking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 8px 8px 8px 16px;
+  border-radius: var(--radius);
+  font-size: 0.9412rem;
+}
+
+.scan-looking .link-btn {
+  margin-left: auto;
+}
+
+.scan-code {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.scan-code a {
+  color: var(--tint);
+}
+
+.spinner {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid var(--fill-strong);
+  border-top-color: var(--label-2);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.choice-source {
+  margin: -4px 4px 0;
+  font-size: 0.8235rem;
+  color: var(--label-2);
+  text-align: center;
+}
+
+.inline-link {
+  padding: 0;
+  font: inherit;
+  color: var(--tint);
+}
+
+.mode-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: -6px 0;
+}
+
+.form .form-hint {
+  margin-top: -8px;
 }

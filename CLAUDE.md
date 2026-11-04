@@ -29,6 +29,7 @@ Den publiceras på https://katzler.github.io/hundra/. Varje push till `main` byg
 - `src/data/macros.ts`: protein, fett och kolhydrater i gram för samma portion som i `foods.ts`.
 - `src/screens/` (Today, Trend, Profile, Onboarding) och `src/components/`.
 - `src/icons/riso/*.svg`: handritade ikoner. Stil och format beskrivs i `design/riso/STILGUIDE.md`.
+- Streckkoder: `src/lib/barcode.ts` (kontrollsiffra, UPC → EAN-13, butikens egna koder), `src/lib/openfoodfacts.ts` (uppslag och tolkning), `src/lib/packaged.ts` (portion, förpackning, glas och 100 g), `src/lib/scanner.ts` (ZXing) och `src/components/ScanSheet.tsx` (kameran).
 
 ## Datan – var försiktig
 
@@ -39,6 +40,7 @@ All användardata finns bara i localStorage på telefonen, under nyckeln `hundra
 - **Ordningen i filen:** `useStore` skapas sist i filen eftersom sparad data läses in direkt när modulen laddas. Allt som inläsningen använder måste vara definierat ovanför. Ett tidigare fel med en `const` som definierades efter skapandet gjorde att datan inte lästes in.
 - **Skrivskyddet:** lagringen skrivs inte förrän inläsningen har lyckats (flaggan `hydrated`). Ta inte bort det skyddet.
 - **Testet:** `src/store/hydrate.test.ts` startar appen med sparad data, precis som på telefonen. Det måste alltid gå igenom.
+- **Skannade varor:** de sparas som egna varor med `barcode` och `per100` (version 6). Näringen sparas per förvalt mått, som för andra varor (`macrosToUnit` i `packaged.ts`). `cleanFood` släpper bara igenom kända fält, så ett nytt fält på egna varor måste läggas till där.
 - **Hemskärmen:** på iPhone har hemskärmsappen egen lagring, och den försvinner om appen tas bort från hemskärmen. Råd aldrig någon att ta bort appen utan att först exportera en backup.
 
 ## Näring
@@ -65,3 +67,8 @@ Service workern använder `registerType: 'prompt'`. I `src/main.tsx` byts appen 
 - **Startbilden:** `index.html` har en inbäddad appikon i `#root` som syns tills React ritar appen. Dess bakgrund ska stämma med `--bg` i `tokens.css`.
 - **Mätningen:** raden under versionen i Profil visar var tiden gick vid senaste starten (`src/lib/startup.ts`). Den hålls bara i minnet. Små värden trots lång väntan betyder att tiden gick i iOS innan sidan började laddas.
 - **Offline-cachen:** alla filer utom de stora appikonerna (icon-512 och den maskerbara) ligger i precachen, ungefär 700 poster med matikonerna. Cachen öppnas vid varje kallstart, så håll nere antalet poster. Stora filer gör varje uppdatering långsammare.
+- **Streckkodsläsaren:** WebAssembly-filen (ca 1 MB) ligger inte i precachen. Den hämtas första gången man skannar och sparas sedan i en egen cache (`runtimeCaching` i `vite.config.ts`).
+
+## Open Food Facts
+
+Uppslaget går direkt från telefonen till `world.openfoodfacts.org` (fri, ingen nyckel, ca 100 uppslag i minuten per användare). Bara koden skickas, och Profil säger det. Vägda varor har butikens egna koder (börjar på 2) och går inte att slå upp. Testerna använder handskrivna svar i samma form som API:et.

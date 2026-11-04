@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { amountsFor, amountText, applyPicks, preferred, questionsFor, usualQty, type Picks } from '../data/choices'
 import type { Food } from '../data/foods'
 import { budgetFor, formatInt, formatPoints, formatQty, toPoints } from '../lib/calc'
@@ -15,10 +15,14 @@ type Props = {
   qty?: number
   date: DateKey
   onClose: () => void
+  /** Ersätter vanligt tillägg, t.ex. för en skannad vara som först ska sparas. */
+  onConfirm?: (variant: Food, qty: number, picks: Picks) => void
+  /** Rad överst i arket, t.ex. var varan kommer ifrån. */
+  note?: ReactNode
 }
 
 /** Snabbval när man trycker på en vara: storlek, tillagning, fetthalt, enhet och mängd på en gång. */
-export function ChoiceSheet({ food, qty: startQty, date, onClose }: Props) {
+export function ChoiceSheet({ food, qty: startQty, date, onClose, onConfirm, note }: Props) {
   const history = useStore((s) => s.budgetHistory)
   const addFood = useStore((s) => s.addFood)
   // Varan ligger kvar medan arket glider ut.
@@ -54,7 +58,8 @@ export function ChoiceSheet({ food, qty: startQty, date, onClose }: Props) {
   }
   const add = () => {
     haptic()
-    addFood(variant, date, qty, picks)
+    if (onConfirm) onConfirm(variant, qty, picks)
+    else addFood(variant, date, qty, picks)
     onClose()
   }
 
@@ -82,6 +87,7 @@ export function ChoiceSheet({ food, qty: startQty, date, onClose }: Props) {
       }
     >
       <div className="choice">
+        {note && <div className="choice-source">{note}</div>}
         {questions.map((q) => (
           <section key={q.id} className="choice-group">
             <h3 className="choice-title">{q.title}</h3>

@@ -255,7 +255,10 @@ export function Profile() {
           Hundra är ett enkelt sätt att följa vad du äter utan att väga. Värdena är ungefärliga – det är snittet över tid som räknas. Appen ersätter inte
           råd från vården. Är du gravid, ammar, är under 18 eller har eller har haft en ätstörning: prata med vården innan du börjar räkna.
         </p>
-        <p className="muted small">All data stannar på din telefon. Ingenting skickas någonstans.</p>
+        <p className="muted small">
+          All data stannar på din telefon. När du skannar en streckkod skickas bara koden till Open Food Facts, en öppen databas över
+          livsmedel, för att hitta varan.
+        </p>
       </section>
       <div className="group feedback-group">
         <a className="row nav-row" href={feedbackLink()}>

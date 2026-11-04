@@ -32,6 +32,15 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webp}'],
         globIgnores: ['icon-512.png', 'icon-maskable-512.png'],
+        // Streckkodsläsaren (ca 1 MB WebAssembly) ligger inte i precachen, som öppnas vid varje start.
+        // Den hämtas första gången man skannar och sparas sedan, så att skannern fungerar offline.
+        runtimeCaching: [
+          {
+            urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.endsWith('.wasm'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'hundra-streckkod', expiration: { maxEntries: 2 } },
+          },
+        ],
       },
       manifest: {
         name: 'Hundra',

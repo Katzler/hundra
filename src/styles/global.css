@@ -3010,3 +3010,102 @@ a.row {
 .form .form-hint {
   margin-top: -8px;
 }
+
+/* ───────── Nytt i Hundra ───────── */
+
+.news-title {
+  margin: 8px 8px 30px;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.news-brand {
+  color: var(--accent-deep);
+}
+
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  margin: 0 8px 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.news-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  animation: rise-in 0.5s var(--ease) both;
+}
+
+.news-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+}
+
+.news-icon-macros {
+  background: var(--card);
+  box-shadow: inset 0 0 0 0.5px var(--separator);
+}
+
+.news-icon-scan {
+  background: var(--button);
+  color: #fff;
+}
+
+.news-ring.protein {
+  stroke: var(--protein);
+}
+
+.news-ring.fat {
+  stroke: var(--fat);
+}
+
+.news-ring.carbs {
+  stroke: var(--carbs);
+}
+
+.news-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.news-item-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.news-item-sub {
+  color: var(--label-2);
+  font-size: 0.9412rem;
+  line-height: 1.38;
+}
+
+.news-footer {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 24px calc(14px + var(--safe-bottom));
+}
+
+.news-link {
+  margin-top: 6px;
+  min-height: 44px;
+  font-size: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-item {
+    animation: none;
+  }
+}

@@ -18,6 +18,9 @@ import {
   toKcal,
   toPoints,
   withBudget,
+  dayMacros,
+  entryMacros,
+  macroTargets,
   type Entry,
   type Profile,
 } from './calc'
@@ -281,5 +284,42 @@ describe('mönster', () => {
     const e2 = { ...entry('2026-10-21', 250), foodId: 'ol', name: 'Öl' }
     const top = topSources([e1, e2], '2026-10-01', '2026-10-31')
     expect(top[0]).toMatchObject({ foodId: 'pizza', share: 0.8 })
+  })
+})
+
+describe('näring', () => {
+  const potatis = { kcal: 75, macros: [2, 0.1, 16] as [number, number, number] }
+  const lookup = (id: string) => (id === 'potatis' ? potatis : undefined)
+  const row = (over: Partial<Entry>): Entry => ({ ...entry('2026-10-24', 75), foodId: 'potatis', ...over })
+
+  it('målen: 1,2 g protein per kilo för att hålla vikten, 30 % fett och resten kolhydrater', () => {
+    expect(macroTargets(man, 2759, 100)).toEqual([96, 92, 387])
+  })
+
+  it('mer protein när man går ner, räknat på vikten vid BMI 25 om man väger mer', () => {
+    const tung: Profile = { ...man, weightKg: 95 }
+    // 25 × 1,8² = 81 kg, och 1,6 g per kilo av det.
+    expect(macroTargets(tung, 3000, 90)[0]).toBe(130)
+    expect(macroTargets(man, 2759, 90)[0]).toBe(128)
+  })
+
+  it('energin i målen blir målet i poäng', () => {
+    const [p, f, k] = macroTargets(kvinna, 2000, 85)
+    // Avrundningen till hela gram ger några kcal hit eller dit.
+    expect(Math.abs(4 * p + 9 * f + 4 * k - 1700)).toBeLessThan(10)
+  })
+
+  it('raden har en egen kopia av näringen som gånger antalet', () => {
+    expect(entryMacros(row({ macrosPerUnit: [1, 2, 3], qty: 2 }), lookup)).toEqual([2, 4, 6])
+  })
+
+  it('gamla rader utan kopia räknas från varan, skalad med radens kcal', () => {
+    expect(entryMacros(row({ kcalPerUnit: 150, qty: 2 }), lookup)).toEqual([8, 0.4, 64])
+  })
+
+  it('okänd näring räknas inte, men kcal som saknar näring samlas', () => {
+    const rows = [row({ macrosPerUnit: [2, 0.1, 16] }), row({ foodId: 'egen-x', kcalPerUnit: 300 }), row({ date: '2026-10-25', macrosPerUnit: [9, 9, 9] })]
+    expect(entryMacros(rows[1], lookup)).toBeNull()
+    expect(dayMacros(rows, '2026-10-24', lookup)).toEqual({ total: [2, 0.1, 16], unknownKcal: 300 })
   })
 })

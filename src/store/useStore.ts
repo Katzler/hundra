@@ -2,18 +2,21 @@ import { create } from 'zustand'
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
 import type { LastChoice, Picks } from '../data/choices'
 import { FOODS, type Food } from '../data/foods'
-import { daySlot, tdee, withBudget, type BudgetPeriod, type Entry, type Profile, type Weight } from '../lib/calc'
+import { daySlot, tdee, withBudget, type BudgetPeriod, type Entry, type MacroLookup, type Macros, type Profile, type Weight } from '../lib/calc'
 import { todayKey, type DateKey } from '../lib/dates'
 import { useUI } from './ui'
 
 /** Hur ofta en vara loggats. `slots` räknar per del av dygnet (morgon, lunch, eftermiddag, kväll). */
 export type Usage = Record<string, { count: number; last: number; slots?: number[] }>
 
-export type MealItem = { foodId: string; name: string; emoji: string; unit: string; kcalPerUnit: number; qty: number }
+export type MealItem = { foodId: string; name: string; emoji: string; unit: string; kcalPerUnit: number; macrosPerUnit?: Macros; qty: number }
 export type Meal = { id: string; name: string; items: MealItem[] }
 
 /** Nyckeln i localStorage. Får aldrig bytas – all historik ligger under den. */
 export const STORAGE_KEY = 'hundra-v1'
+
+/** Datamodellens version. Höjs med ett steg i `migrateData` när modellen ändras. */
+export const STORE_VERSION = 5
 
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
@@ -65,6 +68,8 @@ export type Data = {
   lastBackupAt: number | null
   backupSnoozedUntil: number | null
   trendRange: number
+  /** Visa protein, fett och kolhydrater i ringen. Av som standard. */
+  showMacros: boolean
 }
 
 type Actions = {
@@ -93,6 +98,7 @@ type Actions = {
   markBackup: () => void
   snoozeBackup: () => void
   setTrendRange: (n: number) => void
+  setShowMacros: (on: boolean) => void
   importData: (data: Data) => void
   resetAll: () => void
 }
@@ -114,6 +120,7 @@ export const emptyData: Data = {
   lastBackupAt: null,
   backupSnoozedUntil: null,
   trendRange: 7,
+  showMacros: false,
 }
 
 /** Fälten som sparas och exporteras. En enda lista, så att inget nytt fält glöms bort någonstans. */
@@ -179,6 +186,18 @@ export const itemOf = (food: Food, qty: number): MealItem => ({
   emoji: food.emoji,
   unit: food.unit,
   kcalPerUnit: food.kcal,
+  ...(food.macros ? { macrosPerUnit: food.macros } : {}),
+  qty,
+})
+
+/** Radens fält som en måltidsrad, med näringen om den finns. */
+export const mealItemOf = ({ foodId, name, emoji, unit, kcalPerUnit, macrosPerUnit, qty }: Entry): MealItem => ({
+  foodId,
+  name,
+  emoji,
+  unit,
+  kcalPerUnit,
+  ...(macrosPerUnit ? { macrosPerUnit } : {}),
   qty,
 })
 
@@ -237,6 +256,9 @@ export function migrateData(persisted: unknown, version: number): Data {
     d.favoriteGroups = Object.fromEntries(FAVORITE_GROUPS.map((g) => [g.id, [...ids]]))
     delete d.quickPicks
   }
+  // Version 4 → 5: rader, måltider och egna varor kan ha protein, fett och kolhydrater, och
+  // inställningen showMacros finns. Allt nytt är valfritt, så inget behöver skrivas om. Gamla rader
+  // får ingen kopia av näringen i efterhand, den räknas fram från varan när den visas.
   return d as unknown as Data
 }
 
@@ -245,6 +267,12 @@ const oldPicks = (d: Record<string, unknown>): string[] | null => (Array.isArray
 
 export function allFoods(custom: Food[]): Food[] {
   return [...custom, ...FOODS]
+}
+
+/** Slår upp varor för rader som loggades utan egen kopia av näringen. */
+export function macroLookup(custom: Food[]): MacroLookup {
+  const byId = new Map(allFoods(custom).map((f) => [f.id, f]))
+  return (id) => byId.get(id)
 }
 
 /** De mest använda varorna, där nyligen använda väger tyngre – och, med nog underlag, rätt tid på dygnet. */
@@ -318,13 +346,14 @@ export function mealKcal(meal: Meal): number {
 }
 
 export function exportData(s: Data): string {
-  return JSON.stringify({ app: 'hundra', version: 4, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
+  return JSON.stringify({ app: 'hundra', version: STORE_VERSION, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
 }
 
 const isDate = (v: unknown): v is DateKey => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
 const isNum = (v: unknown, min = -Infinity): v is number => typeof v === 'number' && Number.isFinite(v) && v >= min
 const isStr = (v: unknown): v is string => typeof v === 'string'
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
+const isMacros = (v: unknown): v is Macros => Array.isArray(v) && v.length === 3 && v.every((g) => isNum(g, 0) && g < 10_000)
 
 function cleanProfile(p: unknown): Profile | null {
   if (!isObj(p)) return null
@@ -345,6 +374,7 @@ const cleanItem = (e: Record<string, unknown>): MealItem | null =>
         emoji: isStr(e.emoji) ? e.emoji : '🍽️',
         unit: isStr(e.unit) ? e.unit : '',
         kcalPerUnit: e.kcalPerUnit,
+        ...(isMacros(e.macrosPerUnit) ? { macrosPerUnit: e.macrosPerUnit } : {}),
         qty: e.qty,
       }
     : null
@@ -363,6 +393,7 @@ const cleanFood = (f: unknown): Food | null =>
         emoji: isStr(f.emoji) ? f.emoji : '🍽️',
         unit: isStr(f.unit) ? f.unit : '1 portion',
         kcal: f.kcal,
+        ...(isMacros(f.macros) ? { macros: f.macros } : {}),
         category: 'egna',
         custom: true,
       }
@@ -426,6 +457,7 @@ export function sanitizeData(raw: unknown): { data: Data; dropped: number } {
       lastBackupAt: timeOrNull(d.lastBackupAt),
       backupSnoozedUntil: timeOrNull(d.backupSnoozedUntil),
       trendRange: [7, 30, 90].includes(d.trendRange as number) ? (d.trendRange as number) : 7,
+      showMacros: d.showMacros === true,
     },
     dropped,
   }
@@ -450,6 +482,13 @@ export function parseImport(text: string): Data & { dropped: number } {
   const migrated = migrateData(root.data, isNum(root.version) ? root.version : 1)
   const { data, dropped } = sanitizeData(migrated)
   return { ...data, dropped }
+}
+
+/** En egen vara utan näring ska inte ha fältet kvar som undefined. */
+const withoutEmpty = (f: Food): Food => {
+  if (f.macros) return f
+  const { macros: _, ...rest } = f
+  return rest
 }
 
 const withoutFavorite = (groups: FavoriteGroups, id: string): FavoriteGroups =>
@@ -509,7 +548,7 @@ export const useStore = create<Data & Actions>()(
         set((s) => ({ entries: [...s.entries.filter((e) => e.date !== date), ...dayEntries] })),
 
       addCustomFood: (f) => {
-        const food: Food = { ...f, id: 'egen-' + uid(), category: 'egna', custom: true }
+        const food: Food = withoutEmpty({ ...f, id: 'egen-' + uid(), category: 'egna', custom: true })
         set((s) => ({ customFoods: [...s.customFoods, food] }))
         return food
       },
@@ -519,18 +558,21 @@ export const useStore = create<Data & Actions>()(
         set((s) => {
           const today = todayKey()
           return {
-            customFoods: s.customFoods.map((f) => (f.id === id ? { ...f, ...patch } : f)),
-            entries: s.entries.map((e) =>
-              e.foodId === id && e.date === today
-                ? {
-                    ...e,
-                    name: patch.name ?? e.name,
-                    emoji: patch.emoji ?? e.emoji,
-                    unit: patch.unit ?? e.unit,
-                    kcalPerUnit: patch.kcal ?? e.kcalPerUnit,
-                  }
-                : e,
-            ),
+            customFoods: s.customFoods.map((f) => (f.id === id ? withoutEmpty({ ...f, ...patch }) : f)),
+            entries: s.entries.map((e) => {
+              if (e.foodId !== id || e.date !== today) return e
+              const { macrosPerUnit, ...rest } = e
+              // Tar man bort näringen på varan försvinner den från dagens rader också.
+              const macros = 'macros' in patch ? patch.macros : macrosPerUnit
+              return {
+                ...rest,
+                name: patch.name ?? e.name,
+                emoji: patch.emoji ?? e.emoji,
+                unit: patch.unit ?? e.unit,
+                kcalPerUnit: patch.kcal ?? e.kcalPerUnit,
+                ...(macros ? { macrosPerUnit: macros } : {}),
+              }
+            }),
           }
         }),
 
@@ -610,6 +652,8 @@ export const useStore = create<Data & Actions>()(
 
       setTrendRange: (trendRange) => set({ trendRange }),
 
+      setShowMacros: (showMacros) => set({ showMacros }),
+
       importData: (data) => set({ ...emptyData, ...data }),
 
       resetAll: () => set(emptyData),
@@ -618,7 +662,7 @@ export const useStore = create<Data & Actions>()(
       // Nyckeln får aldrig bytas: all historik ligger under den. Höj i stället `version`
       // och skriv en migrering i `migrate` om datamodellen ändras.
       name: STORAGE_KEY,
-      version: 4,
+      version: STORE_VERSION,
       storage: createJSONStorage(() => safeStorage),
       migrate: (persisted, version) => migrateData(persisted, version),
       // Trasig eller gammal data i lagringen tvättas i stället för att krascha appen.

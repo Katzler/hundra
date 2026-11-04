@@ -15,7 +15,7 @@ Den publiceras på https://katzler.github.io/hundra/. Varje push till `main` byg
 
 | Kommando | Vad |
 | --- | --- |
-| `npm test` | Vitest: poänglogik, sök, lagring, migrering och ikoner |
+| `npm test` | Vitest: poänglogik, näring, sök, lagring, migrering och ikoner |
 | `npm run typecheck` | Appen utan Node-typer (`tsconfig.json`), tester och konfig för sig (`tsconfig.node.json`) |
 | `GITHUB_PAGES=1 npm run build` | Bygger med sökvägen `/hundra/`, som Pages kräver |
 | `npm run icons:raster` | Förrenderar matikonerna till WebP. Kräver Google Chrome. Kör efter ändrade eller nya SVG:er. |
@@ -26,6 +26,7 @@ Den publiceras på https://katzler.github.io/hundra/. Varje push till `main` byg
 - `src/lib/calc.ts`: poäng (Mifflin-St Jeor × aktivitet = 100 p), budgethistorik, snitt, prognos, vikttrend, kalibrering och mönster.
 - `src/store/useStore.ts`: all data i Zustand med persist till localStorage.
 - `src/data/foods.ts`: matlistan med kcal per naturlig portion, kategorier, säsong och `ICON_FALLBACK`.
+- `src/data/macros.ts`: protein, fett och kolhydrater i gram för samma portion som i `foods.ts`.
 - `src/screens/` (Today, Trend, Profile, Onboarding) och `src/components/`.
 - `src/icons/riso/*.svg`: handritade ikoner. Stil och format beskrivs i `design/riso/STILGUIDE.md`.
 
@@ -39,6 +40,14 @@ All användardata finns bara i localStorage på telefonen, under nyckeln `hundra
 - **Skrivskyddet:** lagringen skrivs inte förrän inläsningen har lyckats (flaggan `hydrated`). Ta inte bort det skyddet.
 - **Testet:** `src/store/hydrate.test.ts` startar appen med sparad data, precis som på telefonen. Det måste alltid gå igenom.
 - **Hemskärmen:** på iPhone har hemskärmsappen egen lagring, och den försvinner om appen tas bort från hemskärmen. Råd aldrig någon att ta bort appen utan att först exportera en backup.
+
+## Näring
+
+- **Av som standard:** `showMacros` slås på i Profil. Då visar ringen på Idag tre tunna ringar innanför poängen, för protein, fett och kolhydrater, var och en mot sitt mål i gram. Avstängd ser ringen ut som förut.
+- **Ny vara:** lägg också en rad i `macros.ts`. Testet kräver att varje vara har näring och att 4·P + 9·F + 4·K ungefär stämmer med varans kcal.
+- **Valen:** `applyPicks` i `choices.ts` räknar om näringen. `add` räknas som fett om svaret inte har `addMacros`, en annan fetthalt (`fatDiff`) ändrar fettet och en ny `kcal` skalar resten.
+- **Raderna:** loggade rader sparar en kopia i `macrosPerUnit`, precis som `kcalPerUnit`. Rader från före version 5 saknar den och räknas från varan när de visas.
+- **Målen:** `macroTargets` i `calc.ts`. 1,2 g protein per kilo för att hålla vikten och 1,6 g när man går ner (på vikten vid BMI 25 om man väger mer), 30 % av energin från fett och resten kolhydrater.
 
 ## Ikoner
 

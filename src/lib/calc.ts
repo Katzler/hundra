@@ -23,9 +23,14 @@ export type Entry = {
   unit: string
   /** Kopia av varans kcal när den loggades, så att historiken ligger fast. */
   kcalPerUnit: number
+  /** Kopia av varans näring på samma sätt. Saknas på rader från före version 5 och för varor utan näring. */
+  macrosPerUnit?: Macros
   qty: number
   at: number
 }
+
+/** Protein, fett och kolhydrater i gram. */
+export type Macros = [protein: number, fat: number, carbs: number]
 
 export const ACTIVITY: Record<ActivityLevel, { factor: number; title: string; text: string }> = {
   1: { factor: 1.2, title: 'Stillasittande', text: 'Kontorsjobb, lite rörelse' },
@@ -318,4 +323,79 @@ export function topSources(entries: Entry[], start: DateKey, end: DateKey, limit
     .map(([foodId, v]) => ({ foodId, name: v.name, emoji: v.emoji, share: v.kcal / total }))
     .sort((a, b) => b.share - a.share)
     .slice(0, limit)
+}
+
+// ───────── Näring ─────────
+
+export const MACRO_NAMES = ['Protein', 'Fett', 'Kolhydrater'] as const
+
+/** Energin i näringen: 4 kcal per gram protein och kolhydrater, 9 per gram fett. */
+export const macroKcal = (m: Macros) => 4 * m[0] + 9 * m[1] + 4 * m[2]
+
+export const scaleMacros = (m: Macros, k: number): Macros => [m[0] * k, m[1] * k, m[2] * k]
+
+export const addMacros = (a: Macros, b: Macros): Macros => [a[0] + b[0], a[1] + b[1], a[2] + b[2]]
+
+/** En decimal och aldrig under noll, t.ex. när fett dras bort för en lättare fetthalt. */
+export const roundMacros = (m: Macros): Macros => m.map((x) => Math.max(0, Math.round(x * 10) / 10)) as Macros
+
+/** Slår upp en vara för rader som loggades utan egen kopia av näringen. */
+export type MacroLookup = (foodId: string) => { kcal: number; macros?: Macros } | undefined
+
+/**
+ * Radens näring. Rader från före version 5 saknar kopia och räknas från varan, skalad med radens
+ * kcal, så att t.ex. en stor portion blir rätt. Valen (stekt, fetthalt) syns inte då. null om okänt.
+ */
+export function entryMacros(e: Entry, lookup?: MacroLookup): Macros | null {
+  if (e.macrosPerUnit) return scaleMacros(e.macrosPerUnit, e.qty)
+  const food = lookup?.(e.foodId)
+  if (!food?.macros) return null
+  if (food.kcal <= 0) return e.kcalPerUnit <= 0 ? scaleMacros(food.macros, e.qty) : null
+  return scaleMacros(food.macros, (e.kcalPerUnit / food.kcal) * e.qty)
+}
+
+export type DayMacros = {
+  total: Macros
+  /** kcal från rader utan näring, t.ex. egna varor där man inte fyllt i den. */
+  unknownKcal: number
+}
+
+export function dayMacros(entries: Entry[], date: DateKey, lookup?: MacroLookup): DayMacros {
+  let total: Macros = [0, 0, 0]
+  let unknownKcal = 0
+  for (const e of entries) {
+    if (e.date !== date) continue
+    const m = entryMacros(e, lookup)
+    if (m) total = addMacros(total, m)
+    else unknownKcal += entryKcal(e)
+  }
+  return { total, unknownKcal }
+}
+
+/** Protein per kilo kroppsvikt. Mer när man går ner i vikt, så att musklerna blir kvar. */
+export const PROTEIN_PER_KG = { keep: 1.2, lose: 1.6 }
+
+/** Andel av energin från fett. De nordiska näringsrekommendationerna anger 25–40 %. */
+export const FAT_SHARE = 0.3
+
+/** Över det här BMI:t räknas proteinet på vikten vid just det BMI:t. */
+export const PROTEIN_BMI_CAP = 25
+
+/** Vikten som proteinmålet räknas på. */
+export function proteinWeight(p: Profile): number {
+  const h = p.heightCm / 100
+  return Math.min(p.weightKg, PROTEIN_BMI_CAP * h * h)
+}
+
+/**
+ * Dagens mål i gram. Energin är målet i poäng, t.ex. 90 av 100. Protein räknas per kilo (högst
+ * 35 % av energin), fett är 30 % av energin och kolhydraterna resten.
+ */
+export function macroTargets(p: Profile, budgetKcal: number, goal: number): Macros {
+  const kcal = (budgetKcal * goal) / 100
+  const perKg = goal < 100 ? PROTEIN_PER_KG.lose : PROTEIN_PER_KG.keep
+  const protein = Math.min(proteinWeight(p) * perKg, (kcal * 0.35) / 4)
+  const fat = (kcal * FAT_SHARE) / 9
+  const carbs = Math.max(0, (kcal - 4 * protein - 9 * fat) / 4)
+  return [Math.round(protein), Math.round(fat), Math.round(carbs)]
 }

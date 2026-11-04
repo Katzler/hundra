@@ -15,6 +15,16 @@
   --accent: #47a160;
   --accent-deep: #1e5c34;
   --accent-soft: rgba(71, 161, 96, 0.2);
+  /* Näringsringarna i riso-färger: röd, gul och blå, dovare så att de syns på papperet. */
+  --protein: #d8574c;
+  --protein-deep: #9a2c24;
+  --protein-soft: rgba(216, 87, 76, 0.17);
+  --fat: #dea21c;
+  --fat-deep: #9c6b06;
+  --fat-soft: rgba(222, 162, 28, 0.2);
+  --carbs: #4d7ed1;
+  --carbs-deep: #284d92;
+  --carbs-soft: rgba(77, 126, 209, 0.17);
   /* Ikonens blå #3D78D8, dämpad och mörk nog för knappar med vit text (kontrast 4,9:1). */
   --button: #466fbd;
   /* Länkar i samma blå, djupare så att de också läses på --fill. */
@@ -52,6 +62,15 @@
     --accent: #a6daa8;
     --accent-deep: #52b165;
     --accent-soft: rgba(166, 218, 168, 0.11);
+    --protein: #f0958b;
+    --protein-deep: #df5a4e;
+    --protein-soft: rgba(240, 149, 139, 0.13);
+    --fat: #f2cf68;
+    --fat-deep: #d6a22a;
+    --fat-soft: rgba(242, 207, 104, 0.12);
+    --carbs: #97b7f0;
+    --carbs-deep: #5a8de4;
+    --carbs-soft: rgba(151, 183, 240, 0.13);
     --tint: #93b4f1;
     --danger: #ff453a;
     --bar: rgba(30, 24, 19, 0.84);

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { macroKcal } from '../lib/calc'
 import { amountText, amountsFor, applyPicks, choiceSummary, fillPicks, preferred, questionsFor, usualQty } from './choices'
 import { FOODS } from './foods'
 
@@ -107,5 +108,51 @@ describe('snabbval', () => {
     expect(amountText(1.5, '1 dl')).toBe('1½ dl')
     expect(amountText(2, '2 skivor')).toBe('2 × 2 skivor')
     expect(choiceSummary(food('kycklingfile'), { storlek: 'stor', tillagning: 'stekt' }, 1)).toBe('Stor · Stekt · 1 st')
+  })
+})
+
+describe('näringen följer valen', () => {
+  it('stor stekt kycklingfilé: fettet från stekningen läggs till och storleken skalar allt', () => {
+    const v = applyPicks(food('kycklingfile'), { storlek: 'stor', tillagning: 'stekt' })
+    expect(v.macros).toEqual([48.6, 10.7, 0])
+  })
+
+  it('en annan fetthalt ändrar fettet men inte proteinet', () => {
+    const f = food('grekisk-yoghurt')
+    const v = applyPicks(f, { fetthalt: '0 %' })
+    expect(v.macros![0]).toBe(f.macros![0])
+    expect(v.macros![1]).toBeLessThan(f.macros![1])
+    expect(macroKcal(v.macros!)).toBeCloseTo(v.kcal, -1)
+  })
+
+  it('vaniljkvarg har egen näring: socker, inte fett', () => {
+    const v = applyPicks(food('kvarg'), { fetthalt: 'Vanilj' })
+    expect(v.macros).toEqual([20, 0.4, 26])
+  })
+
+  it('styckvis räknade varor delar näringen per styck', () => {
+    const f = food('fiskpinnar')
+    const v = applyPicks(f, {})
+    expect(v.unit).toBe('1 st')
+    expect(v.macros).toEqual(f.macros!.map((g) => Math.round((g / 4) * 10) / 10))
+  })
+
+  it('egna varor utan näring får ingen', () => {
+    expect(applyPicks({ ...food('banan'), id: 'egen-x', custom: true, category: 'egna', macros: undefined }, {}).macros).toBeUndefined()
+  })
+
+  // Varje enskilt val, för varje vara: näringen ska fortfarande stämma ungefär med kcal.
+  it('varje val ger näring som stämmer med kcal', () => {
+    const off: string[] = []
+    for (const f of FOODS) {
+      if (f.category === 'alkohol') continue
+      const variants = [{}, ...questionsFor(f).flatMap((q) => q.options.map((o) => ({ [q.id]: o.id })))]
+      for (const picks of variants) {
+        const v = applyPicks(f, picks)
+        const e = macroKcal(v.macros!)
+        if (Math.abs(e - v.kcal) > Math.max(v.kcal * 0.2, 10)) off.push(`${f.id} ${JSON.stringify(picks)}: ${v.kcal} kcal men ${Math.round(e)}`)
+      }
+    }
+    expect(off).toEqual([])
   })
 })

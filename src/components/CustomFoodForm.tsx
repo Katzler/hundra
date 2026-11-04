@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FOODS, REFERENCE_FOOD_IDS, type Food } from '../data/foods'
-import { formatPoints, toKcal, toPoints } from '../lib/calc'
+import { formatPoints, MACRO_NAMES, toKcal, toPoints, type Macros } from '../lib/calc'
+import { useStore } from '../store/useStore'
 import { FoodIcon } from './FoodIcon'
 import { MinusIcon, PlusIcon } from './icons'
 
@@ -10,7 +11,8 @@ type Props = {
   budgetKcal: number
   initial?: Partial<Food>
   submitLabel: string
-  onSubmit: (f: { name: string; emoji: string; unit: string; kcal: number }) => void
+  /** `macros` är alltid med, undefined om varan inte har någon näring. */
+  onSubmit: (f: { name: string; emoji: string; unit: string; kcal: number; macros: Macros | undefined }) => void
   onDelete?: () => void
 }
 
@@ -28,6 +30,9 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
   // Det exakta värdet som sparas. Det ändras bara när man själv ändrar poäng eller kcal,
   // så att ett namnbyte eller ett byte mellan poäng och kcal aldrig avrundar om värdet.
   const [exactKcal, setExactKcal] = useState<number | null>(initial?.kcal ?? toKcal(startPoints, budgetKcal))
+  // Näringen visas bara när den är påslagen i Profil. Annars behåller varan det den hade.
+  const showMacros = useStore((s) => s.showMacros)
+  const [grams, setGrams] = useState<string[]>(() => (initial?.macros ? initial.macros.map((g) => String(g).replace('.', ',')) : ['', '', '']))
 
   const num = (s: string) => (s.trim() === '' ? NaN : Number(s.replace(',', '.')))
   const valid = name.trim().length > 0 && exactKcal !== null && Number.isFinite(exactKcal) && exactKcal >= 0
@@ -39,6 +44,15 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
   const changeKcal = (value: string) => {
     setKcal(value)
     setExactKcal(Number.isFinite(num(value)) ? num(value) : null)
+  }
+  /** Tomma fält betyder ingen näring alls. Fyller man i något räknas de tomma som 0. */
+  const macros = (): Macros | undefined => {
+    if (!showMacros) return initial?.macros
+    if (grams.every((g) => g.trim() === '')) return undefined
+    return grams.map((g) => {
+      const n = num(g)
+      return Number.isFinite(n) && n >= 0 ? Math.round(n * 10) / 10 : 0
+    }) as Macros
   }
   const bump = (d: number) => changePoints(String(Math.max(0, Math.round(num(points) || 0) + d)))
   const switchMode = () => {
@@ -52,7 +66,7 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
       className="form"
       onSubmit={(e) => {
         e.preventDefault()
-        if (valid) onSubmit({ name: name.trim(), emoji, unit: unit.trim() || '1 portion', kcal: Math.round(exactKcal) })
+        if (valid) onSubmit({ name: name.trim(), emoji, unit: unit.trim() || '1 portion', kcal: Math.round(exactKcal), macros: macros() })
       }}
     >
       <div className="group">
@@ -120,6 +134,27 @@ export function CustomFoodForm({ budgetKcal, initial, submitLabel, onSubmit, onD
       <button type="button" className="link-btn" onClick={switchMode}>
         {mode === 'points' ? 'Jag vet antal kcal' : 'Ange poäng i stället'}
       </button>
+
+      {showMacros && (
+        <>
+          <div className="group">
+            {MACRO_NAMES.map((label, i) => (
+              <label key={label} className="field field-inline">
+                <span className="field-label">{label}</span>
+                <input
+                  value={grams[i]}
+                  onChange={(e) => setGrams(grams.map((g, j) => (j === i ? e.target.value.replace(/[^0-9,.]/g, '') : g)))}
+                  inputMode="decimal"
+                  placeholder="–"
+                  aria-label={`${label} i gram per portion`}
+                />
+                <span className="field-unit">g</span>
+              </label>
+            ))}
+          </div>
+          <p className="hint-text">Valfritt, per portion. Utan värden räknas varan inte med i protein, fett och kolhydrater.</p>
+        </>
+      )}
 
       <button type="submit" className="primary-btn" disabled={!valid}>
         {submitLabel}

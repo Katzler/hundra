@@ -1,5 +1,9 @@
 // Grundlistan. Värdena är ungefärliga kcal per naturlig portion (Livsmedelsverkets
 // databas som riktmärke). Poängen räknas fram från kcal och användarens budget.
+// Protein, fett och kolhydrater per portion ligger i macros.ts.
+
+import type { Macros } from '../lib/calc'
+import { MACROS } from './macros'
 
 export type Food = {
   id: string
@@ -12,6 +16,8 @@ export type Food = {
   custom?: boolean
   /** Månader (1–12) då varan visas under Säsong i Lägg till. */
   months?: number[]
+  /** Gram per portion. Alla varor i grundlistan har det, egna varor bara om man fyllt i det. */
+  macros?: Macros
 }
 
 export const CATEGORIES = [
@@ -1080,6 +1086,7 @@ export const FOODS: Food[] = Object.entries(DATA).flatMap(([category, rows]) =>
     category: category as CategoryId,
     aliases,
     months: SEASON[id],
+    macros: MACROS[id],
   })),
 )
 

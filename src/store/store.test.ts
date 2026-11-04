@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { FOODS } from '../data/foods'
 import { todayKey } from '../lib/dates'
-import { DATA_KEYS, emptyData, exportData, FAVORITE_LIMIT, migrateData, parseImport, pickData, quickFoods, sanitizeData, useStore } from './useStore'
+import { DATA_KEYS, emptyData, exportData, FAVORITE_LIMIT, mealItemOf, migrateData, parseImport, pickData, quickFoods, sanitizeData, STORE_VERSION, useStore } from './useStore'
 
 const potatis = FOODS.find((f) => f.id === 'potatis')!
 const banan = FOODS.find((f) => f.id === 'banan')!
@@ -79,9 +79,12 @@ describe('store', () => {
     s.setCalibration(0.95)
     s.markBackup()
     s.setTrendRange(30)
+    s.setShowMacros(true)
+    s.addCustomFood({ name: 'Lasagne', emoji: '🍝', unit: '1 bit', kcal: 600, macros: [30, 25, 60] })
     const before = pickData(useStore.getState())
+    expect(before.entries[0].macrosPerUnit).toBeDefined()
     // Varje fält ska ha ett annat värde än standard, annars testar vi inte att det följer med.
-    for (const k of DATA_KEYS) if (k !== 'calibrationDismissedAt' && k !== 'backupSnoozedUntil' && k !== 'customFoods') expect(before[k], k).not.toEqual(emptyData[k])
+    for (const k of DATA_KEYS) if (k !== 'calibrationDismissedAt' && k !== 'backupSnoozedUntil') expect(before[k], k).not.toEqual(emptyData[k])
     const text = exportData(before)
     s.resetAll()
     const { dropped, ...imported } = parseImport(text)
@@ -258,6 +261,63 @@ describe('store', () => {
     localStorage.setItem('hundra-v1', stored) // …med det som låg sparat på telefonen
     await useStore.persist.rehydrate()
     expect(pickData(useStore.getState())).toEqual(saved)
+  })
+
+  it('näringen kopieras till raden, och följer med när dagen sparas som måltid', () => {
+    const s = useStore.getState()
+    s.addFood(potatis, day, 2)
+    const e = useStore.getState().entries[0]
+    expect(e.macrosPerUnit).toEqual(potatis.macros)
+    expect(mealItemOf(e)).toMatchObject({ foodId: 'potatis', qty: 2, macrosPerUnit: potatis.macros })
+  })
+
+  it('ändrad näring på en egen vara gäller dagens rader, och kan tas bort', () => {
+    const s = useStore.getState()
+    const today = todayKey()
+    const egen = s.addCustomFood({ name: 'Bar', emoji: '🍫', unit: '1 st', kcal: 200 })
+    expect('macros' in egen).toBe(false)
+    s.addFood(egen, '2026-01-01')
+    s.addFood(egen, today)
+    s.updateCustomFood(egen.id, { macros: [20, 7, 15] })
+    let rows = useStore.getState().entries
+    expect(rows.find((e) => e.date === today)?.macrosPerUnit).toEqual([20, 7, 15])
+    expect(rows.find((e) => e.date === '2026-01-01')?.macrosPerUnit).toBeUndefined()
+    s.updateCustomFood(egen.id, { macros: undefined })
+    rows = useStore.getState().entries
+    expect(rows.find((e) => e.date === today)?.macrosPerUnit).toBeUndefined()
+    expect(useStore.getState().customFoods[0].macros).toBeUndefined()
+  })
+
+  it('version 4 läses in oförändrad: näringen är av och gamla rader finns kvar', () => {
+    const v4 = {
+      profile: { sex: 'man', age: 30, heightCm: 180, weightKg: 80, activity: 3 },
+      budgetHistory: [{ from: '2026-01-01', kcal: 2759 }],
+      entries: [{ id: 'a', date: day, foodId: 'potatis', name: 'Potatis', emoji: '🥔', unit: '1 st medel', kcalPerUnit: 75, qty: 2, at: 1 }],
+      favoriteGroups: { frukost: ['potatis'], lunch: [], middag: [], skrap: [] },
+      goal: 90,
+    }
+    const { data, dropped } = sanitizeData(migrateData(v4, 4))
+    expect(dropped).toBe(0)
+    expect(data.showMacros).toBe(false)
+    expect(data.entries).toEqual(v4.entries)
+    expect(data.goal).toBe(90)
+  })
+
+  it('trasig näring tvättas bort men raden finns kvar', () => {
+    const { data, dropped } = sanitizeData({
+      entries: [{ id: 'a', date: day, foodId: 'x', name: 'X', kcalPerUnit: 100, qty: 1, macrosPerUnit: [1, 'två', 3] }],
+      customFoods: [{ id: 'egen-a', name: 'A', kcal: 100, macros: [-1, 2, 3] }],
+      showMacros: 'ja',
+    })
+    expect(dropped).toBe(0)
+    expect('macrosPerUnit' in data.entries[0]).toBe(false)
+    expect('macros' in data.customFoods[0]).toBe(false)
+    expect(data.showMacros).toBe(false)
+  })
+
+  it('exporten har den nya versionen', () => {
+    expect(JSON.parse(exportData(pickData(useStore.getState()))).version).toBe(STORE_VERSION)
+    expect(STORE_VERSION).toBe(5)
   })
 
   it('import avvisar fel filer', () => {

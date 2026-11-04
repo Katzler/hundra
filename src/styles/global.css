@@ -617,6 +617,112 @@ strong {
   color: var(--label-2);
 }
 
+/* ───────── Näring: tre tunna ringar innanför poängringen ───────── */
+
+.macro-protein {
+  --c: var(--protein);
+  --c-deep: var(--protein-deep);
+  --c-soft: var(--protein-soft);
+}
+
+.macro-fat {
+  --c: var(--fat);
+  --c-deep: var(--fat-deep);
+  --c-soft: var(--fat-soft);
+}
+
+.macro-carbs {
+  --c: var(--carbs);
+  --c-deep: var(--carbs-deep);
+  --c-soft: var(--carbs-soft);
+}
+
+/* Mindre siffra så att den ryms innanför näringsringarna. */
+.ring.has-macros .ring-value {
+  font-size: 2.6471rem;
+}
+
+.ring.has-macros .ring-caption {
+  margin-top: 2px;
+  font-size: 0.7647rem;
+}
+
+.macro-overflow {
+  filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.3));
+}
+
+.macro-legend {
+  width: 100%;
+  margin: 14px 0 4px;
+}
+
+.macro-items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.macro-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.macro-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7647rem;
+  color: var(--label-2);
+}
+
+.macro-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.macro-value {
+  font-size: 0.8235rem;
+  color: var(--label-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.macro-value strong {
+  font-weight: 600;
+  color: var(--label);
+}
+
+.macro-unknown {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.7647rem;
+  color: var(--label-2);
+}
+
+/* Profil: brytaren och dagens mål */
+.macro-switch {
+  justify-content: space-between;
+}
+
+.macro-target {
+  min-height: 44px;
+}
+
+.macro-target .row-title {
+  flex: 1;
+}
+
+.macro-target-value {
+  color: var(--label-2);
+  font-variant-numeric: tabular-nums;
+}
+
 .chips {
   display: flex;
   gap: 8px;

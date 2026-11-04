@@ -2,7 +2,7 @@
 // Varje vara får de frågor som är vanligast för just den. Valen räknas om till en vanlig
 // rad med eget namn, egen enhet och egna kcal, så att loggen ser ut som förut.
 
-import { formatQty } from '../lib/calc'
+import { addMacros, formatQty, roundMacros, scaleMacros, type Macros } from '../lib/calc'
 import type { Food } from './foods'
 
 /** Ett svar på en fråga. */
@@ -17,6 +17,12 @@ export type Option = {
   add?: number
   /** Ersätter varans kcal per portion, t.ex. för en annan fetthalt. */
   kcal?: number
+  /** Näringen med en ny `kcal`, när den inte bara skalar varans, t.ex. snabbnudlar. */
+  macros?: Macros
+  /** Skillnaden i kcal mot frågans förval är fett, som för en annan fetthalt. */
+  fatDiff?: boolean
+  /** Näringen i `add`. Utan den räknas `add` som fett, som vid stekning. */
+  addMacros?: Macros
   /** Ersätter enheten, t.ex. "1 msk". */
   unit?: string
   /** Läggs till namnet, med eget skiljetecken: ", stekt" eller " 2 %". */
@@ -85,7 +91,8 @@ const cook = (fat = 40, opts: { breaded?: boolean; boiled?: string } = {}): Ques
     { id: 'ugn', label: opts.boiled ?? 'Ugn / kokt', note: 'utan fett' },
     { id: 'stekt', label: 'Stekt', note: 'i smör/olja', add: fat, tag: ', stekt' },
     { id: 'grillad', label: 'Grillad', add: Math.round(fat / 4), tag: ', grillad' },
-    ...(opts.breaded ? [{ id: 'panerad', label: 'Panerad', add: fat * 3, tag: ', panerad' }] : []),
+    // Paneringen är ströbröd och ägg som suger upp fett: ungefär hälften fett, hälften kolhydrater.
+    ...(opts.breaded ? [{ id: 'panerad', label: 'Panerad', add: fat * 3, addMacros: [(fat * 0.3) / 4, (fat * 1.35) / 9, (fat * 1.35) / 4] as Macros, tag: ', panerad' }] : []),
   ],
 })
 
@@ -173,11 +180,12 @@ const cooked = (dl: number, raw: { unit: '1 dl' | '100 g'; kcal: number; note: s
 const GRYN = (kcal: number) => ({ unit: '1 dl' as const, kcal, note: '≈ 3 dl kokt' })
 const PASTA = (kcal: number) => ({ unit: '100 g' as const, kcal, note: '≈ 3½ dl kokt' })
 
-const fat = (options: [string, number][], def: string, title = 'Fetthalt'): Question => ({
+/** Fetthalt eller sort. Skillnaden mot förvalet räknas som fett, om inte svaret har egen näring. */
+const fat = (options: [string, number, Macros?][], def: string, title = 'Fetthalt'): Question => ({
   id: 'fetthalt',
   title,
   default: def,
-  options: options.map(([label, kcal]) => ({ id: label, label, kcal, tag: ` ${label}` })),
+  options: options.map(([label, kcal, macros]) => ({ id: label, label, kcal, ...(macros ? { macros } : { fatDiff: true }), tag: ` ${label}` })),
 })
 
 const milk: Question = {
@@ -198,7 +206,7 @@ const MEAT = [size(), cook()]
 
 /** Smörgåsar: brödet och smöret avgör mest, pålägget står i namnet. */
 const SANDWICH: Question[] = [
-  { id: 'brod', title: 'Bröd', default: 'skiva', options: [{ id: 'skiva', label: 'Brödskiva' }, { id: 'knacke', label: 'Knäcke', add: -40, tag: ' på knäcke' }, { id: 'fralla', label: 'Fralla', add: 90, tag: ' på fralla' }] },
+  { id: 'brod', title: 'Bröd', default: 'skiva', options: [{ id: 'skiva', label: 'Brödskiva' }, { id: 'knacke', label: 'Knäcke', add: -40, addMacros: [-1.5, -0.7, -7], tag: ' på knäcke' }, { id: 'fralla', label: 'Fralla', add: 90, addMacros: [3.5, 1.5, 16], tag: ' på fralla' }] },
   { id: 'smor', title: 'Smör', default: 'med', options: [{ id: 'med', label: 'Med smör' }, { id: 'utan', label: 'Utan', add: -35, tag: ', utan smör' }] },
 ]
 
@@ -207,8 +215,8 @@ const BY_FOOD: Record<string, Question[]> = {
   // Frukost
   'grekisk-yoghurt': [fat([['10 %', 220], ['5 %', 180], ['2 %', 140], ['0 %', 110]], '10 %'), cup()],
   'yoghurt': [fat([['3 %', 130], ['0,5 %', 85]], '3 %'), cup()],
-  'kvarg': [fat([['0,2 %', 130], ['3 %', 180], ['Vanilj', 190]], '0,2 %', 'Sort'), cup()],
-  'grot': [{ id: 'vatska', title: 'Kokt på', default: 'vatten', options: [{ id: 'vatten', label: 'Vatten' }, { id: 'mjolk', label: 'Mjölk', note: '2 dl per dl gryn', add: 90, tag: ', på mjölk' }, { id: 'havre', label: 'Havredryck', note: '2 dl per dl gryn', add: 90, tag: ', på havredryck' }] }],
+  'kvarg': [fat([['0,2 %', 130], ['3 %', 180], ['Vanilj', 190, [20, 0.4, 26]]], '0,2 %', 'Sort'), cup()],
+  'grot': [{ id: 'vatska', title: 'Kokt på', default: 'vatten', options: [{ id: 'vatten', label: 'Vatten' }, { id: 'mjolk', label: 'Mjölk', note: '2 dl per dl gryn', add: 90, addMacros: [6.8, 3, 9.6], tag: ', på mjölk' }, { id: 'havre', label: 'Havredryck', note: '2 dl per dl gryn', add: 90, addMacros: [2, 3, 13], tag: ', på havredryck' }] }],
   'filmjolk-musli': [portion()],
   'bacon': [],
   'aggrora': [],
@@ -231,7 +239,7 @@ const BY_FOOD: Record<string, Question[]> = {
   // Kokt mängd är förval. Okokt finns för den som mäter upp innan, 1 dl okokt ris blir ca 3 dl kokt.
   'pasta': [cooked(3, PASTA(360))],
   'fullkornspasta': [cooked(3, PASTA(340))],
-  'nudlar': [cooked(3, PASTA(360), [{ id: 'snabb', label: 'Snabbnudlar', note: '1 paket', kcal: 380, unit: '1 paket', tag: ', snabbnudlar', amounts: [1, 2], qty: 1 }])],
+  'nudlar': [cooked(3, PASTA(360), [{ id: 'snabb', label: 'Snabbnudlar', note: '1 paket', kcal: 380, macros: [8, 15, 53], unit: '1 paket', tag: ', snabbnudlar', amounts: [1, 2], qty: 1 }])],
   'ris': [cooked(2.5, GRYN(300))],
   'bulgur': [cooked(2.5, GRYN(290))],
   'couscous': [cooked(2.5, GRYN(270))],
@@ -382,8 +390,8 @@ const BY_FOOD: Record<string, Question[]> = {
   'cider': [can(), { id: 'typ', title: 'Typ', default: 'sot', options: [{ id: 'sot', label: 'Söt' }, { id: 'torr', label: 'Torr', factor: 0.65, tag: ', torr' }] }],
   'hard-seltzer': [],
   'drink': [
-    { id: 'sprit', title: 'Sprit', default: 'enkel', options: [{ id: 'enkel', label: 'Enkel', note: '4 cl' }, { id: 'dubbel', label: 'Dubbel', note: '8 cl', add: 90, tag: ', dubbel' }] },
-    { id: 'blandning', title: 'Blandad med', default: 'vanlig', options: [{ id: 'vanlig', label: 'Läsk / tonic' }, { id: 'zero', label: 'Sockerfritt', add: -100, tag: ', sockerfri' }] },
+    { id: 'sprit', title: 'Sprit', default: 'enkel', options: [{ id: 'enkel', label: 'Enkel', note: '4 cl' }, { id: 'dubbel', label: 'Dubbel', note: '8 cl', add: 90, addMacros: [0, 0, 0], tag: ', dubbel' }] },
+    { id: 'blandning', title: 'Blandad med', default: 'vanlig', options: [{ id: 'vanlig', label: 'Läsk / tonic' }, { id: 'zero', label: 'Sockerfritt', add: -100, addMacros: [0, 0, -25], tag: ', sockerfri' }] },
   ],
   'shot': [{ id: 'storlek', title: 'Storlek', default: 'fyra', options: [{ id: 'tva', label: '2 cl', factor: 0.5, unit: '2 cl' }, { id: 'fyra', label: '4 cl' }, { id: 'sex', label: '6 cl', factor: 1.5, unit: '6 cl' }] }],
 
@@ -470,22 +478,53 @@ export function chosenOptions(questions: Question[], picks: Picks): Option[] {
   return questions.map((q) => q.options.find((o) => o.id === full[q.id])!)
 }
 
-/** Varan som den blir med valen: samma id, men eget namn, egen enhet och egna kcal per enhet. */
+/** Varan som den blir med valen: samma id, men eget namn, egen enhet och egna kcal och näring per enhet. */
 export function applyPicks(food: Food, picks: Picks): Food {
   const c = counted(food)
-  const one = c ? { ...food, unit: c.unit, kcal: c.kcal } : food
-  const options = chosenOptions(questionsFor(food), picks)
+  const one = c ? { ...food, unit: c.unit, kcal: c.kcal, ...(food.macros ? { macros: roundMacros(scaleMacros(food.macros, 1 / c.n)) } : {}) } : food
+  const questions = questionsFor(food)
+  const options = chosenOptions(questions, picks)
   if (!options.length) return one
   const base = options.reduce((k, o) => o.kcal ?? k, one.kcal)
   const add = options.reduce((s, o) => s + (o.add ?? 0), 0)
   const factor = options.reduce((f, o) => f * (o.factor ?? 1), 1)
   const kcal = Math.max(0, Math.round((base + add) * factor * 10) / 10)
+  const macros = pickedMacros(one, questions, options, factor)
   return {
     ...food,
     name: food.name + options.map((o) => o.tag ?? '').join(''),
     unit: options.reduce((u, o) => o.unit ?? u, one.unit),
     kcal,
+    ...(macros ? { macros } : {}),
   }
+}
+
+/**
+ * Näringen följer samma val som kcal. En ny kcal skalar näringen, utom för fetthalt där skillnaden
+ * mot förvalet är fett. `add` läggs till (som fett om inget annat sägs) och storleken skalar allt.
+ */
+function pickedMacros(one: Food, questions: Question[], options: Option[], factor: number): Macros | undefined {
+  if (!one.macros) return undefined
+  let macros = one.macros
+  let kcal = one.kcal
+  const scaleTo = (to: number) => {
+    if (kcal > 0) macros = scaleMacros(macros, to / kcal)
+    kcal = to
+  }
+  options.forEach((o, i) => {
+    if (o.kcal === undefined) return
+    if (o.macros) {
+      macros = o.macros
+      kcal = o.kcal
+    } else if (o.fatDiff) {
+      const ref = questions[i].options.find((x) => x.id === questions[i].default)?.kcal ?? kcal
+      scaleTo(ref)
+      macros = addMacros(macros, [0, (o.kcal - ref) / 9, 0])
+      kcal = o.kcal
+    } else scaleTo(o.kcal)
+  })
+  for (const o of options) if (o.add) macros = addMacros(macros, o.addMacros ?? [0, o.add / 9, 0])
+  return roundMacros(scaleMacros(macros, factor))
 }
 
 /** Snabbvalen för mängden med de här valen. */

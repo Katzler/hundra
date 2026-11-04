@@ -45,7 +45,7 @@ export function demoEntries(today: DateKey, history: BudgetPeriod[], days = 60):
     }
     for (const [id, q] of qty) {
       const f = byId.get(id)!
-      out.push({ id: uid(), date, foodId: id, name: f.name, emoji: f.emoji, unit: f.unit, kcalPerUnit: f.kcal, qty: q, at: i })
+      out.push({ id: uid(), date, foodId: id, name: f.name, emoji: f.emoji, unit: f.unit, kcalPerUnit: f.kcal, ...(f.macros ? { macrosPerUnit: f.macros } : {}), qty: q, at: i })
     }
   }
   return out

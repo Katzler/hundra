@@ -3,11 +3,12 @@ import { CustomFoodForm } from '../components/CustomFoodForm'
 import { FoodIcon } from '../components/FoodIcon'
 import { ChevronRight } from '../components/icons'
 import { MealSheet } from '../components/MealSheet'
+import { MACRO_CLASSES } from '../components/Ring'
 import { Segmented } from '../components/Segmented'
 import { AboutFields, ActivityPicker, formFromProfile, toProfile } from '../components/ProfileFields'
 import { Sheet } from '../components/Sheet'
 import type { Food } from '../data/foods'
-import { ACTIVITY, budgetFor, formatInt, formatPoints, kcalPerPoint, toPoints } from '../lib/calc'
+import { ACTIVITY, budgetFor, formatInt, formatPoints, kcalPerPoint, MACRO_NAMES, macroTargets, PROTEIN_PER_KG, proteinWeight, toPoints } from '../lib/calc'
 import { todayKey } from '../lib/dates'
 import { demoEntries } from '../lib/demo'
 import { exportBackup, importBackup } from '../lib/backup'
@@ -30,6 +31,8 @@ export function Profile() {
   const calibration = useStore((s) => s.calibration)
   const setCalibration = useStore((s) => s.setCalibration)
   const lastBackupAt = useStore((s) => s.lastBackupAt)
+  const showMacros = useStore((s) => s.showMacros)
+  const setShowMacros = useStore((s) => s.setShowMacros)
   const showToast = useUI((s) => s.showToast)
 
   const [editing, setEditing] = useState(false)
@@ -45,6 +48,9 @@ export function Profile() {
   const bmi = profile.weightKg / (profile.heightCm / 100) ** 2
   const goals = bmi < 20 ? GOALS.filter((g) => g.value === 100) : GOALS
   const startup = startupText()
+  const targets = macroTargets(profile, budget, goal)
+  const perKg = String(goal < 100 ? PROTEIN_PER_KG.lose : PROTEIN_PER_KG.keep).replace('.', ',')
+  const capped = proteinWeight(profile) < profile.weightKg
 
   return (
     <main className="screen profile">
@@ -79,6 +85,30 @@ export function Profile() {
         {GOALS.find((g) => g.value === goal)?.title}
         {goal < 100 ? ` – sikta på ett snitt runt ${goal}. Ringen visar målet som ett streck.` : ' – ett snitt runt 100 håller vikten.'}
         {bmi < 20 && ' Med ditt BMI rekommenderas inte viktnedgång.'}
+      </p>
+
+      <h2 className="section-title">Näring</h2>
+      <div className="group">
+        <label className="row macro-switch">
+          <span className="row-text">
+            <span className="row-title">Protein, fett och kolhydrater</span>
+            <span className="row-sub">Tunna ringar innanför poängen på Idag</span>
+          </span>
+          <input type="checkbox" className="switch" checked={showMacros} onChange={(e) => setShowMacros(e.target.checked)} />
+        </label>
+        {showMacros &&
+          MACRO_NAMES.map((name, i) => (
+            <div key={name} className={`row macro-target ${MACRO_CLASSES[i]}`}>
+              <span className="macro-dot" aria-hidden />
+              <span className="row-title">{name}</span>
+              <span className="macro-target-value">{targets[i]} g om dagen</span>
+            </div>
+          ))}
+      </div>
+      <p className="hint-text">
+        {showMacros
+          ? `Räknat på ditt mål på ${goal} p: ${perKg} g protein per kilo kroppsvikt${goal < 100 ? ', lite mer än för att hålla vikten så att musklerna blir kvar' : ''}. 30 % av energin från fett och resten kolhydrater.${capped ? ' Proteinet räknas på vikten vid BMI 25.' : ''} Poängen räknas som vanligt.`
+          : 'Av från början. Poängen räknas likadant oavsett.'}
       </p>
 
       <h2 className="section-title">Mina uppgifter</h2>

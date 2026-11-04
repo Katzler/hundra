@@ -8,15 +8,15 @@ import { FavoriteWheel } from '../components/FavoriteWheel'
 import { EntryRow } from '../components/FoodRow'
 import { CalendarIcon, ChevronLeft, ChevronRight, SearchIcon } from '../components/icons'
 import { MealSheet } from '../components/MealSheet'
-import { Ring } from '../components/Ring'
+import { MacroLegend, Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
 import { preferred } from '../data/choices'
-import { budgetFor, entryKcal, formatPoints, formatQty, toPoints, type Entry } from '../lib/calc'
+import { budgetFor, dayMacros, entryKcal, formatPoints, formatQty, macroTargets, toPoints, type Entry } from '../lib/calc'
 import { addDays, dayLong, dayTitle, resolveDay, type DateKey, type PickedDay } from '../lib/dates'
 import { flyToEntries, type FlyOrigin } from '../lib/fly'
 import { useToday } from '../lib/hooks'
 import { haptic, useUI } from '../store/ui'
-import { itemOf, sameItem, useStore, type FavoriteGroup, type MealItem, type QuickItem } from '../store/useStore'
+import { itemOf, macroLookup, mealItemOf, sameItem, useStore, type FavoriteGroup, type MealItem, type QuickItem } from '../store/useStore'
 
 /** Under så här många poäng kan en passerad dag vara ofullständig. */
 const SHORT_DAY = 35
@@ -39,6 +39,9 @@ export function Today() {
   const lastChoices = useStore((s) => s.lastChoices)
   const excludedDays = useStore((s) => s.excludedDays)
   const goal = useStore((s) => s.goal)
+  const showMacros = useStore((s) => s.showMacros)
+  const profile = useStore((s) => s.profile)
+  const customFoods = useStore((s) => s.customFoods)
   const showBackup = useStore((s) => backupDue(s))
   const addFood = useStore((s) => s.addFood)
   const logMeal = useStore((s) => s.logMeal)
@@ -53,6 +56,12 @@ export function Today() {
   const dayEntries = useMemo(() => entries.filter((e) => e.date === date).sort((a, b) => a.at - b.at), [entries, date])
   const total = toPoints(dayEntries.reduce((s, e) => s + entryKcal(e), 0), budget)
   const left = 100 - total
+  const lookup = useMemo(() => macroLookup(customFoods), [customFoods])
+  const macros = useMemo(() => {
+    if (!showMacros || !profile) return null
+    const { total, unknownKcal } = dayMacros(dayEntries, date, lookup)
+    return { value: total, target: macroTargets(profile, budget, goal), unknownPoints: toPoints(unknownKcal, budget) }
+  }, [showMacros, profile, dayEntries, date, lookup, budget, goal])
   const isToday = date === today
   const excluded = excludedDays.includes(date)
   // Loggar man på en annan dag än idag ska bekräftelsen säga det.
@@ -135,7 +144,7 @@ export function Today() {
       </header>
 
       <section className="ring-section">
-        <Ring value={total} goal={goal} />
+        <Ring value={total} goal={goal} macros={macros} />
         <p className="ring-note">
           {dayEntries.length === 0
             ? 'Inget loggat än'
@@ -145,6 +154,12 @@ export function Today() {
                 ? 'Precis 100'
                 : `${formatPoints(-left)} över 100`}
         </p>
+        {macros && (
+          <MacroLegend
+            macros={macros}
+            unknown={macros.unknownPoints >= 0.5 ? `${formatPoints(macros.unknownPoints)} p utan näringsvärden räknas inte med` : undefined}
+          />
+        )}
       </section>
 
       {/* Ett riktigt fält, så att iOS visar tangentbordet vid trycket. Fokus flyttas sedan till arkets sökfält. */}
@@ -213,9 +228,7 @@ export function Today() {
                 className="link-btn"
                 onClick={() =>
                   setMealSource({
-                    items: dayEntries
-                      .filter((e) => e.foodId !== 'snabbpoang')
-                      .map(({ foodId, name, emoji, unit, kcalPerUnit, qty }) => ({ foodId, name, emoji, unit, kcalPerUnit, qty })),
+                    items: dayEntries.filter((e) => e.foodId !== 'snabbpoang').map(mealItemOf),
                   })
                 }
               >

@@ -65,4 +65,10 @@ describe('sök', () => {
     expect(names('bannan')).toContain('Banan')
     expect(names('xyzqq')).toEqual([])
   })
+
+  it('siffrorna under streckkoden hittar en skannad vara', () => {
+    const choklad = { id: 'egen-1', name: 'Marabou Mjölkchoklad', emoji: '🍫', unit: '100 g', kcal: 540, category: 'egna' as const, custom: true, barcode: '7310511210502' }
+    expect(searchFoods([choklad, ...FOODS], '7310511210502')[0]).toBe(choklad)
+    expect(searchFoods([choklad, ...FOODS], '7310 5112 10502')[0]).toBe(choklad)
+  })
 })

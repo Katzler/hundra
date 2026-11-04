@@ -12,6 +12,18 @@ export type Food = {
   custom?: boolean
   /** Månader (1–12) då varan visas under Säsong i Lägg till. */
   months?: number[]
+  /** Streckkod (EAN) för en egen vara från en förpackning, så att den känns igen nästa skanning. */
+  barcode?: string
+  /** Näringsvärdet från förpackningen. Ger valen portion, förpackning och 100 g. */
+  per100?: Per100
+}
+
+/** Kcal per 100 g eller 100 ml, och portionens och förpackningens storlek i samma mått. */
+export type Per100 = {
+  kcal: number
+  measure: 'g' | 'ml'
+  serving?: number
+  pack?: number
 }
 
 export const CATEGORIES = [

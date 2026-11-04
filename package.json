@@ -15,7 +15,8 @@
   "dependencies": {
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "zustand": "^5.0.16"
+    "zustand": "^5.0.16",
+    "zxing-wasm": "^3.1.6"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

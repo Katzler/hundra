@@ -1,31 +1,51 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react'
-import { choiceSummary, hasChoices as choicesFor, preferred } from '../data/choices'
-import type { Food } from '../data/foods'
+import { applyPicks, choiceSummary, hasChoices as choicesFor, preferred, type Picks } from '../data/choices'
+import type { Food, Per100 } from '../data/foods'
+import { isStoreCode } from '../lib/barcode'
 import { budgetFor, dayKcal, formatPoints, formatQty, toPoints } from '../lib/calc'
 import { dayTitle, todayKey, type DateKey } from '../lib/dates'
+import { lookupBarcode, productPage, type Lookup } from '../lib/openfoodfacts'
+import { packagedBase } from '../lib/packaged'
 import { parseQuantity, searchFoods } from '../lib/search'
 import { useUI } from '../store/ui'
-import { allFoods, isFavorite, itemOf, MEAL_PREFIX, mealKcal, recentFoods, sameItem, useStore, type Meal } from '../store/useStore'
+import { allFoods, foodByBarcode, isFavorite, itemOf, MEAL_PREFIX, mealKcal, recentFoods, sameItem, useStore, type Meal } from '../store/useStore'
 import { ChoiceSheet } from './ChoiceSheet'
 import { CustomFoodForm } from './CustomFoodForm'
 import { FavoritePicker } from './FavoritePicker'
 import { FoodIcon } from './FoodIcon'
 import { FoodRow } from './FoodRow'
-import { ChevronLeft, ChevronRight, PlusIcon, SearchIcon, XIcon } from './icons'
+import { BarcodeIcon, ChevronLeft, ChevronRight, PlusIcon, SearchIcon, XIcon } from './icons'
+import { ScanSheet } from './ScanSheet'
 import { Sheet } from './Sheet'
 
-type View = { kind: 'home' } | { kind: 'create' }
+type View =
+  | { kind: 'home' }
+  /** Ny vara. Från en skanning följer koden med, och det som var känt om varan. */
+  | { kind: 'create'; barcode?: string; initial?: Partial<Food>; per100?: Partial<Per100>; note?: string }
+
+/** Id för en skannad vara som ännu inte sparats. Den sparas som egen vara när man lägger till den. */
+const SCANNED_ID = 'skannad'
+
+// Vad formuläret säger när en skannad vara inte gick att använda direkt.
+const SCAN_NOTES: Record<Exclude<Lookup['kind'], 'found'>, string> = {
+  incomplete: 'Varan finns i Open Food Facts men saknar näringsvärde. Skriv av det från förpackningen, så känns varan igen nästa gång.',
+  missing: 'Hittade inte varan i Open Food Facts. Skriv av näringsvärdet från förpackningen, så känns den igen nästa gång.',
+  offline: 'Kunde inte nå Open Food Facts. Skriv av näringsvärdet från förpackningen, så känns varan igen nästa gång.',
+  error: 'Open Food Facts svarar inte just nu. Skriv av näringsvärdet från förpackningen, så känns varan igen nästa gång.',
+}
 
 type Props = {
   open: boolean
   date: DateKey
   /** Text som skrevs i fältet på Idag innan arkets sökfält fick fokus. */
   typed: string
+  /** Arket öppnades med streckkodsknappen: kameran startar direkt. */
+  scan?: boolean
   onClose: () => void
   inputRef: RefObject<HTMLInputElement | null>
 }
 
-export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
+export function AddSheet({ open, date, typed, scan, onClose, inputRef }: Props) {
   const [query, setQuery] = useState('')
   const [view, setView] = useState<View>({ kind: 'home' })
   const custom = useStore((s) => s.customFoods)
@@ -45,6 +65,11 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
   const startKcal = useRef(0)
   const [choosing, setChoosing] = useState<Food | null>(null)
   const [favoriting, setFavoriting] = useState<Food | null>(null)
+  const [scanning, setScanning] = useState(false)
+  // Koden som slås upp just nu, och meddelandet om en kod inte gick att använda.
+  const [looking, setLooking] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
+  const lookupRef = useRef<AbortController | null>(null)
 
   const foods = useMemo(() => allFoods(custom), [custom])
   const budget = budgetFor(date, history)
@@ -66,7 +91,15 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
     setView({ kind: 'home' })
     setChoosing(null)
     setFavoriting(null)
+    setScanning(false)
+    setNotice(null)
+    lookupRef.current?.abort()
+    setLooking(null)
   }, [open, date])
+
+  useEffect(() => {
+    if (open && scan) setScanning(true)
+  }, [open, scan])
 
   useEffect(() => {
     bodyRef.current?.closest('.sheet-body')?.scrollTo({ top: 0 })
@@ -85,6 +118,75 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
   const seasonal = useMemo(() => foods.filter((f) => f.months?.includes(month)), [foods, month])
 
   const add = (food: Food, n = qty) => addFood(food, date, n)
+
+  const startScan = () => {
+    // Tangentbordet fälls ner, annars ligger det kvar ovanpå kameran.
+    inputRef.current?.blur()
+    setNotice(null)
+    setScanning(true)
+  }
+
+  /** En läst kod: först de egna varorna, sedan Open Food Facts, annars formuläret. */
+  const onCode = async (code: string) => {
+    setScanning(false)
+    setQuery('')
+    setNotice(null)
+    setView({ kind: 'home' })
+    const own = foodByBarcode(useStore.getState().customFoods, code)
+    if (own) {
+      setChoosing(own)
+      return
+    }
+    if (isStoreCode(code)) {
+      setNotice('Det här är butikens egen kod, som på lösvikt och deli. Den går inte att slå upp. Sök på varan i stället.')
+      return
+    }
+    lookupRef.current?.abort()
+    const ctrl = new AbortController()
+    lookupRef.current = ctrl
+    setLooking(code)
+    let result: Lookup
+    try {
+      result = await lookupBarcode(code, { signal: ctrl.signal })
+    } catch {
+      return // avbrutet
+    }
+    if (ctrl.signal.aborted) return
+    setLooking(null)
+    if (result.kind === 'found') {
+      const { name, emoji, per100 } = result.product
+      setChoosing({ id: SCANNED_ID, name, emoji, ...packagedBase(per100), category: 'egna', custom: true, barcode: code, per100 })
+      return
+    }
+    setView({
+      kind: 'create',
+      barcode: code,
+      note: SCAN_NOTES[result.kind],
+      initial: result.kind === 'incomplete' && result.name ? { name: result.name } : {},
+      per100: result.kind === 'incomplete' ? result.per100 : { measure: 'g' },
+    })
+  }
+
+  // En skannad vara sparas som egen vara med koden först när den läggs till.
+  const scanned = choosing?.id === SCANNED_ID ? choosing : null
+  const addScanned = (picks: Picks, n: number) => {
+    if (!scanned) return
+    const { name, emoji, unit, kcal, barcode, per100 } = scanned
+    const saved = addCustomFood({ name, emoji, unit, kcal, barcode, per100 })
+    addFood(applyPicks(saved, picks), date, n, picks)
+    showToast(`${saved.name} sparad och tillagd${dayNote}`)
+  }
+  const editScanned = () => {
+    if (!scanned) return
+    setChoosing(null)
+    setView({
+      kind: 'create',
+      barcode: scanned.barcode,
+      initial: { name: scanned.name, emoji: scanned.emoji },
+      per100: scanned.per100,
+      note: 'Rätta det som inte stämmer med förpackningen.',
+    })
+  }
 
   const logMealWithUndo = (meal: Meal) => {
     const before = useStore.getState().entries.filter((e) => e.date === date)
@@ -205,7 +307,7 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
             aria-label="Sök mat"
             tabIndex={open ? 0 : -1}
           />
-          {query && (
+          {query ? (
             <button
               type="button"
               className="search-clear"
@@ -217,22 +319,40 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
             >
               <XIcon size={10} />
             </button>
+          ) : (
+            // Som mikrofonen i iOS sökfält: syns när fältet är tomt och byts mot krysset när man skriver.
+            <button type="button" className="search-scan" onClick={startScan} aria-label="Skanna streckkod" tabIndex={open ? 0 : -1}>
+              <BarcodeIcon size={21} />
+            </button>
           )}
         </div>
 
         {view.kind === 'create' ? (
-          <CustomFoodForm
-            budgetKcal={budget}
-            initial={{ name: trimmed }}
-            submitLabel="Spara och lägg till"
-            onSubmit={(f) => {
-              const food = addCustomFood(f)
-              add(food)
-              showToast(`${food.name} sparad och tillagd${dayNote}`)
-              setQuery('')
-              setView({ kind: 'home' })
-            }}
-          />
+          <>
+            {view.note && <p className="scan-note">{view.note}</p>}
+            <CustomFoodForm
+              key={view.barcode ?? 'ny'}
+              budgetKcal={budget}
+              initial={view.barcode ? view.initial : { name: trimmed }}
+              per100={view.per100}
+              submitLabel="Spara och lägg till"
+              onSubmit={(f) => {
+                const food = addCustomFood(view.barcode ? { ...f, barcode: view.barcode } : f)
+                add(food, view.barcode ? 1 : qty)
+                showToast(`${food.name} sparad och tillagd${dayNote}`)
+                setQuery('')
+                setView({ kind: 'home' })
+              }}
+            />
+            {view.barcode && (
+              <p className="hint-text scan-code">
+                Streckkod {view.barcode} ·{' '}
+                <a href={productPage(view.barcode)} target="_blank" rel="noreferrer">
+                  Lägg till i Open Food Facts
+                </a>
+              </p>
+            )}
+          </>
         ) : searching ? (
           <>
             {qty !== 1 && (
@@ -258,6 +378,27 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
           </>
         ) : (
           <>
+            {looking && (
+              <div className="card scan-looking" role="status">
+                <span className="spinner" aria-hidden />
+                <span>Letar upp varan …</span>
+                <button
+                  type="button"
+                  className="link-btn"
+                  onClick={() => {
+                    lookupRef.current?.abort()
+                    setLooking(null)
+                  }}
+                >
+                  Avbryt
+                </button>
+              </div>
+            )}
+            {notice && (
+              <p className="scan-note" role="status">
+                {notice}
+              </p>
+            )}
             {meals.length > 0 && (
               <>
                 <h3 className="section-title">Mina måltider</h3>
@@ -283,8 +424,25 @@ export function AddSheet({ open, date, typed, onClose, inputRef }: Props) {
           </>
         )}
       </div>
-      <ChoiceSheet food={choosing} qty={qty} date={date} onClose={() => setChoosing(null)} />
+      <ChoiceSheet
+        food={choosing}
+        qty={qty}
+        date={date}
+        onClose={() => setChoosing(null)}
+        onConfirm={scanned ? (_variant, n, picks) => addScanned(picks, n) : undefined}
+        note={
+          scanned ? (
+            <>
+              Från Open Food Facts.{' '}
+              <button type="button" className="inline-link" onClick={editScanned}>
+                Stämmer inte? Ändra
+              </button>
+            </>
+          ) : undefined
+        }
+      />
       <FavoritePicker item={favoriting} onClose={() => setFavoriting(null)} />
+      <ScanSheet open={scanning} onClose={() => setScanning(false)} onCode={(code) => void onCode(code)} />
     </Sheet>
   )
 }

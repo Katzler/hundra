@@ -113,3 +113,19 @@ export const ScaleIcon = ({ size = 18, className }: P) => (
     <path d="M9 9.5a4 4 0 0 1 6 0M12 12l1.6-2.4" />
   </svg>
 )
+
+/** Streckkod i en sökram, som barcode.viewfinder. */
+export const BarcodeIcon = ({ size = 20, className }: P) => (
+  <svg {...base(size)} className={className} strokeWidth={1.9}>
+    <path d="M3.5 8V5.5a2 2 0 0 1 2-2H8M16 3.5h2.5a2 2 0 0 1 2 2V8M20.5 16v2.5a2 2 0 0 1-2 2H16M8 20.5H5.5a2 2 0 0 1-2-2V16" />
+    <path d="M7 8.5v7M12.5 8.5v7M14.7 8.5v7" strokeWidth={1.4} />
+    <path d="M9.6 8.5v7M17.2 8.5v7" strokeWidth={2.3} strokeLinecap="butt" />
+  </svg>
+)
+
+/** Ficklampa, ifylld när den är tänd. */
+export const BoltIcon = ({ size = 18, className, filled }: P & { filled?: boolean }) => (
+  <svg {...base(size)} className={className} fill={filled ? 'currentColor' : 'none'} strokeWidth={1.8}>
+    <path d="M13.5 2.5 5.5 13.5h6l-1 8 8-11h-6z" />
+  </svg>
+)

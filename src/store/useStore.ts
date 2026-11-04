@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
 import type { LastChoice, Picks } from '../data/choices'
-import { FOODS, type Food } from '../data/foods'
+import { FOODS, type Food, type Per100 } from '../data/foods'
 import { daySlot, tdee, withBudget, type BudgetPeriod, type Entry, type Profile, type Weight } from '../lib/calc'
 import { todayKey, type DateKey } from '../lib/dates'
+import { rowAfterEdit } from '../lib/packaged'
 import { useUI } from './ui'
 
 /** Hur ofta en vara loggats. `slots` räknar per del av dygnet (morgon, lunch, eftermiddag, kväll). */
@@ -14,6 +15,9 @@ export type Meal = { id: string; name: string; items: MealItem[] }
 
 /** Nyckeln i localStorage. Får aldrig bytas – all historik ligger under den. */
 export const STORAGE_KEY = 'hundra-v1'
+
+/** Datamodellens version, i lagringen och i exporten. Höjs med ett nytt steg i `migrateData`. */
+export const DATA_VERSION = 5
 
 /** Snabbval kan vara en vara eller en sparad måltid ("måltid:<id>"). */
 export const MEAL_PREFIX = 'måltid:'
@@ -237,6 +241,8 @@ export function migrateData(persisted: unknown, version: number): Data {
     d.favoriteGroups = Object.fromEntries(FAVORITE_GROUPS.map((g) => [g.id, [...ids]]))
     delete d.quickPicks
   }
+  // Version 4 → 5: egna varor kan ha en streckkod (`barcode`) och näringsvärdet från förpackningen
+  // (`per100`). Båda är valfria, så inget behöver flyttas. De tvättas i `cleanFood`.
   return d as unknown as Data
 }
 
@@ -299,6 +305,9 @@ export function itemsOf(foods: Food[], ids: string[], meals: Meal[]): QuickItem[
 /** Ligger id:t i någon av favoritkategorierna? */
 export const isFavorite = (groups: FavoriteGroups, id: string) => FAVORITE_GROUPS.some((g) => groups[g.id].includes(id))
 
+/** Den egna varan med den här streckkoden, om man skannat eller skrivit in den förut. */
+export const foodByBarcode = (custom: Food[], code: string): Food | undefined => custom.find((f) => f.barcode === code)
+
 /** Bakåtkompatibel hjälpare: bara varorna bland snabbvalen. */
 export function quickFoods(foods: Food[], usage: Usage, picks: string[] | null, limit = 8): Food[] {
   return quickItems(foods, usage, picks, [], limit).flatMap((q) => (q.kind === 'food' ? [q.food] : []))
@@ -318,7 +327,7 @@ export function mealKcal(meal: Meal): number {
 }
 
 export function exportData(s: Data): string {
-  return JSON.stringify({ app: 'hundra', version: 4, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
+  return JSON.stringify({ app: 'hundra', version: DATA_VERSION, exportedAt: new Date().toISOString(), data: pickData(s) }, null, 2)
 }
 
 const isDate = (v: unknown): v is DateKey => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
@@ -355,18 +364,31 @@ const cleanEntry = (e: unknown): Entry | null => {
   return item ? { id: e.id, date: e.date, at: isNum(e.at) ? e.at : 0, ...item } : null
 }
 
-const cleanFood = (f: unknown): Food | null =>
-  isObj(f) && isStr(f.id) && isStr(f.name) && isNum(f.kcal, 0)
-    ? {
-        id: f.id,
-        name: f.name,
-        emoji: isStr(f.emoji) ? f.emoji : '🍽️',
-        unit: isStr(f.unit) ? f.unit : '1 portion',
-        kcal: f.kcal,
-        category: 'egna',
-        custom: true,
-      }
-    : null
+const cleanPer100 = (p: unknown): Per100 | null => {
+  if (!isObj(p) || !isNum(p.kcal, 0) || p.kcal > 900 || (p.measure !== 'g' && p.measure !== 'ml')) return null
+  const size = (v: unknown) => (isNum(v, 0) && v > 0 && v <= 100_000 ? v : undefined)
+  const serving = size(p.serving)
+  const pack = size(p.pack)
+  return { kcal: p.kcal, measure: p.measure, ...(serving ? { serving } : {}), ...(pack ? { pack } : {}) }
+}
+
+// Bara kända fält följer med. Ett nytt fält på egna varor måste läggas till här, annars försvinner
+// det tyst vid nästa start.
+const cleanFood = (f: unknown): Food | null => {
+  if (!isObj(f) || !isStr(f.id) || !isStr(f.name) || !isNum(f.kcal, 0)) return null
+  const per100 = cleanPer100(f.per100)
+  return {
+    id: f.id,
+    name: f.name,
+    emoji: isStr(f.emoji) ? f.emoji : '🍽️',
+    unit: isStr(f.unit) ? f.unit : '1 portion',
+    kcal: f.kcal,
+    category: 'egna',
+    custom: true,
+    ...(isStr(f.barcode) && /^\d{8,14}$/.test(f.barcode) ? { barcode: f.barcode } : {}),
+    ...(per100 ? { per100 } : {}),
+  }
+}
 
 const cleanMeal = (m: unknown): Meal | null => {
   if (!isObj(m) || !isStr(m.id) || !isStr(m.name) || !Array.isArray(m.items)) return null
@@ -518,19 +540,12 @@ export const useStore = create<Data & Actions>()(
       updateCustomFood: (id, patch) =>
         set((s) => {
           const today = todayKey()
+          const before = s.customFoods.find((f) => f.id === id)
+          if (!before) return s
+          const after = { ...before, ...patch }
           return {
-            customFoods: s.customFoods.map((f) => (f.id === id ? { ...f, ...patch } : f)),
-            entries: s.entries.map((e) =>
-              e.foodId === id && e.date === today
-                ? {
-                    ...e,
-                    name: patch.name ?? e.name,
-                    emoji: patch.emoji ?? e.emoji,
-                    unit: patch.unit ?? e.unit,
-                    kcalPerUnit: patch.kcal ?? e.kcalPerUnit,
-                  }
-                : e,
-            ),
+            customFoods: s.customFoods.map((f) => (f.id === id ? after : f)),
+            entries: s.entries.map((e) => (e.foodId === id && e.date === today ? { ...e, ...rowAfterEdit(before, after, e) } : e)),
           }
         }),
 
@@ -618,7 +633,7 @@ export const useStore = create<Data & Actions>()(
       // Nyckeln får aldrig bytas: all historik ligger under den. Höj i stället `version`
       // och skriv en migrering i `migrate` om datamodellen ändras.
       name: STORAGE_KEY,
-      version: 4,
+      version: DATA_VERSION,
       storage: createJSONStorage(() => safeStorage),
       migrate: (persisted, version) => migrateData(persisted, version),
       // Trasig eller gammal data i lagringen tvättas i stället för att krascha appen.

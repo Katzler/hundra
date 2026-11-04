@@ -3,7 +3,8 @@
 // rad med eget namn, egen enhet och egna kcal, så att loggen ser ut som förut.
 
 import { formatQty } from '../lib/calc'
-import type { Food } from './foods'
+import { defaultMeasure, measures } from '../lib/packaged'
+import type { Food, Per100 } from './foods'
 
 /** Ett svar på en fråga. */
 export type Option = {
@@ -449,8 +450,21 @@ function spoonsFromUnit(unit: string): Question | null {
   return spoons(msk, unitName, n)
 }
 
-/** Frågorna för en vara. Egna varor har inga. */
+/** Varor från en förpackning: portion, förpackning, glas eller 100 g, med varans enhet som förval. */
+function packaged(food: Food, p: Per100): Question {
+  const all = measures(p)
+  const current = all.find((m) => m.unit === food.unit) ?? defaultMeasure(p)
+  return {
+    id: 'enhet',
+    title: 'Mått',
+    default: current.id,
+    options: all.map((m) => ({ id: m.id, label: m.label, note: m.note, kcal: m.kcal, unit: m.unit, ...(m.amounts ? { amounts: m.amounts } : {}) })),
+  }
+}
+
+/** Frågorna för en vara. Egna varor har inga, utom de från en förpackning. */
 export function questionsFor(food: Food): Question[] {
+  if (food.per100) return [packaged(food, food.per100)]
   if (food.custom) return []
   if (food.id in BY_FOOD) return BY_FOOD[food.id]
   const spoon = spoonsFromUnit(food.unit)

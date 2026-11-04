@@ -38,6 +38,8 @@ export function parseQuantity(raw: string): { qty: number; rest: string } {
 
 /** Lägre är bättre, null betyder ingen träff. */
 function score(food: Food, query: string, terms: string[]): number | null {
+  // Siffrorna under streckkoden hittar en skannad vara.
+  if (food.barcode && query.replace(/ /g, '') === food.barcode) return 0
   const name = normalize(food.name)
   if (name === query) return 0
   if (name.startsWith(query)) return 1

@@ -1,11 +1,27 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { FOODS } from '../data/foods'
 import { todayKey } from '../lib/dates'
-import { DATA_KEYS, emptyData, exportData, FAVORITE_LIMIT, migrateData, parseImport, pickData, quickFoods, sanitizeData, useStore } from './useStore'
+import { packagedBase } from '../lib/packaged'
+import {
+  DATA_KEYS,
+  DATA_VERSION,
+  emptyData,
+  exportData,
+  FAVORITE_LIMIT,
+  foodByBarcode,
+  migrateData,
+  parseImport,
+  pickData,
+  quickFoods,
+  sanitizeData,
+  useStore,
+} from './useStore'
 
 const potatis = FOODS.find((f) => f.id === 'potatis')!
 const banan = FOODS.find((f) => f.id === 'banan')!
 const day = '2026-10-24'
+const per100 = { kcal: 540, measure: 'g' as const, serving: 25, pack: 200 }
+const choklad = { name: 'Marabou Mjölkchoklad', emoji: '🍫', ...packagedBase(per100), barcode: '7310511210502', per100 }
 
 describe('store', () => {
   beforeEach(() => useStore.getState().resetAll())
@@ -79,9 +95,10 @@ describe('store', () => {
     s.setCalibration(0.95)
     s.markBackup()
     s.setTrendRange(30)
+    s.addCustomFood(choklad)
     const before = pickData(useStore.getState())
     // Varje fält ska ha ett annat värde än standard, annars testar vi inte att det följer med.
-    for (const k of DATA_KEYS) if (k !== 'calibrationDismissedAt' && k !== 'backupSnoozedUntil' && k !== 'customFoods') expect(before[k], k).not.toEqual(emptyData[k])
+    for (const k of DATA_KEYS) if (k !== 'calibrationDismissedAt' && k !== 'backupSnoozedUntil') expect(before[k], k).not.toEqual(emptyData[k])
     const text = exportData(before)
     s.resetAll()
     const { dropped, ...imported } = parseImport(text)
@@ -258,6 +275,64 @@ describe('store', () => {
     localStorage.setItem('hundra-v1', stored) // …med det som låg sparat på telefonen
     await useStore.persist.rehydrate()
     expect(pickData(useStore.getState())).toEqual(saved)
+  })
+
+  it('skannade varor behåller streckkod och näringsvärde i lagringen', async () => {
+    const s = useStore.getState()
+    const food = s.addCustomFood(choklad)
+    s.addFood(food, day)
+    const saved = pickData(useStore.getState())
+    const stored = localStorage.getItem('hundra-v1')!
+    useStore.setState({ ...emptyData })
+    localStorage.setItem('hundra-v1', stored)
+    await useStore.persist.rehydrate()
+    expect(pickData(useStore.getState())).toEqual(saved)
+    expect(foodByBarcode(useStore.getState().customFoods, '7310511210502')).toMatchObject({ barcode: '7310511210502', per100 })
+    expect(JSON.parse(stored).version).toBe(DATA_VERSION)
+  })
+
+  it('trasig streckkod och trasigt näringsvärde tvättas bort, varan finns kvar', () => {
+    const { data, dropped } = sanitizeData({
+      customFoods: [
+        { id: 'egen-a', name: 'A', kcal: 100, unit: '100 g', barcode: 'abc', per100: { kcal: 5000, measure: 'g' } },
+        { id: 'egen-b', name: 'B', kcal: 100, unit: '100 g', per100: { kcal: 100, measure: 'liter', serving: 30 } },
+        { id: 'egen-c', name: 'C', kcal: 135, unit: '1 portion (25 g)', per100: { kcal: 540, measure: 'g', serving: 25, pack: -1 } },
+      ],
+    })
+    expect(dropped).toBe(0)
+    expect(data.customFoods[0].barcode).toBeUndefined()
+    expect(data.customFoods[0].per100).toBeUndefined()
+    expect(data.customFoods[1].per100).toBeUndefined()
+    expect(data.customFoods[2].per100).toEqual({ kcal: 540, measure: 'g', serving: 25 })
+  })
+
+  it('version 4 migreras till 5 utan att något försvinner', () => {
+    const v4 = {
+      profile: { sex: 'man', age: 30, heightCm: 180, weightKg: 80, activity: 3 },
+      budgetHistory: [{ from: '2026-01-01', kcal: 2500 }],
+      entries: [{ id: 'a', date: day, at: 1, foodId: 'egen-1', name: 'Lasagne', emoji: '🍝', unit: '1 bit', kcalPerUnit: 600, qty: 1 }],
+      customFoods: [{ id: 'egen-1', name: 'Lasagne', emoji: '🍝', unit: '1 bit', kcal: 600, category: 'egna', custom: true }],
+      favoriteGroups: { frukost: ['egen-1'], lunch: [], middag: [], skrap: [] },
+    }
+    const { data } = sanitizeData(migrateData(v4, 4))
+    expect(data.entries).toHaveLength(1)
+    expect(data.customFoods).toEqual(v4.customFoods)
+    expect(data.favoriteGroups.frukost).toEqual(['egen-1'])
+    expect(JSON.parse(exportData(data)).version).toBe(5)
+  })
+
+  it('ändrad skannad vara: dagens rader behåller sitt mått, tidigare dagar ligger fast', () => {
+    const s = useStore.getState()
+    const food = s.addCustomFood(choklad)
+    const today = todayKey()
+    s.addFood(food, today)
+    s.addFood({ ...food, unit: '100 g', kcal: 540 }, today)
+    s.addFood(food, '2026-01-01')
+    s.updateCustomFood(food.id, { name: 'Mjölkchoklad', per100: { ...per100, kcal: 500 }, ...packagedBase({ ...per100, kcal: 500 }) })
+    const rows = useStore.getState().entries
+    expect(rows.find((e) => e.date === today && e.unit === '100 g')).toMatchObject({ name: 'Mjölkchoklad', kcalPerUnit: 500 })
+    expect(rows.find((e) => e.date === today && e.unit === '1 portion (25 g)')?.kcalPerUnit).toBe(125)
+    expect(rows.find((e) => e.date === '2026-01-01')).toMatchObject({ name: 'Marabou Mjölkchoklad', kcalPerUnit: 135 })
   })
 
   it('import avvisar fel filer', () => {

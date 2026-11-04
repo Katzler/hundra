@@ -37,6 +37,10 @@ Koden för detta finns i `src/lib/calc.ts`, och matlistan i `src/data/foods.ts`.
 
 All data ligger i webbläsarens localStorage på enheten. Använd Exportera/Importera i Profil som backup.
 
+## Streckkoder
+
+Streckkodsikonen i sökfältet öppnar kameran. Koden läses med ZXing (WebAssembly, `zxing-wasm`), eftersom Safari saknar en inbyggd streckkodsläsare. Varan letas först bland de egna varorna och sedan i [Open Food Facts](https://world.openfoodfacts.org), en öppen databas (ODbL). Bara koden skickas. En skannad vara sparas som egen vara med koden och kcal per 100 g, så nästa skanning går direkt och utan nät. Saknas varan skriver man av näringsvärdet från förpackningen.
+
 **Viktigt på iPhone:** appen på hemskärmen har egen lagring, skild från Safari. Tar man bort appen från hemskärmen raderas all data. Exportera alltid en backup först.
 
 ## Datamodell

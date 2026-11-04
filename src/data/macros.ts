@@ -254,6 +254,7 @@ export const MACROS: Record<string, Macros> = {
   'kycklinglever': [21, 5.5, 1],
   'kalkonbrost': [24, 1.2, 0],
   'kalkonfars': [20, 8, 0],
+  'notfars-5': [21, 5, 0],
   'notfars-10': [20, 10, 0],
   'notfars-20': [18, 20, 0],
   'blandfars': [18, 17.5, 0],

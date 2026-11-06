@@ -8,7 +8,7 @@ import { FavoriteWheel } from '../components/FavoriteWheel'
 import { EntryRow } from '../components/FoodRow'
 import { BarcodeIcon, CalendarIcon, ChevronLeft, ChevronRight, SearchIcon } from '../components/icons'
 import { MealSheet } from '../components/MealSheet'
-import { MacroLegend, Ring } from '../components/Ring'
+import { Ring } from '../components/Ring'
 import { SwipeRow } from '../components/SwipeRow'
 import { preferred } from '../data/choices'
 import { budgetFor, dayMacros, entryKcal, formatPoints, formatQty, macroTargets, toPoints, type Entry } from '../lib/calc'
@@ -58,7 +58,6 @@ export function Today() {
   const budget = budgetFor(date, history)
   const dayEntries = useMemo(() => entries.filter((e) => e.date === date).sort((a, b) => a.at - b.at), [entries, date])
   const total = toPoints(dayEntries.reduce((s, e) => s + entryKcal(e), 0), budget)
-  const left = 100 - total
   const lookup = useMemo(() => macroLookup(customFoods), [customFoods])
   const macros = useMemo(() => {
     if (!showMacros || !profile) return null
@@ -157,20 +156,8 @@ export function Today() {
 
       <section className="ring-section">
         <Ring value={total} goal={goal} macros={macros} />
-        <p className="ring-note">
-          {dayEntries.length === 0
-            ? 'Inget loggat än'
-            : left >= 0.5
-              ? `${formatPoints(left)} kvar till 100`
-              : left > -0.5
-                ? 'Precis 100'
-                : `${formatPoints(-left)} över 100`}
-        </p>
-        {macros && (
-          <MacroLegend
-            macros={macros}
-            unknown={macros.unknownPoints >= 0.5 ? `${formatPoints(macros.unknownPoints)} p utan näringsvärden räknas inte med` : undefined}
-          />
+        {macros && macros.unknownPoints >= 0.5 && (
+          <p className="macro-unknown">{formatPoints(macros.unknownPoints)} p utan näringsvärden räknas inte med</p>
         )}
       </section>
 

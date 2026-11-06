@@ -104,28 +104,6 @@ export function Ring({ value, size = 220, stroke = 24, caption = 'av 100', goal 
   )
 }
 
-/** Förklaringen under ringen: gram mot målet för varje ring, och det som saknar näringsvärden. */
-export function MacroLegend({ macros, unknown }: { macros: RingMacros; unknown?: string }) {
-  return (
-    <div className="macro-legend">
-      <div className="macro-items" style={{ gridTemplateColumns: `repeat(${macros.tracked.length}, minmax(0, 1fr))` }}>
-        {macros.tracked.map((i) => (
-          <div key={i} className={`macro-item ${MACRO_CLASSES[i]}`}>
-            <span className="macro-label">
-              <span className="macro-dot" aria-hidden />
-              {MACRO_NAMES[i]}
-            </span>
-            <span className="macro-value">
-              <strong>{Math.round(macros.value[i])}</strong> / {macros.target[i]} g
-            </span>
-          </div>
-        ))}
-      </div>
-      {unknown && <p className="macro-unknown">{unknown}</p>}
-    </div>
-  )
-}
-
 /** Liten, stillastående ring för kalendern och veckoremsan. */
 export function MiniRing({ value, size = 30, stroke = 4, muted = false }: { value: number | null; size?: number; stroke?: number; muted?: boolean }) {
   const r = (size - stroke) / 2
